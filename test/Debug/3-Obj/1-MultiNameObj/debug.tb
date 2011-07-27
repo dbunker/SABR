@@ -1,0 +1,14 @@
+# see license at project root
+
+
+Sym { 0 1 2 }
+
+Board{ a b }
+
+Start{ 0 0 }
+
+End{ 2 2 }
+
+Obj o1 { val1 val2 }
+
+Obj o1 { val1 val2 }

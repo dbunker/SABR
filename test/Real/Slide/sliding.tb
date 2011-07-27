@@ -1,0 +1,82 @@
+# see license at project root
+
+# solves sliding puzzle
+
+# defines symbols
+Sym{
+	0 1 2 3 4 5 6 7 u
+}
+
+# defines what each element on board is called and its 2 dimensional structure
+# these are BoardVals
+Board{
+	a0 a1 a2;
+	b0 b1 b2;
+	c0 c1 c2;
+}
+
+# starting position of board
+# these must be Symbols
+Start{
+	3 4 2;
+	1 0 5;
+	7 u 6;
+}
+
+# desired ending position of board
+# these can have Symbol, TempVal, !Symbol, !TempVal, collection of Symbols and TempVals
+# in TempVal:(Val,Val,...,!Val,...), or (Val,Val,...,!Val,...) (greedy)
+# meaning there may be many possible End points
+End{
+	0 1 2;
+	3 4 5;
+	6 7 u;
+}
+
+# only defines a 2 dimensional structure, the names in here are ignored
+Obj Adj{
+	block1 block2
+}
+
+# transformation available on this structure
+# can have Symbol, TempVal, or collection of Symbols and TempVals
+# in TempVal:(Val,Val,...,!Val,...) form in each space from Adj
+# meaning that any of the indicated Symbols or TempVals could fit that position
+# for the transformation to be able to occur on the created Adj objects
+# if !Val is present it can be filled using this (greedy)can have Symbol, TempVal, or collection of Symbols and TempVals
+# in TempVal:(Val,Val,...,!Val,...) 
+
+# Trans must activate on an object like Adj, if one is not made, use Board (:Board)
+# if trans is named Name:Object, the series of Transformations will be named in output
+Trans Adj{
+	block u
+=>
+	u block
+}
+
+Trans Adj{
+	u block
+=>
+	block u
+}
+
+# all Adjs that will follow Trans
+# this contains only BoardVal or {BoardVal,BoardVal,...}
+# meaning that any of the BoardVals in the brackets could work for the 
+# transformations of Adj
+# if these are named Name:Object then it will also be included in the output
+DesObj Adj{	a0 a1	}
+DesObj Adj{	a1 a2	}
+DesObj Adj{	b0 b1	}
+DesObj Adj{	b1 b2	}
+DesObj Adj{	c0 c1	}
+DesObj Adj{	c1 c2	}
+
+DesObj Adj{	a0 b0	}
+DesObj Adj{	b0 c0	}
+DesObj Adj{	a1 b1	}
+DesObj Adj{	b1 c1	}
+DesObj Adj{	a2 b2	}
+DesObj Adj{	b2 c2	}
+
+

@@ -1,0 +1,24 @@
+# see license at project root
+
+
+Sym{ 0 1 2 }
+
+Sym n1{ 3 4 5 }
+
+Board{ a:n1 b c }
+
+Start{ 3 0 0 }
+
+End{ 5 2 2 }
+
+Obj MyObj{
+	first second;
+	third;
+}
+
+# this will fail due to wrong shape
+Req MyObj{
+	0;
+	0 0;
+}
+

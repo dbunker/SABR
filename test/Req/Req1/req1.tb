@@ -1,0 +1,26 @@
+# see license at project root
+
+# test require
+
+Sym{ 0 1 2 3; }
+
+Board{ a b c; }
+
+Start{ 0 0 0; }
+
+End{ 3 3 3; }
+
+Trans Com0:Board{ 0 0 0; => 1 1 1; }
+
+Trans Com1:Board{ 0 0 0; => 2 2 2; }
+
+Trans Com2:Board{ 1 1 1; => 3 3 3; }
+
+Trans Com3:Board{ 2 2 2; => 3 3 3; }
+
+DesObj All { a b c; }
+
+# each one of these cannot be 2
+Req All { !2 !2 !2; }
+
+

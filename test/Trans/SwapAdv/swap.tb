@@ -1,0 +1,24 @@
+# see license at project root
+
+# Stripped down language
+# Only symbols can appear in End and Trans
+# No Obj, DesObj, Inv, or DesInv
+# add in swapping
+
+Sym{ 0 1 2; }
+
+Board{ a b c; }
+
+Start{ 0 0 1; }
+
+End{ 0 1 0; }
+
+Obj Set { first second third; }
+
+DesObj MyDes:Set { a b c; }
+
+# 0 0 1 => 1 1 0
+Trans Com0:Set{ v1 v1 v2; => v2 v2 v1; }
+
+# 1 1 0 => 0 1 0
+Trans Com1:Set{ v1 v1 v2; => v2 v1 v2; }

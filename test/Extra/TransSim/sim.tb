@@ -1,0 +1,22 @@
+# see license at project root
+
+
+Sym{ 0 1 }
+
+Board{ a b }
+
+Start{ 0 1 }
+
+End{ 1 0 }
+
+Obj CellA { x }
+
+Obj CellB { x }
+
+TransSim Com0:CellA { 0 => 1 }
+
+TransSim Com1:CellB { 1 => 0 }
+
+DesObj CA:CellA {	a	}
+
+DesObj CB:CellB {	b	}

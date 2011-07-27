@@ -1,0 +1,196 @@
+# see license at project root
+
+
+Sym { 0 1 }
+
+Board{
+	000 001 002 003 004; 
+	010 011 012 013 014; 
+	020 021 022 023 024; 
+	030 031 032 033 034; 
+	040 041 042 043 044;
+
+	100 101 102 103 104; 
+	110 111 112 113 114; 
+	120 121 122 123 124; 
+	130 131 132 133 134; 
+	140 141 142 143 144;
+
+	200 201 202 203 204; 
+	210 211 212 213 214; 
+	220 221 222 223 224; 
+	230 231 232 233 234; 
+	240 241 242 243 244;
+
+	300 301 302 303 304; 
+	310 311 312 313 314; 
+	320 321 322 323 324; 
+	330 331 332 333 334; 
+	340 341 342 343 344;
+
+	400 401 402 403 404; 
+	410 411 412 413 414; 
+	420 421 422 423 424; 
+	430 431 432 433 434; 
+	440 441 442 443 444;
+}
+
+Start{
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+	0 0 0 0 0;
+}
+
+End{
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+	1 1 1 1 1;
+}
+
+TransSim Fill:Block  { 0 0 0 0 0 => 1 1 1 1 1 }
+
+DesObj Horiz-Z0-Y0:Block { 000 001 002 003 004 }
+DesObj Horiz-Z0-Y1:Block { 010 011 012 013 014 }
+DesObj Horiz-Z0-Y2:Block { 020 021 022 023 024 }
+DesObj Horiz-Z0-Y3:Block { 030 031 032 033 034 }
+DesObj Horiz-Z0-Y4:Block { 040 041 042 043 044 }
+
+DesObj Horiz-Z1-Y0:Block { 100 101 102 103 104 }
+DesObj Horiz-Z1-Y1:Block { 110 111 112 113 114 }
+DesObj Horiz-Z1-Y2:Block { 120 121 122 123 124 }
+DesObj Horiz-Z1-Y3:Block { 130 131 132 133 134 }
+DesObj Horiz-Z1-Y4:Block { 140 141 142 143 144 }
+
+DesObj Horiz-Z2-Y0:Block { 200 201 202 203 204 }
+DesObj Horiz-Z2-Y1:Block { 210 211 212 213 214 }
+DesObj Horiz-Z2-Y2:Block { 220 221 222 223 224 }
+DesObj Horiz-Z2-Y3:Block { 230 231 232 233 234 }
+DesObj Horiz-Z2-Y4:Block { 240 241 242 243 244 }
+
+DesObj Horiz-Z3-Y0:Block { 300 301 302 303 304 }
+DesObj Horiz-Z3-Y1:Block { 310 311 312 313 314 }
+DesObj Horiz-Z3-Y2:Block { 320 321 322 323 324 }
+DesObj Horiz-Z3-Y3:Block { 330 331 332 333 334 }
+DesObj Horiz-Z3-Y4:Block { 340 341 342 343 344 }
+
+DesObj Horiz-Z4-Y0:Block { 400 401 402 403 404 }
+DesObj Horiz-Z4-Y1:Block { 410 411 412 413 414 }
+DesObj Horiz-Z4-Y2:Block { 420 421 422 423 424 }
+DesObj Horiz-Z4-Y3:Block { 430 431 432 433 434 }
+DesObj Horiz-Z4-Y4:Block { 440 441 442 443 444 }
+
+
+DesObj Vert-Z0-X0:Block { 000 010 020 030 040 }
+DesObj Vert-Z0-X1:Block { 001 011 021 031 041 }
+DesObj Vert-Z0-X2:Block { 002 012 022 032 042 }
+DesObj Vert-Z0-X3:Block { 003 013 023 033 043 }
+DesObj Vert-Z0-X4:Block { 004 014 024 034 044 }
+
+DesObj Vert-Z1-X0:Block { 100 110 120 130 140 }
+DesObj Vert-Z1-X1:Block { 101 111 121 131 141 }
+DesObj Vert-Z1-X2:Block { 102 112 122 132 142 }
+DesObj Vert-Z1-X3:Block { 103 113 123 133 143 }
+DesObj Vert-Z1-X4:Block { 104 114 124 134 144 }
+
+DesObj Vert-Z2-X0:Block { 200 210 220 230 240 }
+DesObj Vert-Z2-X1:Block { 201 211 221 231 241 }
+DesObj Vert-Z2-X2:Block { 202 212 222 232 242 }
+DesObj Vert-Z2-X3:Block { 203 213 223 233 243 }
+DesObj Vert-Z2-X4:Block { 204 214 224 234 244 }
+
+DesObj Vert-Z3-X0:Block { 300 310 320 330 340 }
+DesObj Vert-Z3-X1:Block { 301 311 321 331 341 }
+DesObj Vert-Z3-X2:Block { 302 312 322 332 342 }
+DesObj Vert-Z3-X3:Block { 303 313 323 333 343 }
+DesObj Vert-Z3-X4:Block { 304 314 324 334 344 }
+
+DesObj Vert-Z4-X0:Block { 400 410 420 430 440 }
+DesObj Vert-Z4-X1:Block { 401 411 421 431 441 }
+DesObj Vert-Z4-X2:Block { 402 412 422 432 442 }
+DesObj Vert-Z4-X3:Block { 403 413 423 433 443 }
+DesObj Vert-Z4-X4:Block { 404 414 424 434 444 }
+
+
+DesObj Back-X0-Y0:Block { 000 100 200 300 400 }
+DesObj Back-X0-Y1:Block { 010 110 210 310 410 }
+DesObj Back-X0-Y2:Block { 020 120 220 320 420 }
+DesObj Back-X0-Y3:Block { 030 130 230 330 430 }
+DesObj Back-X0-Y4:Block { 040 140 240 340 440 }
+
+DesObj Back-X1-Y0:Block { 001 101 201 301 401 }
+DesObj Back-X1-Y1:Block { 011 111 211 311 411 }
+DesObj Back-X1-Y2:Block { 021 121 221 321 421 }
+DesObj Back-X1-Y3:Block { 031 131 231 331 431 }
+DesObj Back-X1-Y4:Block { 041 141 241 341 441 }
+
+DesObj Back-X2-Y0:Block { 002 102 202 302 402 }
+DesObj Back-X2-Y1:Block { 012 112 212 312 412 }
+DesObj Back-X2-Y2:Block { 022 122 222 322 422 }
+DesObj Back-X2-Y3:Block { 032 132 232 332 432 }
+DesObj Back-X2-Y4:Block { 042 142 242 342 442 }
+
+DesObj Back-X3-Y0:Block { 003 103 203 303 403 }
+DesObj Back-X3-Y1:Block { 013 113 213 313 413 }
+DesObj Back-X3-Y2:Block { 023 123 223 323 423 }
+DesObj Back-X3-Y3:Block { 033 133 233 333 433 }
+DesObj Back-X3-Y4:Block { 043 143 243 343 443 }
+
+DesObj Back-X4-Y0:Block { 004 104 204 304 404 }
+DesObj Back-X4-Y1:Block { 014 114 214 314 414 }
+DesObj Back-X4-Y2:Block { 024 124 224 324 424 }
+DesObj Back-X4-Y3:Block { 034 134 234 334 434 }
+DesObj Back-X4-Y4:Block { 044 144 244 344 444 }
+
+

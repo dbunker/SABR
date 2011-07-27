@@ -1,0 +1,18 @@
+# see license at project root
+
+# symlist test
+
+Sym s1{ 0 1 2; }
+
+Sym s2{ sa sb; }
+
+Board{ a:s1 b:s2; }
+
+Start{ 0 a; }
+
+End{ 2 b; }
+
+Trans Com0:Board{ 0 sa; => 1 sb; }
+
+Trans Com1:Board{ 1 sb; => 2 sb; }
+

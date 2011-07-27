@@ -1,0 +1,10 @@
+# see license at project root
+
+
+Sym { 0 0 }
+
+Board{ a b }
+
+Start{ 0 0 }
+
+End{ 2 2 }

@@ -1,0 +1,78 @@
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+
+Fill Back-X4-Y4
+Fill Back-X4-Y3
+Fill Back-X4-Y2
+Fill Back-X4-Y1
+Fill Back-X4-Y0
+Fill Back-X3-Y4
+Fill Back-X3-Y3
+Fill Back-X3-Y2
+Fill Back-X3-Y1
+Fill Back-X3-Y0
+Fill Back-X2-Y4
+Fill Back-X2-Y3
+Fill Back-X2-Y2
+Fill Back-X2-Y1
+Fill Back-X2-Y0
+Fill Back-X1-Y4
+Fill Back-X1-Y3
+Fill Back-X1-Y2
+Fill Back-X1-Y1
+Fill Back-X1-Y0
+Fill Back-X0-Y4
+Fill Back-X0-Y3
+Fill Back-X0-Y2
+Fill Back-X0-Y1
+Fill Back-X0-Y0
+
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+

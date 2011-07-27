@@ -1,0 +1,24 @@
+# see license at project root
+
+
+Sym{ 0 1 }
+
+Board{ a b c }
+
+Start{ 0 0 0 }
+
+End{ 1 1 1 }
+
+Trans Ch:Cell { 0 => 1 }
+
+DesObj UsA:Cell { a }
+DesObj UsB:Cell { b }
+DesObj UsC:Cell { c }
+
+Opt MyOpt:Comb { 0 0 }
+Opt MyOpt:Comb { 0 1 }
+Opt MyOpt:Comb { 1 1 }
+
+DesObj De1:Comb { a b }
+DesObj De2:Comb { b c }
+

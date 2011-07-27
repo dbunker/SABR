@@ -1,0 +1,13 @@
+# see license at project root
+
+
+Sym{ 0 1 2 }
+
+Board{ a b }
+
+Start{ 0 0 }
+
+End{ 2 2 }
+
+# this will fail
+Req Board{ 0 (v) }

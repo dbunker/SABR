@@ -1,0 +1,23 @@
+# see license at project root
+
+# find 4 colors for map
+# 1-2, 1-3, 1-4, 1-5
+# 2-3, 2-4, 3-4, 4-5
+
+Sym { 0 1 2 3 }
+
+Board { p1 p2 p3 p4 p5 }
+
+Obj Link { x1 x2 }
+
+Req Link { a !a }
+
+DesObj Link { p1 p2 }
+DesObj Link { p1 p3 }
+DesObj Link { p1 p4 }
+DesObj Link { p1 p5 }
+DesObj Link { p2 p3 }
+DesObj Link { p2 p4 }
+DesObj Link { p3 p4 }
+DesObj Link { p4 p5 }
+

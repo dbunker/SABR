@@ -1,0 +1,102 @@
+
+The language consists of ten constraint configs: 
+Sym, Board, Start, End, Obj, DesObj, Req, Opt, Trans, TransSim
+
+Although the language is domain specific, it was designed with the mantra: 
+The easy stuff should be easy, and the hard stuff should be possible.
+
+------ Overview ------
+
+The main information area is called the Board which consists of a collection of board-cells on a 2d plane.
+Sym is used to define what optional symbol each board-cell can be. The Board exists over many stages defined
+as an argument into the compiler and can transition from one set of symbols in its board-cells, to another
+using Trans and TransSim.
+
+Start defines what constraints the board is required to have at the first stage and End defines what
+constraints must be met at the last stage.
+
+To segment the board based on similar features, you define objects using Obj which consists of obj-cells.
+Objects are defined using DesObj (describe object) which actually says what board-cell matches to each obj-cell. 
+Board can be treated as an object.
+
+Req, Opt, Trans, and TransSim all define constraints on objects:
+	- Req (require) forces all defined objects that share its object to follow the rules it has indicated.
+	- Opt (option) forces its defined objects to follow at least one of the requirements in its opt-group.
+	- Trans (transition) defines a transition from one stage to another where only the obj-cells change.
+	- TransSim (simultaneous transition) is like Trans but allows multiple transitions to happen in a single stage iteration.
+
+The human readable output file will consist of the symbols in the board-cells at each stage
+and the transistion or simultaneous transitions that happened in between.
+
+------ Sym ------
+
+Sym sets what any board-cell can be.
+Sym optional-name { sym1 sym2 ... }
+multiple symbol lists can be created, but must be created at the top of the file
+
+------ Board ------
+
+Board defines where the board-cells are placed and can be represented by another 
+symbol list other than the no-name symbol list. These can be seperated 
+by ; to indicate a line change. Must appear after Sym.
+Board{ board-cell1; board-cell2:another-symbol-list-name ... }
+
+------ Start ------
+
+Start defines what is in the first stage. It is treated as a Req 
+that only effects the first stage. Must appear after Board if it is defined,
+however it is possible for it and End to not be defined.
+Start{ some-sym1 some-sym2 }
+
+------ End ------
+
+Same as start, but is treated as a Req that only effects the last stage.
+End{ some-sym1 some-sym2 }
+
+------ Obj ------
+
+Obj creates an object.
+Obj obj-name{ obj-cell1 obj-cell2 }
+
+------ DesObj ------
+
+DesObj indicates what board-cells that Obj can define. DesObj can also have a name which 
+appears along with the transition that used it in the output file.
+DesObj optional-desobj-name:obj-name{ board-cell1 board-cell2 ... }
+
+------ Req ------
+
+Req defines what rules the object must follow (defined over all board-cells 
+written in desobj of this object)
+Req optional-req-name:obj-name{ rule1 rule2 ... }
+
+Rules include: 
+	- Specific obj-cell must be one of some symbols: (sym1,sym2,...).
+	- A temporary variable can be created which can be used to force multiple obj-cells to match symbols.
+		Any string not a symbol is considered a temporary variable: temp-var temp-var
+	- A temporary variable can be both defined and constrained: new-tem-var:(sym1,sym2,other-temp-var,...)
+	- These can also be negated meaning they can be anything but this: new-tem-var:(!other-temp-var,...)
+
+Note that for each stage all of the requirements are repeated, so it is best to 
+minimize the number of needed stages.
+
+It is possible for a constraint (Req, Opt, Trans, TransSim) to define what stages it is valid for.
+Req(start-at-stage:end-at-stage) optional-req-name:obj-name{ rule1 rule2 ... }
+
+------ Opt ------
+
+Opt is similar to req but must match at least one in the opt-group, and opt-group is defined by the option name
+Opt opt-name:obj-name{ rule1 rule2 ... }
+Opt opt-name:obj-name{ rule1 rule2 ... }
+
+------ Trans ------
+
+Trans also uses the same rules as Req, but these rules exist over two stages.
+If these conditions are met this trans can take place.
+Trans trans-name:obj-name{ rule1 rule2 ... => rule3 rule4 ... }
+
+------ TransSim ------
+
+Same as Trans, but allows multiple transitions to happen in a single stage iteration.
+TransSim trans-name:obj-name{ rule1 rule2 ... => rule3 rule4 ... }
+

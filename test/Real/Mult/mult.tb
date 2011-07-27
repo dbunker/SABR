@@ -1,0 +1,87 @@
+# see license at project root
+
+# multiply two unsigned binary numbers or factor number
+
+Sym { u 0 1 }
+
+# x2 x1 x0
+# y2 y1 y0
+# 
+# if y0:  0   0   x2  x1  x0
+# if y1:  0   x2  x1  x0  0
+# if y2:  x2  x1  x0  0   0
+
+# built similar to an alu
+Board {
+	x2 x1 x0;			# multiply numbers
+	y2 y1 y0;
+
+	t04 t03 t02 t01 t00;		# carrys
+	f04 f03 f02 f01 f00;		# if y0:  0   0   x2  x1  x0
+	s04 s03 s02 s01 s00;		# if y1:  0   x2  x1  x0  0
+	
+	t05
+	t14 t13 t12 t11 t10;		# carrys
+	f14 f13 f12 f11 f10;		# output of last
+	s14 s13 s12 s11 s10;		# if y2:  x2  x1  x0  0   0
+	
+	t15
+	f24 f23 f22 f21 f20;		# final output
+}
+
+# 3 * 3 = 9
+# 1 0 0 1
+Req Board {
+
+	? ? ?;
+	? ? ?;
+	
+	? ? ? ? 0;
+	0 0 ? ? ?;
+	0 ? ? ? 0;
+	
+	?
+	? ? ? ? 0;
+	? ? ? ? ?;
+	? ? ? 0 0;
+	
+	0
+	0 1 0 0 1;	
+}
+
+# if indicated, force the connection
+Opt Link1 { set2 set1 set0; set2 set1 set0; 1; }
+Opt Link1 {    ?    ?    ?;    0    0    0; 0; }
+
+# link
+DesObj Link1 { x2 x1 x0; f02 f01 f00; y0; }
+DesObj Link1 { x2 x1 x0; s03 s02 s01; y1; }
+DesObj Link1 { x2 x1 x0; s14 s13 s12; y2; }
+
+# add
+Opt Add{ 0 0 0; 0 0; }
+
+Opt Add{ 0 0 1; 0 1; }
+Opt Add{ 0 1 0; 0 1; }
+Opt Add{ 1 0 0; 0 1; }
+
+Opt Add{ 0 1 1; 1 0; }
+Opt Add{ 1 0 1; 1 0; }
+Opt Add{ 1 1 0; 1 0; }
+
+Opt Add{ 1 1 1; 1 1; }
+
+# describe
+DesObj Add{ t00 f00 s00; t01 f10; }
+DesObj Add{ t01 f01 s01; t02 f11; }
+DesObj Add{ t02 f02 s02; t03 f12; }
+DesObj Add{ t03 f03 s03; t04 f13; }
+DesObj Add{ t04 f04 s04; t05 f14; }
+
+DesObj Add{ t10 f10 s10; t11 f20; }
+DesObj Add{ t11 f11 s11; t12 f21; }
+DesObj Add{ t12 f12 s12; t13 f22; }
+DesObj Add{ t13 f13 s13; t14 f23; }
+DesObj Add{ t14 f14 s14; t15 f24; }
+
+

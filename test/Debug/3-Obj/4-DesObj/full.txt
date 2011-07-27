@@ -1,0 +1,2 @@
+Start
+Error: Require +Req0+:Cell Temporary Variable 0 Can't Have Same Name As A Symbol.

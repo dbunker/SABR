@@ -1,0 +1,11 @@
+# see license at project root
+
+
+Sym{ 0 1 2 }
+
+Board{ a b }
+
+Req(0:3) Board {
+	0 1
+}
+

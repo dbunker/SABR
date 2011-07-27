@@ -1,0 +1,9 @@
+# see license at project root
+
+
+Sym n1{ 0 1 }
+
+Sym n1{ 0 1 }
+
+Board{ a:n1 }
+

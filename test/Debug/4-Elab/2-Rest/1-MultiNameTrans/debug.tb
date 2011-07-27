@@ -1,0 +1,15 @@
+# see license at project root
+
+
+Sym { 0 1 2 }
+
+Board{ a b }
+
+Start{ 0 0 }
+
+End{ 2 2 }
+
+Trans Com0:Board{ 0 0 => 1 1 }
+
+Trans Com0:Board{ 1 1 => 2 2 }
+

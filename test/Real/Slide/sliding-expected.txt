@@ -1,0 +1,118 @@
+3 4 2 
+1 0 5 
+7 u 6 
+
++Trans0+ +DesObj11+
+
+3 4 2 
+1 u 5 
+7 0 6 
+
++Trans0+ +DesObj10+
+
+3 u 2 
+1 4 5 
+7 0 6 
+
++Trans0+ +DesObj2+
+
+u 3 2 
+1 4 5 
+7 0 6 
+
++Trans1+ +DesObj8+
+
+1 3 2 
+u 4 5 
+7 0 6 
+
++Trans1+ +DesObj9+
+
+1 3 2 
+7 4 5 
+u 0 6 
+
++Trans1+ +DesObj6+
+
+1 3 2 
+7 4 5 
+0 u 6 
+
++Trans1+ +DesObj7+
+
+1 3 2 
+7 4 5 
+0 6 u 
+
++Trans0+ +DesObj13+
+
+1 3 2 
+7 4 u 
+0 6 5 
+
++Trans0+ +DesObj5+
+
+1 3 2 
+7 u 4 
+0 6 5 
+
++Trans0+ +DesObj4+
+
+1 3 2 
+u 7 4 
+0 6 5 
+
++Trans1+ +DesObj9+
+
+1 3 2 
+0 7 4 
+u 6 5 
+
++Trans1+ +DesObj6+
+
+1 3 2 
+0 7 4 
+6 u 5 
+
++Trans0+ +DesObj11+
+
+1 3 2 
+0 u 4 
+6 7 5 
+
++Trans0+ +DesObj10+
+
+1 u 2 
+0 3 4 
+6 7 5 
+
++Trans0+ +DesObj2+
+
+u 1 2 
+0 3 4 
+6 7 5 
+
++Trans1+ +DesObj8+
+
+0 1 2 
+u 3 4 
+6 7 5 
+
++Trans1+ +DesObj4+
+
+0 1 2 
+3 u 4 
+6 7 5 
+
++Trans1+ +DesObj5+
+
+0 1 2 
+3 4 u 
+6 7 5 
+
++Trans1+ +DesObj13+
+
+0 1 2 
+3 4 5 
+6 7 u 
+

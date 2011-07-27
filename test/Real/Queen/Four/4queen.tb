@@ -1,0 +1,62 @@
+# see license at project root
+
+# solves 8 queen problem
+
+Sym { 0 1 }
+
+Board {
+	a0 a1 a2 a3;
+	b0 b1 b2 b3;
+	c0 c1 c2 c3;
+	d0 d1 d2 d3;
+}
+
+# can't have more than one queen (more than one value on a line be 1)
+Opt A:LineA { 1 0 0 0 }
+Opt A:LineA { 0 1 0 0 }
+Opt A:LineA { 0 0 1 0 }
+Opt A:LineA { 0 0 0 1 }
+
+Opt DiA:LineDiA { 1 0 0 0 }
+Opt DiA:LineDiA { 0 1 0 0 }
+Opt DiA:LineDiA { 0 0 1 0 }
+Opt DiA:LineDiA { 0 0 0 1 }
+Opt DiA:LineDiA { 0 0 0 0 }
+
+Opt DiB:LineDiB { 1 0 0 }
+Opt DiB:LineDiB { 0 1 0 }
+Opt DiB:LineDiB { 0 0 1 }
+Opt DiB:LineDiB { 0 0 0 }
+
+Opt DiC:LineDiC { 1 0 }
+Opt DiC:LineDiC { 0 1 }
+Opt DiC:LineDiC { 0 0 }
+
+# row
+DesObj D1:LineA { a0 a1 a2 a3 }
+DesObj D2:LineA { b0 b1 b2 b3 }
+DesObj D3:LineA { c0 c1 c2 c3 }
+DesObj D4:LineA { d0 d1 d2 d3 }
+
+# col
+DesObj D5:LineA { a0 b0 c0 d0 }
+DesObj D6:LineA { a1 b1 c1 d1 }
+DesObj D7:LineA { a2 b2 c2 d2 }
+DesObj D8:LineA { a3 b3 c3 d3 }
+
+# diag \
+DesObj D9:LineDiA { a0 b1 c2 d3 }
+DesObj DA:LineDiB { a1 b2 c3 }
+DesObj DB:LineDiC { a2 b3 }
+
+DesObj DC:LineDiB { b0 c1 d2 }
+DesObj DD:LineDiC { c0 d1 }
+
+# diag /
+DesObj DE:LineDiA { d0 c1 b2 a3 }
+DesObj DF:LineDiB { d1 c2 b3 }
+DesObj DG:LineDiC { d2 c3 }
+
+DesObj DH:LineDiB { c0 b1 a2 }
+DesObj DI:LineDiC { b0 a1 }
+

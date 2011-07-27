@@ -1,0 +1,2 @@
+Start
+Error: Board Cell a Not Unique.

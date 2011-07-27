@@ -1,0 +1,131 @@
+1 e e 
+2 e e 
+3 e e 
+4 e e 
+
++Trans0+ +DesObj6+
+
+e e 1 
+2 e e 
+3 e e 
+4 e e 
+
++Trans0+ +DesObj9+
+
+e 1 e 
+2 e e 
+3 e e 
+4 e e 
+
++Trans1+ +DesObj12+
+
+e 1 e 
+e e 2 
+3 e e 
+4 e e 
+
++Trans0+ +DesObj8+
+
+e e 1 
+e e 2 
+3 e e 
+4 e e 
+
++Trans2+ +DesObj16+
+
+e e 1 
+e e 2 
+e 3 e 
+4 e e 
+
++Trans0+ +DesObj7+
+
+1 e e 
+e e 2 
+e 3 e 
+4 e e 
+
++Trans1+ +DesObj15+
+
+1 e e 
+e 2 e 
+e 3 e 
+4 e e 
+
++Trans0+ +DesObj4+
+
+e 1 e 
+e 2 e 
+e 3 e 
+4 e e 
+
++Trans3+ +DesObj24+
+
+e 1 e 
+e 2 e 
+e 3 e 
+e e 4 
+
++Trans0+ +DesObj5+
+
+1 e e 
+e 2 e 
+e 3 e 
+e e 4 
+
++Trans0+ +DesObj6+
+
+e e 1 
+e 2 e 
+e 3 e 
+e e 4 
+
++Trans1+ +DesObj11+
+
+e e 1 
+2 e e 
+e 3 e 
+e e 4 
+
++Trans0+ +DesObj7+
+
+1 e e 
+2 e e 
+e 3 e 
+e e 4 
+
++Trans2+ +DesObj20+
+
+1 e e 
+2 e e 
+e e 3 
+e e 4 
+
++Trans0+ +DesObj4+
+
+e 1 e 
+2 e e 
+e e 3 
+e e 4 
+
++Trans1+ +DesObj12+
+
+e 1 e 
+e e 2 
+e e 3 
+e e 4 
+
++Trans0+ +DesObj5+
+
+1 e e 
+e e 2 
+e e 3 
+e e 4 
+
++Trans0+ +DesObj6+
+
+e e 1 
+e e 2 
+e e 3 
+e e 4 
+

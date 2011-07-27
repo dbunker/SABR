@@ -1,0 +1,33 @@
+# see license at project root
+
+# test require
+
+Sym   { 0 1 2; }
+
+Board { a b c; }
+
+Start { 0 0 1; }
+
+End   { 1 1 2; }
+
+Trans Com0:Board { 0 0 1; => 1 1 1; }
+Trans Com1:Board { 1 1 1; => 1 1 2; }
+
+# this is legal
+Trans Com2:Board { 0 0 1; => 1 1 0; }
+Trans Com3:Board { 1 1 0; => 1 1 2; }
+
+Obj Set { first second third; }
+
+DesObj Set { a b c; }
+
+# each one of these cannot be 2
+Req MyReq0:Set { x x !x; }
+
+# for x:(1,2), first link to place 0
+# then match the (1,2) requirements in addition
+# there is no reason to describe what x can be twice as it will always be the mutually inclusive set, but it is legal
+Req MyRec2:Set { x:(0,1) x:(0,1,y) y; }
+
+
+

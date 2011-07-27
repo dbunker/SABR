@@ -1,0 +1,137 @@
+# see license at project root
+
+# for solving einstien's puzzle
+
+# color, nation, drink, cigarette, pet
+# illegal to have duplicate name across sym lists
+Sym c {		blue		green		red		white		yellow 		}
+Sym n {		Dane 		Englishman 	German		Swede 		Norwegian 	}
+Sym d {		bier 		coffee		milk		tea 		water		}
+Sym g {		Blend 		BlueMaster 	Dunhill 	PallMall 	Prince		}
+Sym p {		birds 		cats 		dogs 		fish 		horses		}
+
+# (type of item)-(house number)
+Board {
+	c0:c 	n0:n 	d0:d 	g0:g 	p0:p;
+	c1:c 	n1:n 	d1:d 	g1:g 	p1:p;
+	c2:c 	n2:n 	d2:d 	g2:g 	p2:p;
+	c3:c 	n3:n 	d3:d 	g3:g 	p3:p;
+	c4:c 	n4:n 	d4:d 	g4:g 	p4:p;
+}
+
+Req AllUnique {  v !v !v !v !v }
+Req AllUnique { !v  v !v !v !v }
+Req AllUnique { !v !v  v !v !v }
+Req AllUnique { !v !v !v  v !v }
+Req AllUnique { !v !v !v !v  v }
+
+DesObj AllUnique { c0 c1 c2 c3 c4 }
+DesObj AllUnique { n0 n1 n2 n3 n4 }
+DesObj AllUnique { d0 d1 d2 d3 d4 }
+DesObj AllUnique { g0 g1 g2 g3 g4 }
+DesObj AllUnique { p0 p1 p2 p3 p4 }
+
+DesObj House { c0 n0 d0 g0 p0 }
+DesObj House { c1 n1 d1 g1 p1 }
+DesObj House { c2 n2 d2 g2 p2 }
+DesObj House { c3 n3 d3 g3 p3 }
+DesObj House { c4 n4 d4 g4 p4 }
+
+# The Englishman lives in the red house.
+# either both have those traits or niether (!red,Englishman) and (red,!Englishman) excluded
+Opt cl1:House {  red  Englishman ? ? ? }
+Opt cl1:House { !red !Englishman ? ? ? }
+
+# The Swede keeps dogs.
+Opt cl2:House { ?  Swede ? ?  dogs }
+Opt cl2:House { ? !Swede ? ? !dogs }
+
+# The Dane drinks tea.
+Opt cl3:House { ?  Dane  tea ? ? }
+Opt cl3:House { ? !Dane !tea ? ? }
+
+# The owner of the green house drinks coffee.
+Opt cl4:House {  green ?  coffee ? ? }
+Opt cl4:House { !green ? !coffee ? ? }
+
+# The Pall Mall smoker keeps birds.
+Opt cl5:House { ? ? ?  PallMall  birds }
+Opt cl5:House { ? ? ? !PallMall !birds }
+
+# The owner of the yellow house smokes Dunhill.
+Opt cl6:House {  yellow ? ?  Dunhill ? }
+Opt cl6:House { !yellow ? ? !Dunhill ? }
+
+# The man who smokes Blue Master drinks bier.
+Opt cl7:House { ? ?  bier  BlueMaster ? }
+Opt cl7:House { ? ? !bier !BlueMaster ? }
+
+# The German smokes Prince.
+Opt cl8:House { ?  German ?  Prince ? }
+Opt cl8:House { ? !German ? !Prince ? }
+
+# The green house is just to the left of the white one.
+Opt Adj0 {  green  white }
+Opt Adj0 { !green !white }
+DesObj Adj0 { c0 c1 }
+DesObj Adj0 { c1 c2 }
+DesObj Adj0 { c2 c3 }
+DesObj Adj0 { c3 c4 }
+
+# The man in the center house drinks milk.
+Opt CenterDrink { milk }
+DesObj CenterDrink { d2 }
+
+# The Norwegian lives in the first house.
+Opt FirstNat { Norwegian }
+DesObj FirstNat { n0 }
+
+# The Blend smoker has a neighbor who keeps cats.
+Opt Adj1A {  Blend  cats }
+Opt Adj1A { !Blend     ? }
+Opt Adj1B {  Blend  cats     ? }
+Opt Adj1B {  Blend     ?  cats }
+Opt Adj1B { !Blend     ?     ? }
+DesObj Adj1A { g0 p1 }
+DesObj Adj1B { g1 p0 p2 }
+DesObj Adj1B { g2 p1 p3 }
+DesObj Adj1B { g3 p2 p4 }
+DesObj Adj1A { g4 p3 }
+
+# The man who keeps horses lives next to the Dunhill smoker.
+Opt Adj2A {  horses  Dunhill }
+Opt Adj2A { !horses        ? }
+Opt Adj2B {  horses  Dunhill        ? }
+Opt Adj2B {  horses        ?  Dunhill }
+Opt Adj2B { !horses        ?        ? }
+DesObj Adj2A { p0 g1 }
+DesObj Adj2B { p1 g0 g2 }
+DesObj Adj2B { p2 g1 g3 }
+DesObj Adj2B { p3 g2 g4 }
+DesObj Adj2A { p4 g3 }
+
+# The Norwegian lives next to the blue house.
+Opt Adj3A {  Norwegian  blue }
+Opt Adj3A { !Norwegian     ? }
+Opt Adj3B {  Norwegian  blue     ? }
+Opt Adj3B {  Norwegian     ?  blue }
+Opt Adj3B { !Norwegian     ?     ? }
+DesObj Adj3A { n0 c1 }
+DesObj Adj3B { n1 c0 c2 }
+DesObj Adj3B { n2 c1 c3 }
+DesObj Adj3B { n3 c2 c4 }
+DesObj Adj3A { n4 c3 }
+
+# The Blend smoker has a neighbor who drinks water.
+Opt Adj4A {  Blend  water }
+Opt Adj4A { !Blend      ? }
+Opt Adj4B {  Blend  water      ? }
+Opt Adj4B {  Blend      ?  water }
+Opt Adj4B { !Blend      ?      ? }
+DesObj Adj4A { g0 d1 }
+DesObj Adj4B { g1 d0 d2 }
+DesObj Adj4B { g2 d1 d3 }
+DesObj Adj4B { g3 d2 d4 }
+DesObj Adj4A { g4 d3 }
+
+

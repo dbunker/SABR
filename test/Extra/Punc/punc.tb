@@ -1,0 +1,17 @@
+# see license at project root
+
+# punctuation
+
+Sym{ 0 1 2 }
+
+Board{ . a ... b }
+
+#(
+Req Board {
+	1 ?
+}
+)#
+
+Req Board {
+	0 ?
+}

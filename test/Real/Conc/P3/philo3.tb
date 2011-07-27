@@ -1,0 +1,91 @@
+# see license at project root
+
+# dining philisophers
+# combining 1 and 2: is it possible to reach deadlock generally?
+
+Sym { 0 1 }
+
+Board{ 
+	p1R p1L;
+	t1;
+	p2R p2L;
+	t2;
+	p3R p3L;
+	t3;
+	p4R p4L;
+	t4;
+	p5R p5L;
+	t5; 
+}
+
+Start{
+	0 0;
+	1;
+	0 0;
+	1;
+	0 0;
+	1;
+	0 0;
+	1;
+	0 0;
+	1; 
+}
+
+End{
+	? ?; 
+	?; 
+	? ?; 
+	?; 
+	? ?; 
+	?; 
+	? ?; 
+	?;
+	? ?; 
+	?;
+}
+
+# deadlock
+# no one has both chopsticks (they would then put them down)
+Opt(19:20) NotBoth:Philo{ 0 0 }
+Opt(19:20) NotBoth:Philo{ 1 0 }
+Opt(19:20) NotBoth:Philo{ 0 1 }
+
+DesObj Philo{ p1R p1L }
+DesObj Philo{ p2R p2L }
+DesObj Philo{ p3R p3L }
+DesObj Philo{ p4R p4L }
+DesObj Philo{ p5R p5L }
+
+# no one can pick up a chopstick (they would do so)
+Opt(19:20) CantGet:Get{ 0 0 }
+Opt(19:20) CantGet:Get{ 1 0 }
+Opt(19:20) CantGet:Get{ 1 1 }
+
+# trans
+# put down chopsticks
+Trans Down:PhiloDown{ 0 1 1 0 => 1 0 0 1 }
+
+DesObj p1:PhiloDown{ t5 p1R p1L t1 }
+DesObj p2:PhiloDown{ t1 p2R p2L t2 }
+DesObj p3:PhiloDown{ t2 p3R p3L t3 }
+DesObj p4:PhiloDown{ t3 p4R p4L t4 }
+DesObj p5:PhiloDown{ t4 p5R p5L t5 }
+
+# pick up chopstick
+Trans Up:Get{ 0 1 => 1 0 }
+
+DesObj t5-p1:Get{ p1R t5 }
+DesObj t1-p1:Get{ p1L t1 }
+
+DesObj t1-p2:Get{ p2R t1 }
+DesObj t2-p2:Get{ p2L t2 }
+
+DesObj t2-p3:Get{ p3R t2 }
+DesObj t3-p3:Get{ p3L t3 }
+
+DesObj t3-p4:Get{ p4R t3 }
+DesObj t4-p4:Get{ p4L t4 }
+
+DesObj t4-p5:Get{ p5R t4 }
+DesObj t5-p5:Get{ p5L t5 }
+

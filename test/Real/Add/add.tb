@@ -1,0 +1,39 @@
+# see license at project root
+
+# add two unsigned binary numbers
+
+Sym { 0 1 }
+
+# built similar to alu
+Board {
+	.  t3 t2 t1 t0;
+	.  m3 m2 m1 m0;
+	.  n3 n2 n1 n0;
+	t4 o3 o2 o1 o0;
+}
+
+# 7 + 3 = 6
+Req Board {
+	  ? ? ? 0;
+	  0 1 1 1;
+	  0 0 1 1;
+	? ? ? ? ?;
+}
+
+# add
+Opt Add{ 0 0 0; 0 0; }
+
+Opt Add{ 0 0 1; 0 1; }
+Opt Add{ 0 1 0; 0 1; }
+Opt Add{ 1 0 0; 0 1; }
+
+Opt Add{ 0 1 1; 1 0; }
+Opt Add{ 1 0 1; 1 0; }
+Opt Add{ 1 1 0; 1 0; }
+
+Opt Add{ 1 1 1; 1 1; }
+
+DesObj Add { t0 m0 n0; t1 o0; }
+DesObj Add { t1 m1 n1; t2 o1; }
+DesObj Add { t2 m2 n2; t3 o2; }
+DesObj Add { t3 m3 n3; t4 o3; }

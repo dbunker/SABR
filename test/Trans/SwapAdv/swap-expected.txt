@@ -1,0 +1,10 @@
+0 0 1 
+
+Com0 MyDes
+
+1 1 0 
+
+Com1 MyDes
+
+0 1 0 
+

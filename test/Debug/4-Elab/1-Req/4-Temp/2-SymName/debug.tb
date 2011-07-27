@@ -1,0 +1,15 @@
+# see license at project root
+
+
+Sym{ 0 1 2 }
+
+Sym n1{ temp1 temp2 temp3 }
+
+Board{ a b }
+
+Start{ 0 0 }
+
+End{ 2 2 }
+
+# will not let temp1 serve as temporary variable
+Req Board{ temp1 temp1 }

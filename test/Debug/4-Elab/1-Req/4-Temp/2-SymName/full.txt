@@ -1,0 +1,2 @@
+Start
+Error: Require +Req0+:Board Temporary Variable temp1 Can't Have Same Name As A Symbol.

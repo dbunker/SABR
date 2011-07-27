@@ -1,0 +1,35 @@
+# see license at project root
+
+# leap frog puzzle: http://funstufftosee.com/frogleaptest.html
+
+Sym{ 0 r g }
+
+Board{ 	s0 s1 s2 s3 s4 s5 s6 }
+
+Start{ 	g  g  g  0  r  r  r  }
+
+End{ 	r  r  r  0  g  g  g  }
+
+Trans GreenOneForward:Pair{ g 0 => 0 g }
+
+Trans RedOneBack:Pair{ 0 r => r 0 }
+
+Trans GreenHopForward:Trip{ g r 0 => 0 r g }
+
+Trans RedHopBack:Trip{ 0 g r => r g 0 }
+
+# ordered pairs
+DesObj Pair0:Pair{ s0 s1 }
+DesObj Pair1:Pair{ s1 s2 }
+DesObj Pair2:Pair{ s2 s3 }
+DesObj Pair3:Pair{ s3 s4 }
+DesObj Pair4:Pair{ s4 s5 }
+DesObj Pair5:Pair{ s5 s6 }
+
+# ordered triplets
+DesObj Trip0:Trip{ s0 s1 s2 }
+DesObj Trip1:Trip{ s1 s2 s3 }
+DesObj Trip2:Trip{ s2 s3 s4 }
+DesObj Trip3:Trip{ s3 s4 s5 }
+DesObj Trip4:Trip{ s4 s5 s6 }
+

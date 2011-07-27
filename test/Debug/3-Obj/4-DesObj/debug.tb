@@ -1,0 +1,32 @@
+# see license at project root
+
+
+Sym n1{ 0 1 2 }
+
+Sym { 3 4 5 }
+
+Board{ 
+	a:n1 	b:n1;
+	c 	d;
+}
+
+Start{ 
+	0 1;
+	3 4;
+}
+
+End{ 
+	0 1;
+	3 4;
+}
+
+DesObj D1:Cell{ a b }
+
+DesObj D2:Cell{ c b }
+
+# first 0 fails match on D2 c, sees 0 is not in symbol list for c
+# but is a symbol somewhere, this is illegal
+
+Req Cell{ 0 0 }
+
+

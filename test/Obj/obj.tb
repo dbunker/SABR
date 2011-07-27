@@ -1,0 +1,23 @@
+# see license at project root
+
+# test object
+
+Sym{ 0 1 2; }
+
+Board{ a b; }
+
+Start{ 0 0; }
+
+End{ 2 2; }
+
+# don't have to give them a name
+Trans Com0:Cell{ 0; => 1; }
+
+Trans Com1:Cell{ 1; => 2; }
+
+Obj Cell{ v1; }
+
+DesObj First:Cell{ a; }
+
+# don't have to give them a name
+DesObj Second:Cell{ b; }

@@ -1,0 +1,18 @@
+# see license at project root
+
+# test cell fail
+
+Sym{ 0 1 }
+
+Board{ a b }
+
+Start{ 0 0 }
+
+End{ 1 1 }
+
+Obj Cell{ x }
+
+Trans Com0:Cell{ 0 => 1 }
+
+DesObj CellA:Cell{	a	}
+

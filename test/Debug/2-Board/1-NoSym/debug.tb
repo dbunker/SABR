@@ -1,0 +1,12 @@
+# see license at project root
+
+# There is no generic Sym for values in Board
+
+Sym { 0 1 }
+
+Board{ a:blank b }
+
+Start{ 0 0 }
+
+End{ 2 2 }
+

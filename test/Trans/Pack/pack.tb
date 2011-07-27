@@ -1,0 +1,43 @@
+# see license at project root
+
+# pack squares via trans
+
+Sym { 0 1; }
+
+Board{ 
+	a0 a1 a2 a3;
+	b0 b1 b2 b3;
+	c0 c1 c2 c3;
+	d0 d1 d2 d3; 
+}
+
+Start{
+	0 0 0 0;
+ 	0 0 0 0;
+	0 0 0 0;
+	0 0 0 0;
+}
+
+End{
+	1 1 1 1;
+	1 1 1 1;
+	1 1 1 1;
+	1 1 1 1;
+}
+
+Obj Block { a b c d; }
+Trans Fill:Block  { 0 0 0 0; => 1 1 1 1; }
+
+DesObj Y0X0:Block { a0 a1 b0 b1; }
+DesObj Y0X1:Block { a1 a2 b1 b2; }
+DesObj Y0X2:Block { a2 a3 b2 b3; }
+
+DesObj Y1X0:Block { b0 b1 c0 c1; }
+DesObj Y1X1:Block { b1 b2 c1 c2; }
+DesObj Y1X2:Block { b2 b3 c2 c3; }
+
+DesObj Y2X0:Block { c0 c1 d0 d1; }
+DesObj Y2X1:Block { c1 c2 d1 d2; }
+DesObj Y2X2:Block { c2 c3 d2 d3; }
+
+

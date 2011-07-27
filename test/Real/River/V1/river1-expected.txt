@@ -1,0 +1,70 @@
+1 1 1 1 1 1 1 1 1 
+
+Up JailerConvict
+
+1 1 1 1 1 1 0 0 0 
+
+Down Jailer
+
+1 1 1 1 1 1 1 0 1 
+
+Up JailerBoy2
+
+1 1 1 0 1 1 0 0 0 
+
+Down JailerConvict
+
+1 1 1 0 1 1 1 1 1 
+
+Up ManBoy1
+
+0 1 0 0 1 1 1 1 0 
+
+Down Man
+
+1 1 0 0 1 1 1 1 1 
+
+Up WomanMan
+
+0 0 0 0 1 1 1 1 0 
+
+Down Woman
+
+0 1 0 0 1 1 1 1 1 
+
+Up JailerConvict
+
+0 1 0 0 1 1 0 0 0 
+
+Down Man
+
+1 1 0 0 1 1 0 0 1 
+
+Up WomanMan
+
+0 0 0 0 1 1 0 0 0 
+
+Down Woman
+
+0 1 0 0 1 1 0 0 1 
+
+Up WomanGirl1
+
+0 0 0 0 0 1 0 0 0 
+
+Down JailerConvict
+
+0 0 0 0 0 1 1 1 1 
+
+Up JailerGirl2
+
+0 0 0 0 0 0 0 1 0 
+
+Down Jailer
+
+0 0 0 0 0 0 1 1 1 
+
+Up JailerConvict
+
+0 0 0 0 0 0 0 0 0 
+

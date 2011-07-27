@@ -1,0 +1,298 @@
+..... y b b 
+..... y b b 
+..... y b b 
+o o o b w w r r r 
+o o o b w w r r r 
+o o o b w w r r r 
+..... w g g 
+..... w g g 
+..... w g g 
+..... g y y 
+..... g y y 
+..... g y y 
+
+Clock Back
+
+..... r r r 
+..... y b b 
+..... y b b 
+b o o b w w r r g 
+b o o b w w r r g 
+y o o b w w r r w 
+..... w g g 
+..... w g g 
+..... o o o 
+..... g g g 
+..... y y y 
+..... y y y 
+
+CounterClock Bottom
+
+..... r r r 
+..... y b b 
+..... y b b 
+b o o b w w r r g 
+b o o b w w r r g 
+b w w r r w g g g 
+..... g g o 
+..... g g o 
+..... w w o 
+..... o o y 
+..... y y y 
+..... y y y 
+
+Clock Left
+
+..... o r r 
+..... y b b 
+..... y b b 
+b b b r w w r r g 
+w o o y w w r r g 
+w o o y r w g g g 
+..... b g o 
+..... b g o 
+..... r w o 
+..... g o y 
+..... g y y 
+..... w y y 
+
+FullFace Front
+
+..... o r r 
+..... y b b 
+..... o g b 
+b b g w r y o r g 
+w o r w w y o r g 
+w o r w w r b g g 
+..... b b y 
+..... b g o 
+..... r w o 
+..... g o y 
+..... g y y 
+..... w y y 
+
+CounterClock Bottom
+
+..... o r r 
+..... y b b 
+..... o g b 
+b b g w r y o r g 
+w o r w w y o r g 
+w w r b g g y o g 
+..... y o o 
+..... b g w 
+..... b b r 
+..... r o w 
+..... g y y 
+..... w y y 
+
+Clock Top
+
+..... o y o 
+..... g b r 
+..... b b r 
+w r y o r g y y w 
+w o r w w y o r g 
+w w r b g g y o g 
+..... y o o 
+..... b g w 
+..... b b r 
+..... r o w 
+..... g y y 
+..... g b b 
+
+Clock Bottom
+
+..... o y o 
+..... g b r 
+..... b b r 
+w r y o r g y y w 
+w o r w w y o r g 
+w o r w w r b g g 
+..... b b y 
+..... b g o 
+..... r w o 
+..... g o y 
+..... g y y 
+..... g b b 
+
+CounterClock Top
+
+..... o r r 
+..... y b b 
+..... o g b 
+b b g w r y o r g 
+w o r w w y o r g 
+w o r w w r b g g 
+..... b b y 
+..... b g o 
+..... r w o 
+..... g o y 
+..... g y y 
+..... w y y 
+
+FullFace Front
+
+..... o r r 
+..... y b b 
+..... y b b 
+b b b r w w r r g 
+w o o y w w r r g 
+w o o y r w g g g 
+..... b g o 
+..... b g o 
+..... r w o 
+..... g o y 
+..... g y y 
+..... w y y 
+
+FullFace Left
+
+..... b r r 
+..... b b b 
+..... r b b 
+o o w g w w r r g 
+o o w g w w r r g 
+b b b w r w g g g 
+..... o g o 
+..... y g o 
+..... y w o 
+..... r o y 
+..... y y y 
+..... y y y 
+
+Clock Back
+
+..... g g g 
+..... b b b 
+..... r b b 
+r o w g w w r r o 
+r o w g w w r r w 
+b b b w r w g g y 
+..... o g o 
+..... y g o 
+..... o o b 
+..... y y r 
+..... y y o 
+..... y y y 
+
+CounterClock Back
+
+..... b r r 
+..... b b b 
+..... r b b 
+o o w g w w r r g 
+o o w g w w r r g 
+b b b w r w g g g 
+..... o g o 
+..... y g o 
+..... y w o 
+..... r o y 
+..... y y y 
+..... y y y 
+
+Clock Left
+
+..... r r r 
+..... y b b 
+..... y b b 
+b o o b w w r r g 
+b o o b w w r r g 
+b w w r r w g g g 
+..... g g o 
+..... g g o 
+..... w w o 
+..... o o y 
+..... y y y 
+..... y y y 
+
+Clock Bottom
+
+..... r r r 
+..... y b b 
+..... y b b 
+b o o b w w r r g 
+b o o b w w r r g 
+y o o b w w r r w 
+..... w g g 
+..... w g g 
+..... o o o 
+..... g g g 
+..... y y y 
+..... y y y 
+
+Clock Back
+
+..... g g w 
+..... y b b 
+..... y b b 
+r o o b w w r r o 
+r o o b w w r r o 
+r o o b w w r r o 
+..... w g g 
+..... w g g 
+..... b b y 
+..... y y g 
+..... y y g 
+..... y y g 
+
+Clock Bottom
+
+..... g g w 
+..... y b b 
+..... y b b 
+r o o b w w r r o 
+r o o b w w r r o 
+g y y r o o b w w 
+..... b w w 
+..... b g g 
+..... y g g 
+..... o r r 
+..... y y g 
+..... y y g 
+
+CounterClock Bottom
+
+..... g g w 
+..... y b b 
+..... y b b 
+r o o b w w r r o 
+r o o b w w r r o 
+r o o b w w r r o 
+..... w g g 
+..... w g g 
+..... b b y 
+..... y y g 
+..... y y g 
+..... y y g 
+
+FullFace Back
+
+..... y b b 
+..... y b b 
+..... y b b 
+o o o b w w r r r 
+o o o b w w r r r 
+o o o b w w r r r 
+..... w g g 
+..... w g g 
+..... w g g 
+..... g y y 
+..... g y y 
+..... g y y 
+
+CounterClock Left
+
+..... b b b 
+..... b b b 
+..... b b b 
+o o o w w w r r r 
+o o o w w w r r r 
+o o o w w w r r r 
+..... g g g 
+..... g g g 
+..... g g g 
+..... y y y 
+..... y y y 
+..... y y y 
+

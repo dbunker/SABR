@@ -1,0 +1,66 @@
+# see license at project root
+
+# dining philisophers
+# is there a state from which deadlock (no transition) is possble?
+
+# the only possible transitions are: 
+#	1. put down both chopsticks
+#	2. pick up one chopstick
+
+Sym { 0 1 }
+
+Board{ 
+	p1R p1L;
+	t1;
+	p2R p2L;
+	t2;
+	p3R p3L;
+	t3;
+	p4R p4L;
+	t4;
+	p5R p5L;
+	t5; 
+}
+
+# no one has both chopsticks (they would then put them down)
+Opt NotBoth:Philo{ 0 0 }
+Opt NotBoth:Philo{ 1 0 }
+Opt NotBoth:Philo{ 0 1 }
+
+DesObj Philo{ p1R p1L }
+DesObj Philo{ p2R p2L }
+DesObj Philo{ p3R p3L }
+DesObj Philo{ p4R p4L }
+DesObj Philo{ p5R p5L }
+
+# no one can pick up a chopstick (they would do so)
+Opt CantGet:Get{ 0 0 }
+Opt CantGet:Get{ 1 0 }
+Opt CantGet:Get{ 1 1 }
+
+DesObj Get{ p1R t5 }
+DesObj Get{ p1L t1 }
+
+DesObj Get{ p2R t1 }
+DesObj Get{ p2L t2 }
+
+DesObj Get{ p3R t2 }
+DesObj Get{ p3L t3 }
+
+DesObj Get{ p4R t3 }
+DesObj Get{ p4L t4 }
+
+DesObj Get{ p5R t4 }
+DesObj Get{ p5L t5 }
+
+# the chopstick must be somewhere
+Opt Chop:Place{ 1 0 0 }
+Opt Chop:Place{ 0 1 0 }
+Opt Chop:Place{ 0 0 1 }
+
+DesObj Place { p1L t1 p2R }
+DesObj Place { p2L t2 p3R }
+DesObj Place { p3L t3 p4R }
+DesObj Place { p4L t4 p5R }
+DesObj Place { p5L t5 p1R }
+

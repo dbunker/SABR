@@ -1,0 +1,14 @@
+# see license at project root
+
+
+Sym n1{ 0 1 2 }
+
+Sym n2{ 3 4 5 }
+
+Board{ a:n1 b:n2 }
+
+# can't connect different sym lists
+Start{ temp temp }
+
+End{ 0 3 }
+

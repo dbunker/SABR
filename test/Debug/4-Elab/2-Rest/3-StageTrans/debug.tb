@@ -1,0 +1,13 @@
+# see license at project root
+
+
+Sym{ 0 1 2 }
+
+Board{ a b }
+
+Start{ 0 0 }
+
+End{ 2 2 }
+
+Trans(-1:0) Board{ 0 0 => 1 1 }
+

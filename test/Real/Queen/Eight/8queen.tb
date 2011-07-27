@@ -1,0 +1,130 @@
+# see license at project root
+
+# solves 8 queen problem
+
+Sym { 0 1 }
+
+Board {
+	a0 a1 a2 a3 a4 a5 a6 a7;
+	b0 b1 b2 b3 b4 b5 b6 b7;
+	c0 c1 c2 c3 c4 c5 c6 c7;
+	d0 d1 d2 d3 d4 d5 d6 d7;
+	e0 e1 e2 e3 e4 e5 e6 e7;
+	f0 f1 f2 f3 f4 f5 f6 f7;
+	g0 g1 g2 g3 g4 g5 g6 g7;
+	h0 h1 h2 h3 h4 h5 h6 h7;
+}
+
+# can't have more than one queen (more than one value on a line be 1)
+Opt A:LineA { 1 0 0 0 0 0 0 0 }
+Opt A:LineA { 0 1 0 0 0 0 0 0 }
+Opt A:LineA { 0 0 1 0 0 0 0 0 }
+Opt A:LineA { 0 0 0 1 0 0 0 0 }
+Opt A:LineA { 0 0 0 0 1 0 0 0 }
+Opt A:LineA { 0 0 0 0 0 1 0 0 }
+Opt A:LineA { 0 0 0 0 0 0 1 0 }
+Opt A:LineA { 0 0 0 0 0 0 0 1 }
+
+Opt DiA:LineDiA { 1 0 0 0 0 0 0 0 }
+Opt DiA:LineDiA { 0 1 0 0 0 0 0 0 }
+Opt DiA:LineDiA { 0 0 1 0 0 0 0 0 }
+Opt DiA:LineDiA { 0 0 0 1 0 0 0 0 }
+Opt DiA:LineDiA { 0 0 0 0 1 0 0 0 }
+Opt DiA:LineDiA { 0 0 0 0 0 1 0 0 }
+Opt DiA:LineDiA { 0 0 0 0 0 0 1 0 }
+Opt DiA:LineDiA { 0 0 0 0 0 0 0 1 }
+Opt DiA:LineDiA { 0 0 0 0 0 0 0 0 }
+
+Opt DiB:LineDiB { 1 0 0 0 0 0 0 }
+Opt DiB:LineDiB { 0 1 0 0 0 0 0 }
+Opt DiB:LineDiB { 0 0 1 0 0 0 0 }
+Opt DiB:LineDiB { 0 0 0 1 0 0 0 }
+Opt DiB:LineDiB { 0 0 0 0 1 0 0 }
+Opt DiB:LineDiB { 0 0 0 0 0 1 0 }
+Opt DiB:LineDiB { 0 0 0 0 0 0 1 }
+Opt DiB:LineDiB { 0 0 0 0 0 0 0 }
+
+Opt DiC:LineDiC { 1 0 0 0 0 0 }
+Opt DiC:LineDiC { 0 1 0 0 0 0 }
+Opt DiC:LineDiC { 0 0 1 0 0 0 }
+Opt DiC:LineDiC { 0 0 0 1 0 0 }
+Opt DiC:LineDiC { 0 0 0 0 1 0 }
+Opt DiC:LineDiC { 0 0 0 0 0 1 }
+Opt DiC:LineDiC { 0 0 0 0 0 0 }
+
+Opt DiD:LineDiD { 1 0 0 0 0 }
+Opt DiD:LineDiD { 0 1 0 0 0 }
+Opt DiD:LineDiD { 0 0 1 0 0 }
+Opt DiD:LineDiD { 0 0 0 1 0 }
+Opt DiD:LineDiD { 0 0 0 0 1 }
+Opt DiD:LineDiD { 0 0 0 0 0 }
+
+Opt DiE:LineDiE { 1 0 0 0 }
+Opt DiE:LineDiE { 0 1 0 0 }
+Opt DiE:LineDiE { 0 0 1 0 }
+Opt DiE:LineDiE { 0 0 0 1 }
+Opt DiE:LineDiE { 0 0 0 0 }
+
+Opt DiF:LineDiF { 1 0 0 }
+Opt DiF:LineDiF { 0 1 0 }
+Opt DiF:LineDiF { 0 0 1 }
+Opt DiF:LineDiF { 0 0 0 }
+
+Opt DiG:LineDiG { 1 0 }
+Opt DiG:LineDiG { 0 1 }
+Opt DiG:LineDiG { 0 0 }
+
+# row
+DesObj LineA {	a0 a1 a2 a3 a4 a5 a6 a7	}
+DesObj LineA {	b0 b1 b2 b3 b4 b5 b6 b7	}
+DesObj LineA {	c0 c1 c2 c3 c4 c5 c6 c7	}
+DesObj LineA {	d0 d1 d2 d3 d4 d5 d6 d7	}
+DesObj LineA {	e0 e1 e2 e3 e4 e5 e6 e7	}
+DesObj LineA {	f0 f1 f2 f3 f4 f5 f6 f7	}
+DesObj LineA {	g0 g1 g2 g3 g4 g5 g6 g7	}
+DesObj LineA {	h0 h1 h2 h3 h4 h5 h6 h7	}
+
+# col
+DesObj LineA { 	a0 b0 c0 d0 e0 f0 g0 h0 }
+DesObj LineA { 	a1 b1 c1 d1 e1 f1 g1 h1 }
+DesObj LineA { 	a2 b2 c2 d2 e2 f2 g2 h2 }
+DesObj LineA { 	a3 b3 c3 d3 e3 f3 g3 h3 }
+DesObj LineA { 	a4 b4 c4 d4 e4 f4 g4 h4 }
+DesObj LineA { 	a5 b5 c5 d5 e5 f5 g5 h5 }
+DesObj LineA { 	a6 b6 c6 d6 e6 f6 g6 h6 }
+DesObj LineA { 	a7 b7 c7 d7 e7 f7 g7 h7 }
+
+# diag \
+DesObj LineDiA {	a0 b1 c2 d3 e4 f5 g6 h7	}
+DesObj LineDiB {	a1 b2 c3 d4 e5 f6 g7 }
+DesObj LineDiC {	a2 b3 c4 d5 e6 f7 }
+DesObj LineDiD {	a3 b4 c5 d6 e7 }
+DesObj LineDiE {	a4 b5 c6 d7 }
+DesObj LineDiF {	a5 b6 c7 }
+DesObj LineDiG {	a6 b7 }
+
+DesObj LineDiB {	b0 c1 d2 e3 f4 g5 h6 }
+DesObj LineDiC {	c0 d1 e2 f3 g4 h5 }
+DesObj LineDiD {	d0 e1 f2 g3 h4 }
+DesObj LineDiE {	e0 f1 g2 h3 }
+DesObj LineDiF {	f0 g1 h2 }
+DesObj LineDiG {	g0 h1 }
+
+# diag /
+DesObj LineDiA {	h0 g1 f2 e3 d4 c5 b6 a7 }
+DesObj LineDiB {	h1 g2 f3 e4 d5 c6 b7 }
+DesObj LineDiC {	h2 g3 f4 e5 d6 c7 }
+DesObj LineDiD {	h3 g4 f5 e6 d7 }
+DesObj LineDiE {	h4 g5 f6 e7 }
+DesObj LineDiF {	h5 g6 f7 }
+DesObj LineDiG {	h6 g7 }
+
+DesObj LineDiB {	g0 f1 e2 d3 c4 b5 a6 }
+DesObj LineDiC {	f0 e1 d2 c3 b4 a5 }
+DesObj LineDiD {	e0 d1 c2 b3 a4 }
+DesObj LineDiE {	d0 c1 b2 a3 }
+DesObj LineDiF {	c0 b1 a2 }
+DesObj LineDiG {	b0 a1 }
+
+
+

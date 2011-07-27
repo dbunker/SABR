@@ -1,0 +1,22 @@
+digraph dependency {
+
+Parser->Arch
+
+Arch->TBL
+
+TBL->Var
+TBL->Req
+TBL->Structs
+
+Req->Var
+Req->Structs
+
+LinkedList->SkipList
+LinkedList->BotList
+
+SkipList->LinkedList
+SkipList->BotList
+
+Debug
+
+}
