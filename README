@@ -2,7 +2,7 @@ SABR (Spatial and Action Based Resolver)
 
 ------------ GENERAL ------------
 
-SABR (Spatial and Action Based Resolver) is a contraint programming 
+SABR (Spatial and Action Based Resolver) is a constraint programming 
 language designed with an emphasis on spatial and temporal logic. 
 
 Programs compile to CNF (Conjunctive Normal Form), which is then solved
