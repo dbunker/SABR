@@ -1,3 +1,4 @@
+# SABR
 # solves sudoku 4x4
 # must have exactly one of each in each box
 # must have exactly one of each in each column

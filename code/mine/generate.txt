@@ -1,10 +1,12 @@
-print 'Start'
-# use >> (bit shift) and % (mod) bit manipulation
+# python
+# generate minesweeper model
 
-def combo(fi,name,totSize):
+# use >> (bit shift) and % (mod) bit manipulation
+def combo(name,totSize):
 
 	fullSize = pow(2,totSize)
 	bit = {}
+	outstr = ''
 
 	for i in range(0,fullSize):
 		
@@ -21,16 +23,16 @@ def combo(fi,name,totSize):
 				line = line + '  m'
 		
 		line = line + ' }\n'
-		fi.write(line)
+		outstr += line
 
 	last = 'Opt ' + name + ' { m'
 	for i in range(0,totSize):
 		last = last + '  ?'
-	fi.write(last + ' }\n\n')
 
-fi = open('source.tb','w')
+	outstr += last + ' }\n\n'
+	return outstr
 
-fi.write("""# this will solve a 4x4 minesweeper problem
+out = """# SABR\n# this will solve a 4x4 minesweeper problem
 
 Sym { m 0 1 2 3 4 5 6 7 8 }
 
@@ -47,13 +49,13 @@ Req Board {
 	1 ? 3 2;
 	1 ? ? 0;
 }\n
-""")
+"""
 
-combo(fi,'BlockA',8)
-combo(fi,'BlockB',5)
-combo(fi,'BlockC',3)
+out += combo('BlockA',8)
+out += combo('BlockB',5)
+out += combo('BlockC',3)
 
-fi.write("""# surround each cell
+out += """# surround each cell
 # a0 a1 a2 a3
 # b0 b1 b2 b3
 # c0 c1 c2 c3
@@ -77,5 +79,6 @@ DesObj BlockC { a0	a1 b0 b1; }
 DesObj BlockC { a3	a2 b2 b3; }
 DesObj BlockC { d0	c0 c1 d1; }
 DesObj BlockC { d3	c2 c3 d2; }
-""")
+"""
 
+print out

@@ -1,4 +1,5 @@
-# this will write out the the TBL of the z bin packing problem
+# python
+# this will write out the model of the z bin packing problem
 # which is to fit long-z shaped pieces into a 5x5x5 cube
 
 # shape
@@ -7,7 +8,7 @@
 
 # 25 peices
 
-out = '\nSym { 0 1 }\n\n'
+out = '# SABR\n\nSym { 0 1 }\n\n'
 
 # define that the cube starts unfilled and then at the end is filled
 out += 'Board{\n'
@@ -103,6 +104,5 @@ for directInd in range(0,3):
 	
 					out += '\n'
 
-fi = open('source.tb','w')
-fi.write(out);
+print out
 
