@@ -1,0 +1,158 @@
+---
+layout: main-ex
+title: SABR
+---
+
+<h1>River Crossing</h1>
+
+<a href="http://www.robmathiowetz.com/"><img src="img/river.jpg"/></a>
+<br><br>
+
+We start with a standard <a href="http://en.wikipedia.org/wiki/River_crossing_puzzle">river crossing</a> 
+puzzle in which we ferry everyone accross the river with these rules:
+
+<ul>
+	<li>Up to two people can fit on the boat.</li> 
+	<li>The man cannot be with either girl without the woman.</li>
+	<li>The woman cannot be with either boy without the man.</li> 
+	<li>The convict cannot be with anyone without the jailer.</li>
+	<li>The children and convict cannot ferry themselves.</li>
+</ul>
+
+We start by stating what symbols are possible. We will have 0 mean on the farside of 
+the river and 1 mean the nearside, so the goal is for each indevidual to go from 0 to 1.
+<br><br>
+
+<div class="mycode">
+	Sym{ 0 1 }
+</div>
+<br>
+
+Now we want to define all of the variables which can be either 0 or 1.
+<br><br>
+
+<div class="mycode">
+	Board{ 	Man 	Woman 	Boy1 	Boy2 	Girl1 	Girl2 	Jailer 	Convict	Boat 	}
+</div>
+<br>
+
+Next, we will state the initial state and end state of the world we are modeling.
+<br><br>
+
+<div class="mycode">
+	Start{ 	1	1	1	1	1	1	1	1	1	}	<br>
+	End{	0	0	0	0	0	0	0	0	0	}
+</div>
+<br>
+
+We can now define an object. Objects are used to represent a peice of the board for which we can define constraints or possible transitions. The object we will define now is the boat with two riders.
+<br><br>
+
+<div class="mycode">
+	Obj BoatTwo			{ boat rider1 rider2 }
+</div>
+<br>
+
+We can define the transitions that can be done to objects. The transition we are defining now is the boat going up or down.
+<br><br>
+
+<div class="mycode">
+	Trans Up:BoatTwo		{ 1 1 1 => 0 0 0 }	<br>
+	Trans Down:BoatTwo		{ 0 0 0 => 1 1 1 }
+</div>
+<br>
+
+Although we have defined the object, we have not yet matched it up to any board cells, we do this with DesObj. The Boat board cell will always be the boat object cell, but the riders can be different and are defined by our rules. # indicates a comment.
+<br><br>
+
+<div class="mycode">
+	# woman and either girl					<br>
+	DesObj WomanGirl1:BoatTwo	{ Boat Woman Girl1 } 	<br>
+	DesObj WomanGirl2:BoatTwo	{ Boat Woman Girl2 } 	<br>
+								<br>
+	# man and either boy					<br>
+	DesObj ManBoy1:BoatTwo		{ Boat Man Boy1 } 	<br>
+	DesObj ManBoy2:BoatTwo		{ Boat Man Boy2 } 	<br>
+								<br>
+	# woman and man						<br>
+	DesObj WomanMan:BoatTwo		{ Boat Woman Man }	<br>
+								<br>
+	# jailer and anyone					<br>
+	DesObj JailerMan:BoatTwo	{ Boat Jailer Man }	<br>
+	DesObj JailerWoman:BoatTwo	{ Boat Jailer Woman }	<br>
+	DesObj JailerBoy1:BoatTwo	{ Boat Jailer Boy1 }	<br>
+	DesObj JailerBoy2:BoatTwo	{ Boat Jailer Boy2 }	<br>
+	DesObj JailerGirl1:BoatTwo	{ Boat Jailer Girl1 }	<br>
+	DesObj JailerGirl2:BoatTwo	{ Boat Jailer Girl2 }	<br>
+	DesObj JailerConvict:BoatTwo	{ Boat Jailer Convict }
+</div>
+<br>
+
+Next, we need to define the boat with only one pasenger.
+<br><br>
+
+<div class="mycode">
+	Obj BoatOne 			{ boat rider }	<br>
+	Trans Up:BoatOne		{ 1 1 => 0 0 }	<br>
+	Trans Down:BoatOne		{ 0 0 => 1 1 }	<br>
+							<br>
+	DesObj Man:BoatOne 		{ Boat Man }	<br>
+	DesObj Woman:BoatOne 		{ Boat Woman }	<br>
+	DesObj Jailer:BoatOne 		{ Boat Jailer }
+</div>
+<br>
+
+Now we need to forbid certain individuals from being together. In our model that means 
+requiring that two variables have different values in certain conditions. We can do this
+using Req, which stands for Require. 
+<br><br>
+
+This Req defines the first object cell as 
+temporary variable a and the third object cell as temporary variable b. The middle 
+object cell must either be a or anything except b.
+<br><br>
+
+<div class="mycode">
+	Obj WithoutButWith		{ with without with }	<br>
+	Req WithoutButWith		{ a (a,!b) b }
+</div>
+<br>
+
+Finally, we specify who is allowed to be with who, i.e. which board cells match up
+to which object cells.
+<br><br>
+
+<div class="mycode">
+	# woman cannot be with either boy and without man		<br>
+	DesObj WithoutButWith		{ Man Woman Boy1 }		<br>
+	DesObj WithoutButWith		{ Man Woman Boy2 }		<br>
+									<br>
+	# man cannot be with either girl and without woman		<br>
+	DesObj WithoutButWith		{ Woman Man Girl1 }		<br>
+	DesObj WithoutButWith		{ Woman Man Girl2 }		<br>
+									<br>
+	# convict cannot be with anyone without jailer			<br>
+	DesObj WithoutButWith		{ Jailer Convict Man }		<br>
+	DesObj WithoutButWith		{ Jailer Convict Woman }	<br>
+	DesObj WithoutButWith		{ Jailer Convict Boy1 }		<br>	
+	DesObj WithoutButWith		{ Jailer Convict Boy2 }		<br>
+	DesObj WithoutButWith		{ Jailer Convict Girl1 }	<br>
+	DesObj WithoutButWith		{ Jailer Convict Girl2 }
+</div>
+<br>
+
+The solution can be resolved with this command indicating we try up to 20 stages.
+<br><br>
+
+<div class="mycode">
+	./sabr 20 &lt; source.tb
+</div>
+<br>
+
+The overall program source and the resulting solution can be viewed below.
+
+<br><br>
+
+<a href="code/river/source.tb">source</a> | <a href="code/river/result.txt">solution</a>
+
+

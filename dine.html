@@ -1,0 +1,59 @@
+---
+layout: main-ex
+title: SABR
+---
+
+<h1>Dining Philosoraptors</h1>
+
+<a href="http://en.wikipedia.org/wiki/Dining_philosophers_problem"><img src="img/raptor.jpg"/></a>
+<br><br>
+
+So a group of five philosoraptors get together for their weekly poker match and decide to order
+some chinese food, however they unfortunately only have five chopsticks between them. 
+Each chopstick is between two philosoraptors and they are around a round poker table.
+<br><br>
+
+When the chinese food arives they will each reach for chopsticks, if one next to
+them is taken they will hold on to whatever they have and wait for the other. 
+If they get both, they can eat and put them both down again.
+The question is, are they guarenteed to eat, or may they 
+<a href="http://en.wikipedia.org/wiki/Dining_philosophers_problem">deadlock</a>.
+<br><br>
+
+SABR can be useful in finding concurency issues such as this. 
+For this example we model these rules to see if a deadlock state is possible.
+<br><br>
+
+<a href="code/dine/v1/source.tb">source</a> | <a href="code/dine/v1/result.txt">solution</a>
+<br><br>
+
+Then we can check if we can reach that state.
+<br><br>
+
+<a href="code/dine/v2/source.tb">source</a> | <a href="code/dine/v2/result.txt">solution</a>
+<br><br>
+
+Even if there was no way to reach that state, deadlock may still be possible and reachable in another state, 
+so we combine our first and second examples to test for this. In this we utilize stage setting in Opt because
+the information that can be placed in End alone is not suficient. 
+<br><br>
+
+Opt(19:20) means option for the last stage
+since we are testing up to stage 20. Stage setting can also be useful for improving speed and can be used with
+Req, Opt, Trans, and TransSim. In this code we indicate no one has both chopsticks in the deadlock stage becuase 
+they would then put them down, releiving deadlock.
+<br><br>
+
+<div class="mycode">
+	Opt(19:20) NotBoth:Philo{ 0 0 }		<br>
+	Opt(19:20) NotBoth:Philo{ 1 0 }		<br>
+	Opt(19:20) NotBoth:Philo{ 0 1 }
+</div>
+<br>
+
+<a href="code/dine/v3/source.tb">source</a> | <a href="code/dine/v3/result.txt">solution</a>
+<br><br>
+
+As we can see from the solution, deadlock is possible by the transitions indicated.
+
+

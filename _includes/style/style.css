@@ -1,0 +1,86 @@
+body {
+	margin-left: auto;
+    	margin-right: auto;
+    	width: 55em;
+	top: 2em;
+	position: relative;
+}
+
+div.main {
+  	font-family: Georgia, "Times New Roman", Times, serif;
+  	color: black;
+	left: 14em;
+	width: 32em;
+	position: absolute;
+}
+
+ul.navbar {
+  	list-style-type: none;
+  	padding: 0;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+  	margin: 0;
+  	position: absolute;
+  	top: 6em;
+  	width: 12em;
+}
+
+h1 {
+  	font-family: Helvetica, Geneva, Arial,
+  	      SunSans-Regular, sans-serif 
+}
+
+ul.navbar div.li {
+  	background: white;
+  	margin: 0.5em 0;
+  	padding: 0.3em;
+	border-right: 1em solid #d8da3d;
+  	border-left: 1em solid #d8da3d;
+	background-color: #d8da3d;
+}
+
+ul.navbar div.litop {
+	border-left: 1em solid black;
+}
+
+ul.navbar div.litop_in {
+}
+
+ul.navbar div.lisub {
+	border-left: 1em solid white;
+}
+
+ul.navbar div.lisub_in {
+	border-left: 1em solid black;
+}
+
+ul.navbar a {
+  	text-decoration: none 
+}
+
+a:link {
+  	color: black
+}
+
+a:visited {
+  	color: black 
+}
+
+img{
+	border:none;
+}
+
+.mycode{
+	font-size: 0.95em;
+	font-family: Verdana, Arial, sans serif;
+	background-color:#fcfcfc;
+	color:#505050;
+	border:1px solid #e3e3e3;
+	padding:6px;
+	margin:6px;
+	width:100%;
+}
+
+.mytab{
+	padding-left:30px;
+}

@@ -1,0 +1,34 @@
+---
+layout: main-ex
+title: SABR
+---
+
+<h1>Minesweeper</h1>
+
+<a href="http://web.mat.bham.ac.uk/R.W.Kaye/minesw/"><img src="img/mine.png"/></a>
+<br><br>
+
+In 2000 it was proven that solving unknown values in minesweeper from known values is NP-complete. 
+Some parts of this proof are available
+<a href="http://web.mat.bham.ac.uk/R.W.Kaye/minesw/minesw.pdf">online</a>. This sketch describes
+a polynomial conversion from the NP-hard problem of satisfiability to the minesweeper problem.
+<br><br>
+
+However two conditions must be met for a problem to be NP-complete, it must be NP-easy and NP-hard:
+<br>
+
+<ul>
+<li>NP-easy: There is a polynomial conversion of this problem to a problem in NP.</li>
+<li>NP-hard: There is a polynomial conversion of a problem in NP to this problem.</li>
+</ul>
+
+The NP-easy part of the proof can be sketched with SABR. First we generate objects to define
+the number of mines around each number, then we apply those objects to board-cells based
+on whether they are a corner, side or middle cell. 
+<br><br>
+
+As the size of the board increases, causing the number of DesObj to also increase, the size 
+of the CNF file increases at a polynomial rate.
+<br><br>
+
+<a href="code/mine/generate.py">generate</a> | <a href="code/mine/source.tb">source</a> | <a href="code/mine/result.txt">solution</a>

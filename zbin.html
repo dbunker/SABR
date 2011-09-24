@@ -1,0 +1,25 @@
+---
+layout: main-ex
+title: SABR
+---
+
+<h1>Z-Bin Packing</h1>
+
+<a href="http://www.creativecrafthouse.com/index.php?main_page=page&id=90"><img src="img/bin.jpg"/></a>
+<br><br>
+
+This is a difficult 3d puzzle involving fitting 25 roughly z-shaped peices perfectly into a 5x5 cube.
+To perform this bin packing we set the Board to be the 5x5 cube and then "tile" the space. Every
+possible position the z-shaped peice could take is expressed with a DesObj.
+<br><br>
+
+We utilize TransSim to allow simultaneous transitions and then only allow 2 stages.
+so that the Board starts all 0 (unused) and then is filled by simultaneous transitions,
+in a single stage, to be all 1 (used). Based on which DesObj where used, we know where the z-shaped peices go.
+<br><br>
+
+Writing out all of possible positions the z-shaped peice could have would be onerouse, so it is better to
+write a script (generate.py) to perform this task for us.
+<br><br>
+
+<a href="code/zbin/generate.py">generate</a> | <a href="code/zbin/source.tb">source</a> | <a href="code/zbin/result.txt">solution</a>

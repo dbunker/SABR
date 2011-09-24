@@ -1,0 +1,25 @@
+---
+layout: main-ex
+title: SABR
+---
+
+<h1>Rubik's Cube</h1>
+
+<a href="http://en.wikipedia.org/wiki/Rubik's_Cube"><img src="img/rubik.jpg"/></a>
+<br><br>
+
+Solving a fully or partially scrambled Rubik's cube is another very hard problem. However,
+the setup is simple and follows the same form as the machinarium puzzle. 
+<br><br>
+
+Board indicates all of the sides, Start indicates the scramble, and End indicates the 
+solution. Trans operates over a side object and can be clockwise or counter clockwise.
+The side object has a DesObj for each Rubik's Cube side.
+<br><br>
+
+It has been proven via <a href="http://en.wikipedia.org/wiki/Rubik's_Cube#Optimal_solutions">intelligent brute-force</a> that at most 20 moves are needed to solve a 
+Rubik's Cube from any start position. So the number of stages input parameter can 
+always be below 20.
+<br><br>
+
+<a href="code/rubik/source.tb">source</a> | <a href="code/rubik/result.txt">solution</a>

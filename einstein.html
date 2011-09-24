@@ -1,0 +1,33 @@
+---
+layout: main-ex
+title: SABR
+---
+
+<h1>Einstein's Puzzle</h1>
+
+<a href="http://www.brain-fun.com/Brain-Teasers/EinsteinsRiddle.php"><img src="img/ein.jpg"/></a>
+<br><br>
+
+Einstein's puzzle, stated <a href="http://www.brain-fun.com/Brain-Teasers/EinsteinsRiddle.php">here</a>, is a 
+classic constraint problem. In common with Sudoku, it does not use transitions and uses the "all different"
+design pattern.
+<br><br>
+
+This puzzle also utilizes multiple symbol lists. After creating a symbol list with a name, you can specify
+that a board cell uses that symbol list by stating board-cell:symbol-list-name. It is invalid to connect
+one symbol list to another using a temporary variable.
+<br><br>
+
+Here we also utilize Opt, which stands for Option. For instance we can state that either the object House
+indicates the Englishman is in a red house, or the nationality and house have other values than
+Englishman and red. These groups of options (opt-groups) are formed using the option name. We continue in 
+this vein for all the rules to properly model the problem.
+<br><br>
+
+<div class="mycode">
+	Opt cl1:House {  red  Englishman ? ? ? }	<br>
+	Opt cl1:House { !red !Englishman ? ? ? }
+</div>
+<br>
+
+<a href="code/ein/source.tb">source</a> | <a href="code/ein/result.txt">solution</a>

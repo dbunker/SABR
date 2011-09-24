@@ -1,0 +1,28 @@
+---
+layout: main-ex
+title: SABR
+---
+
+<h1>Sudoku</h1>
+
+<a href="http://www.websudoku.com/"><img src="img/sudo.jpg"/></a>
+<br><br>
+
+Sudoku is often used as a constraint programming example. Our example is a 4x4 Sudoku.
+Transitions are unnessary for the Sudoku problem so we do not state a Start or End and 
+instead use Board as the object for Req Board to specify what symbols we know. 
+? is used for the symbols we do not know.
+<br><br>
+
+To make a constraint like "all different" we can use Req like below:
+<br><br>
+
+<div class="mycode">
+	Req RowColBlock	{  v !v !v !v }		<br>
+	Req RowColBlock	{ !v  v !v !v }		<br>
+	Req RowColBlock	{ !v !v  v !v }		<br>
+	Req RowColBlock	{ !v !v !v  v }
+</div>
+<br>
+
+<a href="code/sudo/source.tb">source</a> | <a href="code/sudo/result.txt">solution</a>
