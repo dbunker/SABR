@@ -1,0 +1,65 @@
+# solves japenese river crossing puzzle: http://www.robmathiowetz.com/
+
+Sym{ 0 1 }
+
+Board{ 	Man 	Woman 	Boy1 	Boy2 	Girl1 	Girl2 	Jailer 	Convict	Boat 	}
+
+Start{ 	1	1	1	1	1	1	1	1	1	}
+
+End{	0	0	0	0	0	0	0	0	0	}
+
+# first trans
+Obj BoatTwo			{ boat rider1 rider2 }
+Trans Up:BoatTwo		{ 1 1 1 => 0 0 0 }
+Trans Down:BoatTwo		{ 0 0 0 => 1 1 1 }
+
+# woman and either girl
+DesObj WomanGirl1:BoatTwo	{ Boat Woman Girl1 }
+DesObj WomanGirl2:BoatTwo	{ Boat Woman Girl2 }
+
+# man and either boy
+DesObj ManBoy1:BoatTwo		{ Boat Man Boy1 }
+DesObj ManBoy2:BoatTwo		{ Boat Man Boy2 }
+
+# woman and man
+DesObj WomanMan:BoatTwo		{ Boat Woman Man }
+
+# jailer and anyone
+DesObj JailerMan:BoatTwo	{ Boat Jailer Man }
+DesObj JailerWoman:BoatTwo	{ Boat Jailer Woman }
+DesObj JailerBoy1:BoatTwo	{ Boat Jailer Boy1 }
+DesObj JailerBoy2:BoatTwo	{ Boat Jailer Boy2 }
+DesObj JailerGirl1:BoatTwo	{ Boat Jailer Girl1 }
+DesObj JailerGirl2:BoatTwo	{ Boat Jailer Girl2 }
+DesObj JailerConvict:BoatTwo	{ Boat Jailer Convict }
+
+# second trans
+Obj BoatOne 			{ boat rider }
+Trans Up:BoatOne		{ 1 1 => 0 0 }
+Trans Down:BoatOne		{ 0 0 => 1 1 }
+
+DesObj Man:BoatOne 		{ Boat Man }
+DesObj Woman:BoatOne 		{ Boat Woman }
+DesObj Jailer:BoatOne 		{ Boat Jailer }
+
+# describes who can be with who
+Obj WithoutButWith		{ with without with }
+Req WithoutButWith		{ a (a,!b) b }
+
+# woman cannot be with either boy and without man
+DesObj WithoutButWith		{ Man Woman Boy1 }
+DesObj WithoutButWith		{ Man Woman Boy2 }
+
+# man cannot be with either girl and without woman
+DesObj WithoutButWith		{ Woman Man Girl1 }
+DesObj WithoutButWith		{ Woman Man Girl2 }
+
+# convict cannot be with anyone without jailer
+DesObj WithoutButWith		{ Jailer Convict Man }
+DesObj WithoutButWith		{ Jailer Convict Woman }
+DesObj WithoutButWith		{ Jailer Convict Boy1 }
+DesObj WithoutButWith		{ Jailer Convict Boy2 }
+DesObj WithoutButWith		{ Jailer Convict Girl1 }
+DesObj WithoutButWith		{ Jailer Convict Girl2 }
+
+

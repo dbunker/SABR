@@ -1,0 +1,78 @@
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+
+Fill Back-Z4-Y4-XS1-XF1-OR2
+Fill Back-Z4-Y1-XS0-XF1-OR2
+Fill Back-Z4-Y3-XS1-XF0-OR2
+Fill Back-Z4-Y0-XS0-XF0-OR0
+Fill Back-Z3-Y1-XS1-XF1-OR1
+Fill Back-Z2-Y0-XS0-XF1-OR3
+Fill Back-Z2-Y1-XS0-XF0-OR0
+Fill Back-Z1-Y0-XS1-XF0-OR0
+Fill Back-Z0-Y3-XS1-XF0-OR3
+Fill Back-Z0-Y0-XS0-XF0-OR3
+Fill Horiz-ZS0-ZF1-Y4-X0-OR3
+Fill Horiz-ZS1-ZF0-Y4-X3-OR3
+Fill Horiz-ZS0-ZF0-Y4-X1-OR3
+Fill Horiz-ZS0-ZF1-Y3-X3-OR3
+Fill Horiz-ZS1-ZF1-Y3-X0-OR1
+Fill Horiz-ZS1-ZF0-Y2-X0-OR3
+Fill Horiz-ZS0-ZF1-Y2-X3-OR2
+Fill Horiz-ZS0-ZF0-Y2-X2-OR1
+Fill Horiz-ZS0-ZF0-Y2-X1-OR1
+Fill Horiz-ZS1-ZF0-Y0-X3-OR3
+Fill Vert-Z3-YS1-YF0-X4-OR2
+Fill Vert-Z3-YS0-YF1-X0-OR1
+Fill Vert-Z2-YS1-YF0-X4-OR0
+Fill Vert-Z1-YS0-YF0-X4-OR0
+Fill Vert-Z1-YS0-YF0-X0-OR0
+
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+1 1 1 1 1 
+
