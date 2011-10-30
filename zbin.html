@@ -8,17 +8,17 @@ title: SABR
 <a href="http://www.creativecrafthouse.com/index.php?main_page=page&id=90"><img src="img/bin.jpg"/></a>
 <br><br>
 
-This is a difficult 3d puzzle involving fitting 25 roughly z-shaped peices perfectly into a 5x5 cube.
+This is a difficult 3d puzzle involving fitting 25 roughly z-shaped pieces perfectly into a 5x5 cube.
 To perform this bin packing we set the Board to be the 5x5 cube and then "tile" the space. Every
-possible position the z-shaped peice could take is expressed with a DesObj.
+possible position the z-shaped piece could take is expressed with a DesObj.
 <br><br>
 
 We utilize TransSim to allow simultaneous transitions and then only allow 2 stages.
 so that the Board starts all 0 (unused) and then is filled by simultaneous transitions,
-in a single stage, to be all 1 (used). Based on which DesObj where used, we know where the z-shaped peices go.
+in a single stage, to be all 1 (used). Based on which DesObj where used, we know where the z-shaped pieces go.
 <br><br>
 
-Writing out all of possible positions the z-shaped peice could have would be onerouse, so it is better to
+Writing out all of possible positions the z-shaped piece could have would be onerous, so it is better to
 write a script (generate) to perform this task for us.
 <br><br>
 
