@@ -9,17 +9,20 @@ title: SABR
 <br><br>
 
 Solving a fully or partially scrambled Rubik's cube is another very hard problem. However,
-the setup is simple and follows the same form as the Machinarium puzzle. 
+the setup is simple and follows the same form as the <a href="mach.html">Machinarium puzzle</a>. 
 <br><br>
 
-Board indicates all of the sides, Start indicates the scramble, and End indicates the 
-solution. Trans operates over a side object and can be clockwise or counter clockwise.
-The side object has a DesObj for each Rubik's Cube side.
+Board indicates all of the sides, Start indicates the starting scramble of the cube, and End indicates the 
+solved cube. Trans (the possible transitions) operates over the side object and can be clockwise or counter clockwise.
+The side object has a DesObj for representing each Rubik's Cube side.
 <br><br>
 
 It has been proven via <a href="http://en.wikipedia.org/wiki/Rubik's_Cube#Optimal_solutions">intelligent brute-force</a> that at most 20 moves are needed to solve a 
 Rubik's Cube from any start position. So the number of stages input parameter can 
 always be below 20.
+<br><br>
+
+The source and solution can be seen below.
 <br><br>
 
 <a href="code/rubik/source.txt">source</a> | <a href="code/rubik/result.txt">solution</a>
