@@ -8,13 +8,13 @@ title: SABR
 <a href="http://en.wikipedia.org/wiki/Rubik's_Cube"><img src="img/rubik.jpg"/></a>
 <br><br>
 
-Solving a fully or partially scrambled Rubik's cube is another hard problem we can solve with constraint programming. However,
-the setup is simple and follows the same form as the <a href="mach.html">Machinarium puzzle</a>. 
+Solving a fully or partially scrambled Rubik's cube is another hard problem we can solve with constraint programming.
+The setup for this problem is simple and follows the same form as the <a href="mach.html">Machinarium puzzle</a>. 
 <br><br>
 
 Board indicates all of the sides, Start indicates the starting scramble of the cube, and End indicates the 
 solved cube. Trans (the possible transitions) operates over the side object and can be clockwise or counter clockwise.
-The side object has a DesObj for representing each Rubik's Cube side.
+The side object has a DesObj (describe object) for representing each Rubik's Cube side.
 <br><br>
 
 It has been proven via <a href="http://en.wikipedia.org/wiki/Rubik's_Cube#Optimal_solutions">intelligent brute-force</a> that at most 20 moves are needed to solve a 
