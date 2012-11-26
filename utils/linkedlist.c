@@ -41,7 +41,7 @@ linkedList createLinked(void *(*myMalloc)(size_t),void (*myFree)(void*)){
 		myMalloc = malloc;
 	if(!myFree)
 		myFree = free;
-	
+
 	linked *list = myMalloc(sizeof(linked));
 	if(!list) return NULL;
 
@@ -80,7 +80,7 @@ void *toArrayLinked(linkedList listP){
 
 	linked *list = listP;
 	assert(list,"link");
-	
+
 	/* if it changed, it needs to be remade */
 	if(list->isChanged){
 		if(list->array){
@@ -111,7 +111,7 @@ int destroyLinked(linkedList listP,void (*freeData)(void*)){
 
 	linked *list = listP;
 	assert(list,"link");
-	
+
 	/* pop and free all data */
 	void *data;
 	while((data = popLinked(list)))
@@ -120,7 +120,7 @@ int destroyLinked(linkedList listP,void (*freeData)(void*)){
 
 	if(list->array)	
 		list->myFree(list->array);
-	
+
 	list->myFree(list);
 	return 0;
 }
@@ -135,13 +135,13 @@ int pushLinked(linkedList listP,void *data){
 	if(!newHead) 
 		return MEM_ERROR;
 	list->isChanged = 1;
-	
+
 	/* set head as next */
 	createNode(newHead,data);
 
 	if(list->head)
 		insertBeforeNode(list->head,newHead);
-	
+
 	/* set new head */
 	list->head = newHead;
 	list->size++;
@@ -162,16 +162,16 @@ void *popLinked(linkedList listP){
 	if(!curHead) 
 		return NULL;
 	list->isChanged = 1;
-	
+
 	/* get head as return and set to next */
 	void *returnData = extractNode(curHead);
 	list->head = getNextNode(curHead);
 	list->size--;	
-	
+
 	/* if there is not a head, remove tail */
 	if(!list->head)
 		list->tail = NULL;
-	
+
 	removeNode(curHead);
 	list->myFree(curHead);
 	return returnData;
@@ -196,17 +196,17 @@ int addTailLinked(linkedList listP,void *data){
 
 	linkedNode curTail = list->tail;
 	list->isChanged = 1;
-	
+
 	if(!curTail)
 		return pushLinked(list,data);
-	
+
 	linkedNode newTail = list->myMalloc(sizeNode());
 	if(!newTail) 
 		return MEM_ERROR;
-	
+
 	/* set tail after curTail */
 	createNode(newTail,data);
-	
+
 	insertAfterNode(curTail,newTail);
 	list->tail = newTail; 
 	list->size++;
@@ -222,16 +222,16 @@ void *removeTailLinked(linkedList listP){
 	if(!curTail) 
 		return NULL;
 	list->isChanged = 1;
-	
+
 	/* get head as return and set to next */
 	void *returnData = extractNode(curTail);
 	list->tail = getPrevNode(curTail);
 	list->size--;	
-	
+
 	/* if there is not a tail, remove head */
 	if(!list->tail)
 		list->head = NULL;
-	
+
 	removeNode(curTail);
 	list->myFree(curTail);
 	return returnData;
@@ -260,7 +260,7 @@ int sortCompareTo(void *compareToParam,void *data){
 	paramHolder *hold = compareToParam;
 	int (*compareTo)(void*,void*) = hold->func;
 	void *newData = hold->info;
-	
+
 	/* this will cause insertBeforeLinked to continue to execute
            until the inputed data is larger than list data */
 	if(newData != NULL && compareTo(newData,data) <= 0)
@@ -276,18 +276,18 @@ int insertSortLinked(linkedList listP,int (*compareTo)(void*,void*),void *data){
 	assert(data,"link");
 
 	list->isChanged = 1;
-	
+
 	paramHolder hold;
 	hold.info = data;
 	hold.func = compareTo;
-	
+
 	/* if never larger, it goes at end */
 	int ret = insertBeforeLinked(list,sortCompareTo,&hold,data);
 	if(ret == MEM_ERROR)
 		return MEM_ERROR;
 	if(ret == -1)
 		ret = addTailLinked(list,data);
-	
+
 	return ret;
 }
 
@@ -307,22 +307,22 @@ int sortLinked(linkedList listP,int (*compareTo)(void*,void*)){
 	linked *list = listP;
 	assert(list,"link");
 	assert(compareTo,"link");
-	
+
 	linked *newList = createLinked(list->myMalloc,list->myFree);
 	if(!newList)
 		return MEM_ERROR;
 	list->isChanged = 1;
-	
+
 	/* perform sort on each value to make a new list */
 	paramHolder hold;
 	hold.info = newList;
 	hold.func = compareTo;
 	execUntilLinked(list,sortInsert,&hold);
-	
+
 	list->head = newList->head;
 	list->tail = newList->tail;
 	list->size = newList->size;
-	
+
 	destroyLinked(newList,NULL);
 	return 0;
 }
@@ -332,7 +332,7 @@ void *getLinked(linkedList listP,int (*compareTo)(void*,void*),void *param){
 	linked *list = listP;
 	assert(list,"link");
 	assert(compareTo,"link");
-	
+
 	/* iterate through list until match is found */
 	linkedNode curHead = list->head;
 	while(curHead){
@@ -348,9 +348,9 @@ void *removeLinked(linkedList listP,int (*compareTo)(void*,void*),void *param){
 	linked *list = listP;
 	assert(list,"link");
 	assert(compareTo,"link");
-	
+
 	list->isChanged = 1;
-	
+
 	/* iterate through list until match is found */
 	linkedNode curHead = list->head;
 	linkedNode prevHead = NULL;
@@ -362,7 +362,7 @@ void *removeLinked(linkedList listP,int (*compareTo)(void*,void*),void *param){
 				list->tail = prevHead;
 
 			removeNode(curHead);
-			
+
 			void *retData = extractNode(curHead);
 			list->size--;
 			list->myFree(curHead);
@@ -382,26 +382,26 @@ int insertBeforeLinked(linkedList listP,int (*compareTo)(void*,void*),void *para
 	assert(data,"link");
 
 	list->isChanged = 1;
-	
+
 	/* iterate through list until match is found */
 	linkedNode curHead = list->head;
-	linkedNode prevHead = NULL;
+	
 	while(curHead){
 		if(compareTo(param,extractNode(curHead)) == 0){
 			if(curHead == list->head)
 				return pushLinked(list,data);
-			
+
 			linkedNode newNode = list->myMalloc(sizeNode());
 			if(!newNode) 
 				return MEM_ERROR;
-	
+
 			/* set node */
 			createNode(newNode,data);
 			insertBeforeNode(curHead,newNode);
 			list->size++;
 			return 0;
 		}
-		prevHead = curHead;
+		
 		curHead = getNextNode(curHead);
 	}
 	return -1;
@@ -415,26 +415,26 @@ int insertAfterLinked(linkedList listP,int (*compareTo)(void*,void*),void *param
 	assert(data,"link");
 
 	list->isChanged = 1;
-	
+
 	/* iterate through list until match is found */
 	linkedNode curHead = list->head;
-	linkedNode prevHead = NULL;
+	
 	while(curHead){
 		if(compareTo(param,extractNode(curHead)) == 0){
 			if(curHead == list->tail)
 				return addTailLinked(list,data);
-			
+
 			linkedNode newNode = list->myMalloc(sizeNode());
 			if(!newNode) 
 				return MEM_ERROR;
-	
+
 			/* set node */
 			createNode(newNode,data);
 			insertAfterNode(curHead,newNode);
 			list->size++;
 			return 0;
 		}
-		prevHead = curHead;
+		
 		curHead = getNextNode(curHead);
 	}
 	return -1;
@@ -446,9 +446,9 @@ void *replaceLinked(linkedList listP,int (*compareTo)(void*,void*),void *param,v
 	assert(list,"link");
 	assert(compareTo,"link");
 	assert(data,"link");
-	
+
 	list->isChanged = 1;
-	
+
 	/* iterate through list until match is found */
 	linkedNode curHead = list->head;
 	while(curHead){
@@ -486,20 +486,20 @@ int reverseLinked(linkedList listP){
 	assert(list,"link");
 
 	list->isChanged = 1;
-	
+
 	linked *newList = createLinked(list->myMalloc,list->myFree);
 	if(!newList) 
 		return MEM_ERROR;
-	
+
 	/* pop off one and onto other linked list */
 	void *data;
 	while((data = popLinked(list)))
 		pushLinked(newList,data);
-	
+
 	list->head = newList->head;
 	list->tail = newList->tail;
 	list->size = newList->size;
-	
+
 	list->myFree(newList);
 	return 0;
 }
@@ -507,7 +507,7 @@ int reverseLinked(linkedList listP){
 /* two have same malloc and free
  * the two cannot be the same list */
 linkedList concatLinked(linkedList listP1,linkedList listP2){
-	
+
 	linked *list1 = listP1;
 	linked *list2 = listP2;
 	assert(list1,"link");
@@ -516,7 +516,7 @@ linkedList concatLinked(linkedList listP1,linkedList listP2){
 	assertBool((list1 != list2),"link");
 	assertBool((list1->myMalloc == list2->myMalloc),"link");
 	assertBool((list1->myFree == list2->myFree),"link");
-	
+
 	if(sizeLinked(list1) == 0){
 		list1->myFree(list1);
 		return list2;
@@ -525,7 +525,7 @@ linkedList concatLinked(linkedList listP1,linkedList listP2){
 		list2->myFree(list2);
 		return list1;
 	}
-	
+
 	connectNode(list1->tail,list2->head);
 	list1->tail = list2->tail;
 
@@ -551,7 +551,7 @@ int internalCopy(void *param,void *data){
 	void *newData = param;
 	if(cop->func)
 		newData = cop->func(data);
-	
+
 	if(!newData)
 		return -1;
 
@@ -561,7 +561,7 @@ int internalCopy(void *param,void *data){
 }
 
 linkedList copyLinked(linkedList listP,void *(*myMalloc)(size_t),void (*myFree)(void*),void *(*myCopy)(void*)){
-	
+
 	linked *list = listP;
 	assert(list,"link");
 
@@ -570,7 +570,7 @@ linkedList copyLinked(linkedList listP,void *(*myMalloc)(size_t),void (*myFree)(
 	if(!param.info)
 		return NULL;
 	param.func = myCopy;
-	
+
 	int ret = execUntilLinked(list,internalCopy,&param);
 	if(ret != 0)
 		return NULL;
@@ -591,7 +591,7 @@ int printLinked(linkedList listP,void (*printOut)(void*)){
 	linked *list = listP;
 	assert(list,"link");
 	assert(printOut,"link");
-	
+
 	/* run printOut on all */
 	return execUntilLinked(list,noParamExecVoid,printOut);
 }

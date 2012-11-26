@@ -27,19 +27,27 @@ int globalInitDebug = 0;
 // malloc holder skip list
 skipList globalMemHolder;
 
+void compAssert(char *str){
+
+	printf("%s\n",str);
+	// cause segfault for easy gdb stack trace (can be removed)
+	volatile int i = *(int*)0x4;
+	printf("%d\n",i);
+	exit(0);
+}
+
 void assert(void *nonZero,char *str){
 
 	if(!nonZero){
-		printf("%s\n",str);
-		// cause segfault for easy gdb stack trace (can be removed)
-		volatile int i = *(int*)0x4;
-		exit(0);
+		compAssert(str);
 	}
 }
 
 void assertBool(int nonZero,char *str){
 
-	assert((void*)nonZero,str);
+	if(!nonZero){
+		compAssert(str);
+	}
 }
 
 void *Malloc(size_t len){

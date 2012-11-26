@@ -85,11 +85,11 @@ treeNode *choiceNode(int tok,treeNode *choice,treeNode *root){
 	
 	switch(tok){
 		case TRANSFORM: 	pushLinked(data->transNodes,choice);	break;
-		case OBJECT: 		pushLinked(data->objNodes,choice); 	break;
+		case OBJECT: 		pushLinked(data->objNodes,choice); 		break;
 		case DESOBJECT: 	pushLinked(data->desObjNodes,choice); 	break;
-		case REQUIRE: 		pushLinked(data->reqNodes,choice); 	break;
-		case OPTION: 		pushLinked(data->optNodes,choice); 	break;
-		default:		assert(NULL,"Node Error");
+		case REQUIRE: 		pushLinked(data->reqNodes,choice); 		break;
+		case OPTION: 		pushLinked(data->optNodes,choice); 		break;
+		default:			assert(NULL,"Node Error");
 	}
 	return root;
 }
@@ -195,7 +195,7 @@ treeNode *storeNode(int tok,treeNode *set){
 	nodeType type;
 	switch(tok){
 		case BOARD: 	type = boardType;	break;
-		default:	assert(NULL,"Node Error");
+		default:		assert(NULL,"Node Error");
 	}
 	startSetData *notParsed = set->data;
 	setData *newData = createSet(notParsed);
@@ -297,7 +297,7 @@ treeNode *setCommaNode(int tok,int varId,treeNode *varList){
 	if(tok == CHARVAR){
 		
 		// assert no varlist
-		assert((void*)!varList,"Char VarList");
+		assertBool(varList == NULL,"Char VarList");
 		int *dataVar = Malloc(sizeof(int));
 		*dataVar = varId;
 
@@ -430,13 +430,13 @@ treeNode *nameNode(int tok,treeNode *stagesNode,int nameId,int objId,treeNode *s
 	nodeType type;
 	switch(tok){
 		case OBJECT:		type = objType; 	break;
-		case DESOBJECT:		type = desObjType; 	if(!nameId) nameId = inventName("DesObj");	break;
-		case REQUIRE:		type = reqType; 	if(!nameId) nameId = inventName("Req");		break;
+		case DESOBJECT:		type = desObjType; 	if(!nameId) nameId = inventName("DesObj");		break;
+		case REQUIRE:		type = reqType; 	if(!nameId) nameId = inventName("Req");			break;
 		case OPTION:		type = optType; 	if(!nameId) nameId = addSymbol("+NoNameOpt+");	break;
-		case START:		type = startType;	break;
-		case END:		type = endType;		break;
+		case START:			type = startType;	break;
+		case END:			type = endType;		break;
 		case SYMBOLS: 		type = symType;		break;
-		default:		assert(NULL,"No Token");
+		default:			assert(NULL,"No Token");
 	}
 	startSetData *notParsed = set->data;
 	
@@ -495,12 +495,12 @@ int initSym(){
 int yywrap(){
 	
 	endFile = 1;
-    	return 1;
+	return 1;
 }
 
 void yyerror(char *s) {
 
-    	printf("Error: Syntax Error On Line %i.\n",curLineNum);
+	printf("Error: Syntax Error On Line %i.\n",curLineNum);
 	exit(0);
 }
 

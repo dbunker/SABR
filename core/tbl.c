@@ -498,7 +498,7 @@ void setUsedClauses(rootData *rdata,indexList *varList,linkedList clauseList,lin
 						clauseVar = createClauseVar(tv,1);
 						addTailLinked(clause,clauseVar);
 
-						assert((void*)sizeLinked(clause),"Empty Clause Used");
+						assertBool(sizeLinked(clause) != 0,"Empty Clause Used");
 						addTailLinked(clauseList,clause);
 
 						clauseVar = createClauseVar(tv,0);
@@ -581,7 +581,7 @@ void usedClauses(rootData *rdata,indexList *varList,linkedList clauseList,linked
 					clauseVar = createClauseVar(scv1,0);
 					addTailLinked(clause,clauseVar);
 
-					assert((void*)sizeLinked(clause),"Empty Clause Used");
+					assertBool(sizeLinked(clause) != 0,"Empty Clause Used");
 					addTailLinked(clauseList,clause);
 
 					clause = createLinked(Malloc,Free);
@@ -592,7 +592,7 @@ void usedClauses(rootData *rdata,indexList *varList,linkedList clauseList,linked
 					clauseVar = createClauseVar(scv0,0);
 					addTailLinked(clause,clauseVar);
 
-					assert((void*)sizeLinked(clause),"Empty Clause Used");
+					assertBool(sizeLinked(clause) != 0,"Empty Clause Used");
 					addTailLinked(clauseList,clause);
 				}
 			}
@@ -782,7 +782,7 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 	
 	indexList *outVars = createVarIndex();
 	int ret;
-	int num = fscanf(inFile,"%i",&ret);
+	fscanf(inFile,"%i",&ret);
 
 	while(ret != 0){
 		
@@ -790,7 +790,7 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 		// get varData of this variable in out sat
 		varData *vdata = getVarByValue(varList,ret);
 		
-		num = fscanf(inFile,"%i",&ret);
+		fscanf(inFile,"%i",&ret);
 
 		if(!vdata)
 			continue;

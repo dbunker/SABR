@@ -523,7 +523,8 @@ limitations under the License.
 #include <string.h>
 #include "../core/arch.h"
 #include "y.tab.h"
-#line 527 "lex.yy.c"
+#define YY_NO_INPUT 1
+#line 528 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -582,8 +583,6 @@ extern int yywrap (void );
 #endif
 #endif
 
-    static void yyunput (int c,char *buf_ptr  );
-    
 #ifndef yytext_ptr
 static void yy_flex_strncpy (char *,yyconst char *,int );
 #endif
@@ -710,10 +709,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 27 "parser/tbl.l"
+#line 30 "parser/tbl.l"
 
 
-#line 717 "lex.yy.c"
+#line 716 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -798,109 +797,109 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 29 "parser/tbl.l"
+#line 32 "parser/tbl.l"
 { return SYMBOLS; 	}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 30 "parser/tbl.l"
+#line 33 "parser/tbl.l"
 { return BOARD; 	}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 31 "parser/tbl.l"
+#line 34 "parser/tbl.l"
 { return START;		}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 32 "parser/tbl.l"
+#line 35 "parser/tbl.l"
 { return END;		}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 33 "parser/tbl.l"
+#line 36 "parser/tbl.l"
 { return OBJECT;	}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 34 "parser/tbl.l"
+#line 37 "parser/tbl.l"
 { return DESOBJECT;	}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 35 "parser/tbl.l"
+#line 38 "parser/tbl.l"
 { return TRANSFORM;	}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 36 "parser/tbl.l"
+#line 39 "parser/tbl.l"
 { return TRANSFORMSIM;	}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 37 "parser/tbl.l"
+#line 40 "parser/tbl.l"
 { return REQUIRE;	}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 38 "parser/tbl.l"
+#line 41 "parser/tbl.l"
 { return OPTION;	}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 39 "parser/tbl.l"
+#line 42 "parser/tbl.l"
 { return ARROW;		}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 41 "parser/tbl.l"
+#line 44 "parser/tbl.l"
 {
-				int symVal = addSymbol(yytext);
-                        	yylval.val = symVal;
-                        	return VARIABLE;
-                    	}
+							int symVal = addSymbol(yytext);
+							yylval.val = symVal;
+							return VARIABLE;
+						}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 47 "parser/tbl.l"
+#line 50 "parser/tbl.l"
 {
-				return *yytext;
-			}
+							return *yytext;
+						}
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 51 "parser/tbl.l"
+#line 54 "parser/tbl.l"
 ;
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 53 "parser/tbl.l"
+#line 56 "parser/tbl.l"
 curLineNum++;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 55 "parser/tbl.l"
+#line 58 "parser/tbl.l"
 ;
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 57 "parser/tbl.l"
+#line 60 "parser/tbl.l"
 curLineNum++;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 59 "parser/tbl.l"
+#line 62 "parser/tbl.l"
 { printf("Error: Unknown Character On Line %i\n",curLineNum); exit(0); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 61 "parser/tbl.l"
+#line 64 "parser/tbl.l"
 ECHO;
 	YY_BREAK
-#line 904 "lex.yy.c"
+#line 903 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1227,43 +1226,6 @@ static int yy_get_next_buffer (void)
 	yy_is_jam = (yy_current_state == 61);
 
 	return yy_is_jam ? 0 : yy_current_state;
-}
-
-    static void yyunput (int c, register char * yy_bp )
-{
-	register char *yy_cp;
-    
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up yytext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		register int number_to_move = (yy_n_chars) + 2;
-		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		register char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
 }
 
 #ifndef YY_NO_INPUT
@@ -1898,7 +1860,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 61 "parser/tbl.l"
+#line 64 "parser/tbl.l"
 
 
 

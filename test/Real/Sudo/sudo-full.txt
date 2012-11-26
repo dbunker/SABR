@@ -17,7 +17,7 @@ conflicts             : 0              (0 /sec)
 decisions             : 2              (0.00 % random) (167 /sec)
 propagations          : 1578           (131500 /sec)
 conflict literals     : 0              (-nan % deleted)
-Memory used           : 5.00 MB
+Memory used           : 6.00 MB
 CPU time              : 0.012 s
 
 SATISFIABLE

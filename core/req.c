@@ -49,7 +49,7 @@ void atLeastOne(linkedList newVarList,linkedList clauseList){
 		assert(clauseVar->data,"Least");
 		addTailLinked(clause,clauseVar);
 	}
-	assert((void*)sizeLinked(clause),"Empty Clause At Least One");
+	assertBool(sizeLinked(clause) != 0,"Empty Clause At Least One");
 	addTailLinked(clauseList,clause);
 }
 
@@ -81,7 +81,7 @@ void atMostOne(linkedList newVarList,linkedList clauseList){
 			assert(clauseVar->data,"Most");
 			addTailLinked(clause,clauseVar);
 
-			assert((void*)sizeLinked(clause),"Empty Clause At Most One");
+			assertBool(sizeLinked(clause) != 0,"Empty Clause At Most One");
 			addTailLinked(clauseList,clause);
 		}
 	}
@@ -123,7 +123,7 @@ int ifThen(linkedList varListA,linkedList varListB,linkedList clauseList){
 			assert(clauseVarB->data,"If Then B");
 			addTailLinked(clause,clauseVarB);
 		}
-		assert((void*)sizeLinked(clause),"Empty Clause If Then");
+		assertBool(sizeLinked(clause) != 0,"Empty Clause If Then");
 		addTailLinked(clauseList,clause);
 	}
 	return 0;

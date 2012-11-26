@@ -69,7 +69,7 @@ int simpleComp(void *param,void *data);
 int simpleSearch(void *param,void *data);
 
 int findString(void *param,void *data);
-int findValue(void *param,void *data);
+// int findValue(void *param,void *data);
 char *getStringSym(int value);
 
 int findTemp(void *param,void *data);

@@ -15,19 +15,14 @@ limitations under the License.
 *************************************************************************/
 
 /* yacc file */
-// removed because {} in DesObj is not supported:
-// manyvar:
-// 	  '{' manycomma '}' 		{ $$ = setVarNode(MANYBRACK,0,$2); }
-// manycomma:
-//	  VARIABLE			{ $$ = setCommaNode(MANYVAR,$1,NULL); }
-//	| VARIABLE ',' manycomma	{ $$ = setCommaNode(MANYVAR,$1,$3); }
-
 
 %{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../core/arch.h"
+
+int yylex(void);
 %}
 
 %union {
@@ -69,12 +64,12 @@ limitations under the License.
 %%
 
 root:
-	  statements 				{ if(endFile) execute($1); }
+	  statements							{ if(endFile) execute($1); }
 	;
 
 statements:
-	  symbols board start end choices	{ $$ = statementNodes($1,$2,$3,$4,$5); }
-	| symbols board choices			{ $$ = statementNodes($1,$2,NULL,NULL,$3); }
+	  symbols board start end choices		{ $$ = statementNodes($1,$2,$3,$4,$5); }
+	| symbols board choices					{ $$ = statementNodes($1,$2,NULL,NULL,$3); }
 	;
 
 choices:
@@ -88,44 +83,47 @@ choices:
 
 setstages:
 	  '(' VARIABLE ':' VARIABLE ')'		{ $$ = setStages($2,$4); }
-	| /* empty */				{ $$ = NULL; }
+	| /* empty */						{ $$ = NULL; }
 	;
 
 symbols:
-	  symlist				{ $$ = symNode($1,NULL); }
-	| symlist symbols			{ $$ = symNode($1,$2); }
+	  symlist							{ $$ = symNode($1,NULL); }
+	| symlist symbols					{ $$ = symNode($1,$2); }
 	;
 
 symlist:
-	  SYMBOLS '{' charset '}'		{ $$ = nameNode(SYMBOLS,NULL,0,0,$3); }
+	  SYMBOLS '{' charset '}'			{ $$ = nameNode(SYMBOLS,NULL,0,0,$3); }
 	| SYMBOLS VARIABLE '{' charset '}'	{ $$ = nameNode(SYMBOLS,NULL,$2,0,$4); }
 	;
 
 board:
-	  BOARD '{' boardset '}'		{ $$ = storeNode(BOARD,$3); }
+	  BOARD '{' boardset '}'			{ $$ = storeNode(BOARD,$3); }
 	;
 
 start:
-	  START '{' elabset '}'			{ $$ = nameNode(START,NULL,0,0,$3); }
+	  START '{' elabset '}'				{ $$ = nameNode(START,NULL,0,0,$3); }
 	;
 
 end:
-	  END '{' elabset '}'			{ $$ = nameNode(END,NULL,0,0,$3); }
+	  END '{' elabset '}'				{ $$ = nameNode(END,NULL,0,0,$3); }
 	;
 
 transform:
-	  transtype setstages VARIABLE ':' anyobject '{' elabset ARROW elabset '}'		{ $$ = transNode($1,$2,$3,$5,$7,$9); }
-	| transtype setstages anyobject '{' elabset ARROW elabset '}'				{ $$ = transNode($1,$2,0,$3,$5,$7); }
+	  transtype setstages VARIABLE ':' anyobject '{' elabset ARROW elabset '}'
+	  		{ $$ = transNode($1,$2,$3,$5,$7,$9); }
+	  		
+	| transtype setstages anyobject '{' elabset ARROW elabset '}'				
+			{ $$ = transNode($1,$2,0,$3,$5,$7); }
 	;
 
 transtype:
-	  TRANSFORM				{ $$ = TRANSFORM; }
-	| TRANSFORMSIM				{ $$ = TRANSFORMSIM; }
+	  TRANSFORM							{ $$ = TRANSFORM; }
+	| TRANSFORMSIM						{ $$ = TRANSFORMSIM; }
 	;
 
 anyobject:
-	  VARIABLE				{ $$ = $1; }
-	| BOARD					{ $$ = addSymbol("Board"); }
+	  VARIABLE							{ $$ = $1; }
+	| BOARD								{ $$ = addSymbol("Board"); }
 	;
 
 object:
@@ -133,81 +131,90 @@ object:
 	;
 
 desobject:
-	  DESOBJECT VARIABLE ':' VARIABLE '{' manyset '}'		{ $$ = nameNode(DESOBJECT,NULL,$2,$4,$6); }		
-	| DESOBJECT VARIABLE '{' manyset '}'				{ $$ = nameNode(DESOBJECT,NULL,0,$2,$4); }
+	  DESOBJECT VARIABLE ':' VARIABLE '{' manyset '}'		
+			{ $$ = nameNode(DESOBJECT,NULL,$2,$4,$6); }
+			
+	| DESOBJECT VARIABLE '{' manyset '}'
+			{ $$ = nameNode(DESOBJECT,NULL,0,$2,$4); }
 	;
 
 require:
-	  REQUIRE setstages VARIABLE ':' anyobject '{' elabset '}'	{ $$ = nameNode(REQUIRE,$2,$3,$5,$7); }
-	| REQUIRE setstages anyobject '{' elabset '}'			{ $$ = nameNode(REQUIRE,$2,0,$3,$5); }
+	  REQUIRE setstages VARIABLE ':' anyobject '{' elabset '}'
+	  		{ $$ = nameNode(REQUIRE,$2,$3,$5,$7); }
+	  		
+	| REQUIRE setstages anyobject '{' elabset '}'			
+			{ $$ = nameNode(REQUIRE,$2,0,$3,$5); }
 	;
 
 option:
-	  OPTION setstages VARIABLE ':' anyobject '{' elabset '}'	{ $$ = nameNode(OPTION,$2,$3,$5,$7); }
-	| OPTION setstages anyobject '{' elabset '}'			{ $$ = nameNode(OPTION,$2,0,$3,$5); }
+	  OPTION setstages VARIABLE ':' anyobject '{' elabset '}'	
+			{ $$ = nameNode(OPTION,$2,$3,$5,$7); }
+	  
+	| OPTION setstages anyobject '{' elabset '}'
+			{ $$ = nameNode(OPTION,$2,0,$3,$5); }
 	;
 
 objset:
-	  boardvar objset 			{ $$ = setNode(0,$1,$2); }
+	  boardvar objset 				{ $$ = setNode(0,$1,$2); }
 	| boardvar ';' objset			{ $$ = setNode(SEMI,$1,$3); }
-	| boardvar ';'				{ $$ = setNode(0,$1,NULL); }
-	| boardvar				{ $$ = setNode(0,$1,NULL); }
+	| boardvar ';'					{ $$ = setNode(0,$1,NULL); }
+	| boardvar						{ $$ = setNode(0,$1,NULL); }
 	;
 
 boardset:
 	  boardvar boardset 			{ $$ = setNode(0,$1,$2); }
 	| boardvar ';' boardset			{ $$ = setNode(SEMI,$1,$3); }
-	| boardvar ';'				{ $$ = setNode(0,$1,NULL); }
-	| boardvar				{ $$ = setNode(0,$1,NULL); }
-	| '.' boardset				{ $$ = setNode(SPACEVAR,NULL,$2); }
+	| boardvar ';'					{ $$ = setNode(0,$1,NULL); }
+	| boardvar						{ $$ = setNode(0,$1,NULL); }
+	| '.' boardset					{ $$ = setNode(SPACEVAR,NULL,$2); }
 	;
 
 boardvar:
-	  VARIABLE				{ $$ = setBoardVarNode(BOARDVAR,$1,0); }
+	  VARIABLE						{ $$ = setBoardVarNode(BOARDVAR,$1,0); }
 	| VARIABLE ':' VARIABLE			{ $$ = setBoardVarNode(BOARDVAR,$1,$3); }
 	;
 
 charset:
-	  charvar charset 			{ $$ = setNode(0,$1,$2); }
+	  charvar charset 				{ $$ = setNode(0,$1,$2); }
 	| charvar ';' charset			{ $$ = setNode(SEMI,$1,$3); }
-	| charvar ';'				{ $$ = setNode(0,$1,NULL); }
-	| charvar				{ $$ = setNode(0,$1,NULL); }
+	| charvar ';'					{ $$ = setNode(0,$1,NULL); }
+	| charvar						{ $$ = setNode(0,$1,NULL); }
 	;
 
 charvar:
-	  VARIABLE				{ $$ = setVarNode(CHARVAR,$1,NULL); }
+	  VARIABLE						{ $$ = setVarNode(CHARVAR,$1,NULL); }
 	;
 
 manyset:
-	  manyvar manyset 			{ $$ = setNode(0,$1,$2); }
+	  manyvar manyset 				{ $$ = setNode(0,$1,$2); }
 	| manyvar ';' manyset			{ $$ = setNode(SEMI,$1,$3); }
-	| manyvar ';'				{ $$ = setNode(0,$1,NULL); }
-	| manyvar				{ $$ = setNode(0,$1,NULL); }
+	| manyvar ';'					{ $$ = setNode(0,$1,NULL); }
+	| manyvar						{ $$ = setNode(0,$1,NULL); }
 	;
 
 manyvar:
-	  VARIABLE				{ $$ = setVarNode(MANYVAR,$1,NULL); }
+	  VARIABLE						{ $$ = setVarNode(MANYVAR,$1,NULL); }
 	;
 
 elabset:
-	  elabvar elabset 			{ $$ = setNode(0,$1,$2); }
+	  elabvar elabset 				{ $$ = setNode(0,$1,$2); }
 	| elabvar ';' elabset			{ $$ = setNode(SEMI,$1,$3); }
-	| elabvar ';'				{ $$ = setNode(0,$1,NULL); }
-	| elabvar				{ $$ = setNode(0,$1,NULL); }
+	| elabvar ';'					{ $$ = setNode(0,$1,NULL); }
+	| elabvar						{ $$ = setNode(0,$1,NULL); }
 	;
 
 elabvar:
-	  VARIABLE				{ $$ = setVarNode(ELABTEMP,$1,NULL); }
-	| '?'					{ $$ = setVarNode(ELABQUEST,0,NULL); }
-	| '!' VARIABLE				{ $$ = setVarNode(ELABNEG,$2,NULL); }
-	| '(' elabcomma ')'			{ $$ = setVarNode(ELABPAREN,0,$2); }
+	  VARIABLE							{ $$ = setVarNode(ELABTEMP,$1,NULL); }
+	| '?'								{ $$ = setVarNode(ELABQUEST,0,NULL); }
+	| '!' VARIABLE						{ $$ = setVarNode(ELABNEG,$2,NULL); }
+	| '(' elabcomma ')'					{ $$ = setVarNode(ELABPAREN,0,$2); }
 	| VARIABLE ':' '(' elabcomma ')'	{ $$ = setVarNode(ELABCOL,$1,$4); }
 	;
 
 elabcomma:
-	  VARIABLE				{ $$ = setCommaNode(ELABVAR,$1,NULL); }
-	| '!' VARIABLE				{ $$ = setCommaNode(ELABNEG,$2,NULL); }
-	| VARIABLE ',' elabcomma		{ $$ = setCommaNode(ELABVAR,$1,$3); }
+	  VARIABLE							{ $$ = setCommaNode(ELABVAR,$1,NULL); }
+	| '!' VARIABLE						{ $$ = setCommaNode(ELABNEG,$2,NULL); }
+	| VARIABLE ',' elabcomma			{ $$ = setCommaNode(ELABVAR,$1,$3); }
 	| '!' VARIABLE ',' elabcomma		{ $$ = setCommaNode(ELABNEG,$2,$4); }
 
 %%

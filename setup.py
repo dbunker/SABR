@@ -11,7 +11,7 @@ def minisat():
 	
 	os.system('make -C cnf/minisat')
 	os.system('rm cnfsat')
-	os.system('ln -s cnf/minisat/build/release/bin/minisat cnfsat')
+	os.system('cp cnf/minisat/build/release/bin/minisat cnfsat')
 
 def parser():
 
@@ -30,7 +30,7 @@ def parser():
 
 def build():
 
-	cmd  = 'gcc -g -o sabr '
+	cmd  = 'gcc -g -Wall -o sabr '
 	cmd += 'utils/linkedlist.c utils/skiplist.c utils/botlist.c utils/gendebug.c '
 	cmd += 'parser/y.tab.c parser/lex.yy.c '
 	cmd += 'core/arch.c core/structs.c core/debug.c core/tbl.c core/req.c core/var.c'

@@ -77,14 +77,15 @@ int findString(void *param,void *data){
 // stringData
 int findValue(void *param,void *data){
 	
+	int intParam = *(int*)param;
 	stringData *str = data;
-	return !(str->value == (int)param);
+	return !(str->value == intParam);
 }
 
 // stringData
 char *getStringSym(int value){
 
-	stringData *data = getLinked(symTable,findValue,(void*)value);
+	stringData *data = getLinked(symTable,findValue,&value);
 	assert(data,"StringSym Does Not Exist");
 	return data->str;
 }
