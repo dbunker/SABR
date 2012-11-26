@@ -4,7 +4,7 @@ WARNING: for repeatability, setting FPU to use double precision
 |  Number of variables:         30064                                         |
 |  Number of clauses:           38483                                         |
 |  Parse time:                   0.03 s                                       |
-|  Simplification time:          0.00 s                                       |
+|  Simplification time:          0.01 s                                       |
 |                                                                             |
 ============================[ Search Statistics ]==============================
 | Conflicts |          ORIGINAL         |          LEARNT          | Progress |
