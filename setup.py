@@ -28,7 +28,7 @@ def parser():
 	os.system('mv y.tab.c parser')
 	os.system('mv y.tab.h parser')
 
-def build():
+def sabr():
 
 	cmd  = 'gcc -g -Wall -o sabr '
 	cmd += 'utils/linkedlist.c utils/skiplist.c utils/botlist.c utils/gendebug.c '
@@ -45,6 +45,10 @@ def cleanall():
 	clean()
 	os.system('make clean -C cnf/minisat')
 
+coms = """
+Usage: 
+"""
+
 if len(sys.argv) == 2:
 	if sys.argv[1] == 'depend':
 		depend()
@@ -52,14 +56,19 @@ if len(sys.argv) == 2:
 		minisat()
 	elif sys.argv[1] == 'parser':
 		parser()
+	elif sys.argv[1] == 'sabr':
+		sabr()
 	elif sys.argv[1] == 'build':
-		build()
+		minisat()
+		parser()
+		sabr()
 	elif sys.argv[1] == 'clean':
 		clean()
 	elif sys.argv[1] == 'cleanall':
+		cleanall()
+	elif sys.argv[1] == 'help':
 		cleanall()
 	else:
 		print 'Improper Commands.'
 else:
 	print 'Improper Commands.'
-
