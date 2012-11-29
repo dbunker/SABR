@@ -114,6 +114,11 @@ hardList1 = [	'Hard/Pack/Z-Puzzle/pack'	]
 hardList2 = [	'Hard/Rube/Medium/Six/6-solve'	]
 hardList3 = [ 	'Hard/Rube/Medium/Ten/10-solve'	]
 
+def hardProbs():
+	proc(hardList1,2)
+	proc(hardList2,6)
+	proc(hardList3,10)
+
 if len(sys.argv) == 2:
 	
 	if sys.argv[1] == 'debug':
@@ -124,30 +129,22 @@ if len(sys.argv) == 2:
 	elif sys.argv[1] == 'adv':
 	 	proc(advList,20)
 	elif sys.argv[1] == 'hard':
-		proc(hardList1,2)
-	 	proc(hardList2,6)
-		proc(hardList3,10)
+		hardProbs()
 	elif sys.argv[1] == 'all':
 		proc(simpleList,20)
 		proc(advList,20)
-		proc(hardList1,2)
-	 	proc(hardList2,6)
-		proc(hardList3,10)
+		hardProbs()
 
 	elif sys.argv[1] == 'simple-full':
 		full(simpleList,20)
 	elif sys.argv[1] == 'adv-full':
 	 	full(advList,20)
 	elif sys.argv[1] == 'hard-full':
-		full(hardList1,2)
-	 	full(hardList2,6)
-		full(hardList3,10)
+		hardProbs()
 	elif sys.argv[1] == 'all-full':
 		full(simpleList,20)
 		full(advList,20)
-		full(hardList1,2)
-	 	full(hardList2,6)
-		full(hardList3,10)
+		hardProbs()
 
 	# debug files take up a lot of space, clearing them frees this
 	elif sys.argv[1] == 'clear-debug':
