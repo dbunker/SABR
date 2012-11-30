@@ -1,6 +1,8 @@
-# SABR
+SABR
+================================
  
-## General
+General
+-------------------------
 
 SABR (Spatial and Action Based Resolver) is a constraint programming 
 language designed with an emphasis on spatial and temporal logic. 
@@ -18,7 +20,8 @@ and systems that can be modeled as automata such as circuits and programs.
 
 website: sabrlang.org
 
-## Install
+Install
+-------------------------
 
 SABR is installed using setup.py
 
@@ -28,7 +31,8 @@ python setup.py build
 python setup.py help
 	For more commands
 
-## Run
+Run
+-------------------------
 
 To run SABR, provide the number of stages to use,
 an optional flag, and the input code
@@ -39,7 +43,8 @@ Example:
 ./sabr --help
 	For more commands
 
-## Testing
+Testing
+-------------------------
 
 Testing is done with test.py
 
