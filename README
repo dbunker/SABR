@@ -1,14 +1,14 @@
-SABR (Spatial and Action Based Resolver) 
+# SABR
  
------------- GENERAL ------------
+## General
 
 SABR (Spatial and Action Based Resolver) is a constraint programming 
 language designed with an emphasis on spatial and temporal logic. 
 
 Programs compile to CNF (Conjunctive Normal Form), which is then solved
-by a CNF solver, whose results are processed into human readable form. 
+by a CNF solver. 
 
-The goal of the language is to make representing puzzles and operations 
+The goal of the language is to make representing operations 
 research problems not just possible, but also intuitive and the solving 
 of these problems efficient. 
 
@@ -18,86 +18,33 @@ and systems that can be modeled as automata such as circuits and programs.
 
 website: sabrlang.org
 
------------- INSTALL ------------
+## Install
 
 SABR is installed using setup.py
 
-python setup.py depend
-	This command will create a dependency diagram using a dot file 
-	indicating which files primarilly use which other files and how 
-	the program progresses and place it in doc/depend.
-
-python setup.py minisat
-	This will install the default cnf solver used SABR. The default 
-	cnf solver is minisat. More information can be found at 
-	https://github.com/niklasso/minisat.		
-
-python setup.py parser
-	This will use flex and bison to create the c files from the lex 
-	and yacc files in the parser directory.
-		
 python setup.py build
-	This will build SABR from core utils and parser.
+	Will build SABR and the CNF solver
+	
+python setup.py help
+	For more commands
 
-python setup.py clean
-	This will clear all unnesary files in the SABR directory.
+## Run
 
-python setup.py cleanall
-	This will also clear minisat installation.
-
------------- RUN ------------
-
-To run SABR, you must provide the number of stages as the first argument. 
-An optional type of compilation flag. Then input the SABR program to run.
-The output file will appear as result.out.
-For more information on the language view doc/LANGUAGE.
+To run SABR, provide the number of stages to use,
+an optional flag, and the input code
 
 Example:
-./sabr 20 -all < test/Simple/simple.tb
+./sabr 20 --all < test/Simple/simple.tb
 
-Flags
+./sabr --help
+	For more commands
 
-none
-	No flag will produce the dimin.in for the cnf and execute and 
-	process it to human readable form.
-
--initial
-	This will only produce the dimin.in. After this, a more advanced 
-	sat solver could be used.
-
--debug
-	This will be like initial, but will output dimin.in debug information.
-
--result
-	This will assume dimout.out will come from another cnf solver.
-
--all
-	This will run like with no flag, but also output debug results.
-
------------- TESTING ------------
+## Testing
 
 Testing is done with test.py
--full can be added where indicated to fill in debug results
 
-python test.py debug
-	Tests compiler post-process syntax checking.
-
-python test.py simple
-python test.py simple-full
-	Does simple tests for compiler functionality. 
-
-python test.py adv
-python test.py adv-full
-	Does advanced tests for compiler functionality. 
-
-python test.py hard
-python test.py hard-full
-	Does difficult tests for compiler functionality. 
-
-python test.py all
 python test.py all-full
-	Does all tests for compiler functionality. 
+	Runs all tests
 
-python test.py clear-debug
-	Clears the debug results for all tests (reduces project size).
-
+python test.py help
+	For more commands
