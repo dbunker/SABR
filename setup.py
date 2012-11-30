@@ -45,8 +45,17 @@ def cleanall():
 	clean()
 	os.system('make clean -C cnf/minisat')
 
-coms = """
-Usage: 
+coms = """usage: python setup.py <command>
+
+commands:
+build		Compile minisat and sabr
+depend		Create a dependency diagram using the dot file in doc
+minisat		Compile minisat, the default cnf solver used by SABR
+parser		Use flex and bison to create c files from parser directory
+sabr		build SABR from core utils and parser
+clean		Clear all unnesary files in the SABR directory
+cleanall	Clear minisat installation
+help		Help screen
 """
 
 if len(sys.argv) == 2:
@@ -67,8 +76,8 @@ if len(sys.argv) == 2:
 	elif sys.argv[1] == 'cleanall':
 		cleanall()
 	elif sys.argv[1] == 'help':
-		cleanall()
+		print coms
 	else:
-		print 'Improper Commands.'
+		print "Improper Command"
 else:
-	print 'Improper Commands.'
+	print coms

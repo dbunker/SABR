@@ -8,8 +8,8 @@ def proc(newList,size):
 
 	for elem in newList:
 
-		# example: ./sabr 20 -all < test/Simple/simple.tb
-		cmdExec = './sabr ' + str(size) + ' -all < test/' + elem + '.tb'
+		# example: ./sabr 20 --all < test/Simple/simple.tb
+		cmdExec = './sabr ' + str(size) + ' --all < test/' + elem + '.tb'
 		os.system(cmdExec)
 
 		# check debug
@@ -38,7 +38,7 @@ def full(newList,size):
 
 	for elem in newList:
 
-		cmdExec = './sabr ' + str(size) + ' -all < test/' + elem + '.tb > full.out'
+		cmdExec = './sabr ' + str(size) + ' --all < test/' + elem + '.tb > full.out'
 		os.system(cmdExec)
 
 		# output
@@ -64,7 +64,7 @@ def debug(newList):
 
 	for elem in newList:
 
-		cmdExec = './sabr 1 -all < test/Debug/' + elem + '/debug.tb > full.out'
+		cmdExec = './sabr 1 --all < test/Debug/' + elem + '/debug.tb > full.out'
 		ans = os.system(cmdExec)
 
 		if ans != 0:
@@ -119,6 +119,19 @@ def hardProbs():
 	proc(hardList2,6)
 	proc(hardList3,10)
 
+coms = """usage: python test.py <command>
+
+commands:
+debug			Compiler post-process syntax checking
+simple			Simple tests for compiler functionality
+adv				Advanced tests for compiler functionality
+hard			Difficult tests for compiler functionality
+all				All tests for compiler functionality
+all-full		Also outputs debug files
+clear-debug		Clear all debug info
+help			Help screen
+"""
+
 if len(sys.argv) == 2:
 	
 	if sys.argv[1] == 'debug':
@@ -134,13 +147,7 @@ if len(sys.argv) == 2:
 		proc(simpleList,20)
 		proc(advList,20)
 		hardProbs()
-
-	elif sys.argv[1] == 'simple-full':
-		full(simpleList,20)
-	elif sys.argv[1] == 'adv-full':
-	 	full(advList,20)
-	elif sys.argv[1] == 'hard-full':
-		hardProbs()
+		
 	elif sys.argv[1] == 'all-full':
 		full(simpleList,20)
 		full(advList,20)
@@ -154,7 +161,7 @@ if len(sys.argv) == 2:
 		clear(hardList2)
 		clear(hardList3)
 	else:
-		print "Improper Commands."
+		print "Improper Command"
 else:
-	print "Improper Commands."
+	print coms
 

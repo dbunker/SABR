@@ -913,6 +913,14 @@ void execute(treeNode *root){
 	
 	if(command == COMMAND_ALL || command == COMMAND_NONE){
 		// system
+		
+		int last = 0;
+		int i;
+		
+		for(i=0;i<strlen(sabrPath);i++)
+			if(sabrPath[i] == '/')
+				last = i;
+		
 		system("./cnfsat dimin.in dimout.out");
 	}	
 

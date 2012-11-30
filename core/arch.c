@@ -504,25 +504,52 @@ void yyerror(char *s) {
 	exit(0);
 }
 
+void printHelp(){
+
+	printf("usage: sabr [--flag] <number of stages> < <path to source>\n");
+	printf("example: sabr --all 20 < source.tb\n\n");
+	printf("commands:\n");
+	printf("\t\tNo flag will produce the dimin.in for the cnf and produce the result output");
+	printf("initial\t\tThis will only produce the dimin.in");
+	printf("debug\t\tThis will be like initial, but will output dimin.in debug information");
+	printf("result\t\tThis will assume dimout.out will come from another cnf solver");
+	printf("all\t\tThis will run like with no flag, but also output debug results");
+	printf("help\t\tHelp screen");
+}
+
 int main(int argc,char **argv){
 
-	if(argc < 2 || !atoi(argv[1])){
-		printf("Error: Positive Integer Number Of Levels Must Be Input.\n");
+	sabrPath = argv[0];
+	
+	if(argc < 2 || strcmp(argv[1],"--help") == 0){
+		printHelp();
+		exit(0);
+	}
+	
+	if(!atoi(argv[1])){
+		printf("Error: Positive Integer Number Of Levels Must Be Input First.\n");
+		printf("Use --help For More Information.");
 		exit(0);
 	}
 	
 	if(argc == 2) 					
 		command = COMMAND_NONE;
-	else if(argc == 3 && strcmp(argv[2],"-initial") == 0)		
+	else if(argc == 3 && strcmp(argv[2],"--initial") == 0)		
 		command = COMMAND_INITIAL;
-	else if(argc == 3 && strcmp(argv[2],"-debug") == 0)		
+	else if(argc == 3 && strcmp(argv[2],"--debug") == 0)		
 		command = COMMAND_DEBUG;
-	else if(argc == 3 && strcmp(argv[2],"-result") == 0)		
+	else if(argc == 3 && strcmp(argv[2],"--result") == 0)		
 		command = COMMAND_RESULT;
-	else if(argc == 3 && strcmp(argv[2],"-all") == 0)		
+	else if(argc == 3 && strcmp(argv[2],"--all") == 0)		
 		command = COMMAND_ALL;
 	else{
-		printf("Error: Invalid Input.\n");
+		printf("Error: Invalid Flag.\n");
+		printf("Use --help For More Information.");
+		exit(0);
+	}
+	
+	if(argc < 3){
+		printHelp();
 		exit(0);
 	}
 
