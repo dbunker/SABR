@@ -19,36 +19,30 @@ Install
 
 SABR is installed using setup.py
 
-python setup.py build
-
-Will build SABR and the CNF solver
+python setup.py build  
+	Will build SABR and the CNF solver
 	
-python setup.py help
-
-For more commands
+python setup.py help  
+	For more commands
 
 Run
 -------------------------
 
 To run SABR, provide the number of stages to use, an optional flag, and the input code
 
-Example:
-
+Example:  
 ./sabr --all 20 test/Simple/simple.tb
 
-./sabr --help
-
-For more commands
+./sabr --help  
+	For more commands
 
 Testing
 -------------------------
 
 Testing is done with test.py
 
-python test.py all-full
+python test.py all-full  
+	Runs all tests
 
-Runs all tests
-
-python test.py help
-
-For more commands
+python test.py help  
+	For more commands
