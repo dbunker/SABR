@@ -10,7 +10,6 @@ def depend():
 def minisat():
 	
 	os.system('make -C cnf/minisat')
-	os.system('rm cnfsat')
 	os.system('cp cnf/minisat/build/release/bin/minisat cnfsat')
 
 def parser():
