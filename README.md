@@ -41,7 +41,7 @@ Testing
 
 Testing is done with test.py. For more documentation check /doc/LANGUAGE.
 
-python test.py all 
+python test.py all  
 	Runs all tests
 
 python test.py help  
