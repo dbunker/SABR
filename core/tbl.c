@@ -880,16 +880,12 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 	return 0;
 }
 
-char *makeCmd(){
+char *combineStr(char *str1,char *str2){
 
-	char *end = "cnfsat dimin.in dimout.out";
-	
-	int len = strlen(sabrDir) + strlen(end) + 1;	
-	char *cmd = Malloc(sizeof(char)*len);
-	sprintf(cmd,"%s%s",sabrDir,end);
-	Free(sabrDir);
-	
-	return cmd;
+	int len = strlen(str1) + strlen(str2) + 1;	
+	char *both = Malloc(sizeof(char)*len);
+	sprintf(both,"%s%s",str1,str2);
+	return both;
 }
 
 void execute(treeNode *root){
@@ -911,31 +907,32 @@ void execute(treeNode *root){
 	transClauses(rdata,varList,clauseList);
 	reqOptClauses(rdata,varList,clauseList);
 
-	if(command == COMMAND_ALL || command == COMMAND_DEBUG){
-		FILE *dfile = fopen("debug.out","w");
+	if(flag == FLAG_DEBUG){
+		FILE *dfile = fopen("debug.txt","w");
 		printDebugClauses(dfile,varList,clauseList);
 		fclose(dfile);
 	}
 
-	if(command == COMMAND_ALL || command == COMMAND_NONE || command == COMMAND_INITIAL){
-		FILE *ofile = fopen("dimin.in","w");
+	if(flag == FLAG_CNF || flag == FLAG_RUN){
+		FILE *ofile = fopen("cnf.txt","w");
 		printClauses(ofile,varList,clauseList);
 		fclose(ofile);
 	}
 	
-	if(command == COMMAND_ALL || command == COMMAND_NONE){
+	if(flag == FLAG_RUN){
 		// system
-		char *cmd = makeCmd();
+		char *cmd = combineStr(sabrDir,"cnfsat cnf.txt vars.txt");
 		system(cmd);
 		Free(cmd);
 	}	
 
-	if(command == COMMAND_ALL || command == COMMAND_NONE || command == COMMAND_RESULT){
+	if(flag == FLAG_RESULT || flag == FLAG_RUN){
 		// read in from dimout.out
 		// convert output from minisat to human readable
-		createSatOut("dimout.out","result.out",rdata,varList,fullTransNodes);
+		createSatOut("vars.txt","result.txt",rdata,varList,fullTransNodes);
 	}
 	
+	Free(sabrDir);
 	freeArch(root);
 	
 	destroyLinked(fullTransNodes,singleFree);

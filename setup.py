@@ -38,7 +38,7 @@ def sabr():
 
 def clean():
 	
-	os.system('rm debug.out dimin.in dimout.out full.out result.out cnfsat sabr')
+	os.system('rm debug.txt cnf.txt vars.txt result.txt stats.txt cnfsat sabr')
 
 def cleanall():
 
@@ -52,7 +52,7 @@ build		Compile minisat and sabr
 depend		Create a dependency diagram using the dot file in doc
 minisat		Compile minisat, the default cnf solver used by SABR
 parser		Use flex and bison to create c files from parser directory
-sabr		build SABR from core utils and parser
+sabr		Build SABR from core utils and parser
 clean		Clear all unnesary files in the SABR directory
 cleanall	Clear minisat installation
 help		Help screen

@@ -34,12 +34,11 @@ linkedList symTable;
 int numStages;
 
 // potential command line argument
-#define COMMAND_NONE 0		// prog.tbl =compile=> dimin.in =cnf=> dimout.out =postproc=> result.out
-#define COMMAND_INITIAL 1	// prog.tbl =compile=> dimin.in
-#define COMMAND_DEBUG 2		// prog.tbl =compile=> debug.out
-#define COMMAND_RESULT 3	// prog.tbl =compile=> =nothing=> dimout.out =postproc=> result.out
-#define COMMAND_ALL 4		// prog.tbl =compile=> debug.out, dimin.in =cnf=> dimout.out =postproc=> result.out
-int command;
+#define FLAG_DEBUG 	1	// prog.tbl =compile=> debug.out
+#define FLAG_CNF	2	// prog.tbl =compile=> dimin.in
+#define FLAG_RUN 	3	// prog.tbl =compile=> dimin.in =cnf=> dimout.out =postproc=> result.out
+#define FLAG_RESULT	4	// prog.tbl =compile=> =nothing=> dimout.out =postproc=> result.out
+int flag;
 
 // line number
 int curLineNum;

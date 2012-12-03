@@ -504,23 +504,22 @@ void yyerror(char *s) {
 	exit(0);
 }
 
+void endError(char *msg){
+	printf("Error: %s\n",msg);
+	printf("Use --help For More Information\n\n");
+	exit(0);
+}
+
 void endHelp(){
 
 	printf("usage: sabr [--flag] <number of stages> <path to source>\n");
 	printf("example: sabr --all 20 < source.tb\n\n");
-	printf("commands:\n");
-	printf("\t\tno flag produces the dimin.in for the cnf and the result output\n");
-	printf("initial\t\tproduces the dimin.in\n");
-	printf("debug\t\tlike initial, but will output dimin.in debug information\n");
-	printf("result\t\tdoesn't use cnf solver, assumes dimout.out will come from other\n");
-	printf("all\t\truns like with no flag, but also outputs debug results\n");
-	printf("help\t\thelp screen\n\n");
-	exit(0);
-}
-
-void endError(char *msg){
-	printf("Error: %s\n",msg);
-	printf("Use --help For More Information\n\n");
+	printf("flags:\n");
+	printf("\t\tNo flag produces the result output\n");
+	printf("cnf\t\tProduces the cnf.txt containing the conjunctive normal form\n");
+	printf("debug\t\tLike cnf, but will show cnf in more detail in debug.txt\n");
+	printf("result\t\tSDesn't use minisat, assumes vars.out will come from other solver\n");
+	printf("help\t\tHelp screen\n\n");
 	exit(0);
 }
 
@@ -553,6 +552,35 @@ void fileRead(char *file){
 	yyin = myfile;
 }
 
+int processFlags(int argc,char **argv){
+
+	int a=1;
+	flag = FLAG_RUN;
+
+	// while processing flags
+	while(a < argc && argv[a][0] == '-' && argv[a][1] == '-'){
+	
+		if(strcmp(argv[a],"--help") == 0){
+			endHelp();
+		}
+		else if(strcmp(argv[a],"--debug") == 0){	
+			flag = FLAG_DEBUG;
+		}
+		else if(strcmp(argv[a],"--cnf") == 0){		
+			flag = FLAG_CNF;
+		}
+		else if(strcmp(argv[a],"--result") == 0){	
+			flag = FLAG_RESULT;
+		}
+		else{
+			endError("Invalid Flag");
+		}
+		a++;
+	}
+	
+	return a;
+}
+
 int main(int argc,char **argv){
 	
 	if(argc == 1){
@@ -562,33 +590,9 @@ int main(int argc,char **argv){
 	sabrDir = getDir(argv[0]);
 	
 	// current argument
-	int a = 1;
+	int a = processFlags(argc,argv);
 	
-	if(strcmp(argv[a],"--help") == 0){
-		endHelp();
-	}
-	else if(strcmp(argv[a],"--initial") == 0){	
-		command = COMMAND_INITIAL;
-	}
-	else if(strcmp(argv[a],"--debug") == 0){		
-		command = COMMAND_DEBUG;
-	}
-	else if(strcmp(argv[a],"--result") == 0){	
-		command = COMMAND_RESULT;
-	}
-	else if(strcmp(argv[a],"--all") == 0){
-		command = COMMAND_ALL;
-	}
-	else if(argv[a][0] == '-' && argv[a][1] == '-'){
-		endError("Invalid Flag");
-	}
-	else{	
-		command = COMMAND_NONE;
-		a--;
-	}
-	
-	a++;
-	if(argc <= a || !atoi(argv[a])){
+	if(a >= argc || !atoi(argv[a])){
 		endError("Positive Integer Number Of Levels Must Be Input First");
 	}
 	
@@ -598,7 +602,7 @@ int main(int argc,char **argv){
 	endFile = 0;
 	
 	a++;
-	if(argc <= a){
+	if(a >= argc){
 		endError("Must Enter Source File");
 	}
 	
@@ -606,7 +610,7 @@ int main(int argc,char **argv){
 	fileRead(file);
 	
 	a++;
-	if(argc > a){
+	if(a != argc){
 		endError("Too Many Arguments");
 	}
 	

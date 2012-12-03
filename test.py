@@ -4,24 +4,31 @@ import os
 import sys
 
 # just test, don't write
-def proc(newList,size):
+def proc(newList,size,checkDebug=False):
 	
 	for elem in newList:
 		
-		# example: ./sabr --all 20 test/Simple/simple.tb
-		cmdExec = './sabr --all ' + str(size) + ' test/' + elem + '.tb'
+		# example: ./sabr 20 test/Simple/simple.tb
+		cmdExec = './sabr ' + str(size) + ' test/' + elem + '.tb'
 		os.system(cmdExec)
 		
 		# check debug
-		cmdDif = 'diff -B -w debug.out test/' + elem + '-debug.txt'
-		ans = os.system(cmdDif)
+		if checkDebug:
 		
-		if ans != 0:
-			print 'Error Debug ' + cmdExec
-			exit()
+			# create debug result
+			cmdExec = './sabr --debug ' + str(size) + ' test/' + elem + '.tb'
+			os.system(cmdExec)
+		
+			# compare it
+			cmdDif = 'diff -B -w debug.txt test/' + elem + '-debug.txt'
+			ans = os.system(cmdDif)
+		
+			if ans != 0:
+				print 'Error Debug ' + cmdExec
+				exit()
 		
 		# check expected results
-		cmdDif = 'diff -B -w result.out test/' + elem + '-expected.txt'
+		cmdDif = 'diff -B -w result.txt test/' + elem + '-expected.txt'
 		ans = os.system(cmdDif)
 		
 		if ans != 0:
@@ -36,26 +43,29 @@ def full(newList,size):
 
 	for elem in newList:
 
-		cmdExec = './sabr --all ' + str(size) + ' test/' + elem + '.tb > full.out'
+		cmdExec = './sabr ' + str(size) + ' test/' + elem + '.tb > stats.txt'
 		os.system(cmdExec)
 
 		# output
-		cmdPrint = 'cat full.out'
+		cmdPrint = 'cat stats.txt'
 		os.system(cmdPrint)
 
 		# this can be used when it is known the debug results are correct
-		cmd = 'cp debug.out test/' + elem + '-debug.txt'
+		cmdExec = './sabr --debug ' + str(size) + ' test/' + elem + '.tb'
+		os.system(cmdExec)
+		
+		cmd = 'cp debug.txt test/' + elem + '-debug.txt'
 		ans = os.system(cmd)
 
 		# this can be used when it is known the full results are correct
-		# cmd = 'cp result.out test/' + elem + '-expected.txt'
+		# cmd = 'cp result.txt test/' + elem + '-expected.txt'
 		# ans = os.system(cmd)
 
 		# this can be used when it is known the full out results are correct
-		cmd = 'cp full.out test/' + elem + '-full.txt'
+		cmd = 'cp stats.txt test/' + elem + '-full.txt'
 		ans = os.system(cmd)
 		
-		print 'Passed ' + elem
+		print 'Wrote ' + elem
 
 # test post process debugger
 def debug(newList):
@@ -70,8 +80,8 @@ def debug(newList):
 			exit()
 
 		# this can be used when it is known the debug results are correct
-		# cmd = 'cp full.out test/Debug/' + elem + '/full.txt'
-		# ans = os.system(cmd)
+		cmd = 'cp full.out test/Debug/' + elem + '/full.txt'
+		ans = os.system(cmd)
 
 		cmdDif = 'diff -B -w full.out test/Debug/' + elem + '/full.txt'
 		ans = os.system(cmdDif)
@@ -125,7 +135,7 @@ simple			Simple tests for compiler functionality
 adv 			Advanced tests for compiler functionality
 hard			Difficult tests for compiler functionality
 all 			All tests for compiler functionality
-all-full		Also outputs debug files
+all-full		Like all, but also saves debug and stats files
 clear-debug		Clear all debug info
 help			Help screen
 """
