@@ -28,7 +28,7 @@ python setup.py help
 Run
 -------------------------
 
-To run SABR, provide the number of stages to use, an optional flag, and the input code
+To run SABR, provide the number of stages to use, an optional flag, and the input code.
 
 Example:  
 ./sabr --all 20 test/Simple/simple.tb
@@ -39,7 +39,7 @@ Example:
 Testing
 -------------------------
 
-Testing is done with test.py
+Testing is done with test.py. For more documentation check /doc/LANGUAGE.
 
 python test.py all-full  
 	Runs all tests
