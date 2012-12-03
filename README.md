@@ -1,6 +1,6 @@
 SABR
 ================================
- 
+
 General
 -------------------------
 
@@ -21,7 +21,7 @@ SABR is installed using setup.py
 
 python setup.py build  
 	Will build SABR and the CNF solver
-	
+
 python setup.py help  
 	For more commands
 
