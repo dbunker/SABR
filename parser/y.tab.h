@@ -97,7 +97,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 35 "parser/tbl.y"
+#line 28 "parser/tbl.y"
 
     int val;
     treeNode *node;

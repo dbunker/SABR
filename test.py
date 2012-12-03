@@ -5,32 +5,30 @@ import sys
 
 # just test, don't write
 def proc(newList,size):
-
+	
 	for elem in newList:
-
-		# example: ./sabr 20 --all < test/Simple/simple.tb
-		cmdExec = './sabr ' + str(size) + ' --all < test/' + elem + '.tb'
+		
+		# example: ./sabr --all 20 test/Simple/simple.tb
+		cmdExec = './sabr --all ' + str(size) + ' test/' + elem + '.tb'
 		os.system(cmdExec)
-
+		
 		# check debug
 		cmdDif = 'diff -B -w debug.out test/' + elem + '-debug.txt'
 		ans = os.system(cmdDif)
-	
+		
 		if ans != 0:
 			print 'Error Debug ' + cmdExec
 			exit()
-
+		
 		# check expected results
 		cmdDif = 'diff -B -w result.out test/' + elem + '-expected.txt'
 		ans = os.system(cmdDif)
-
+		
 		if ans != 0:
 			print 'Error Res ' + cmdExec
 			exit()
-
+		
 		print 'Passed ' + elem
-
-	print 'Passed All'
 
 # run tests, and write out results
 # use with caution
@@ -38,7 +36,7 @@ def full(newList,size):
 
 	for elem in newList:
 
-		cmdExec = './sabr ' + str(size) + ' --all < test/' + elem + '.tb > full.out'
+		cmdExec = './sabr --all ' + str(size) + ' test/' + elem + '.tb > full.out'
 		os.system(cmdExec)
 
 		# output
@@ -57,14 +55,14 @@ def full(newList,size):
 		cmd = 'cp full.out test/' + elem + '-full.txt'
 		ans = os.system(cmd)
 		
-		print 'Wrote ' + elem
+		print 'Passed ' + elem
 
 # test post process debugger
 def debug(newList):
 
 	for elem in newList:
 
-		cmdExec = './sabr 1 --all < test/Debug/' + elem + '/debug.tb > full.out'
+		cmdExec = './sabr --all 1 test/Debug/' + elem + '/debug.tb > full.out'
 		ans = os.system(cmdExec)
 
 		if ans != 0:
@@ -114,19 +112,19 @@ hardList1 = [	'Hard/Pack/Z-Puzzle/pack'	]
 hardList2 = [	'Hard/Rube/Medium/Six/6-solve'	]
 hardList3 = [ 	'Hard/Rube/Medium/Ten/10-solve'	]
 
-def hardProbs():
-	proc(hardList1,2)
-	proc(hardList2,6)
-	proc(hardList3,10)
+def hardProbs(testFunc):
+	testFunc(hardList1,2)
+	testFunc(hardList2,6)
+	testFunc(hardList3,10)
 
 coms = """usage: python test.py <command>
 
 commands:
 debug			Compiler post-process syntax checking
 simple			Simple tests for compiler functionality
-adv				Advanced tests for compiler functionality
+adv 			Advanced tests for compiler functionality
 hard			Difficult tests for compiler functionality
-all				All tests for compiler functionality
+all 			All tests for compiler functionality
 all-full		Also outputs debug files
 clear-debug		Clear all debug info
 help			Help screen
@@ -142,16 +140,16 @@ if len(sys.argv) == 2:
 	elif sys.argv[1] == 'adv':
 	 	proc(advList,20)
 	elif sys.argv[1] == 'hard':
-		hardProbs()
+		hardProbs(proc)
 	elif sys.argv[1] == 'all':
 		proc(simpleList,20)
 		proc(advList,20)
-		hardProbs()
+		hardProbs(proc)
 		
 	elif sys.argv[1] == 'all-full':
 		full(simpleList,20)
 		full(advList,20)
-		hardProbs()
+		hardProbs(full)
 
 	# debug files take up a lot of space, clearing them frees this
 	elif sys.argv[1] == 'clear-debug':
@@ -162,6 +160,10 @@ if len(sys.argv) == 2:
 		clear(hardList3)
 	else:
 		print "Improper Command"
+		exit()
+		
+	print "Passed All Tests"
+	
 else:
 	print coms
 

@@ -3,7 +3,7 @@ WARNING: for repeatability, setting FPU to use double precision
 |                                                                             |
 |  Number of variables:          6300                                         |
 |  Number of clauses:           39125                                         |
-|  Parse time:                   0.02 s                                       |
+|  Parse time:                   0.01 s                                       |
 |  Eliminated clauses:           0.06 Mb                                      |
 |  Simplification time:          0.01 s                                       |
 |                                                                             |

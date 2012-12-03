@@ -880,6 +880,18 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 	return 0;
 }
 
+char *makeCmd(){
+
+	char *end = "cnfsat dimin.in dimout.out";
+	
+	int len = strlen(sabrDir) + strlen(end) + 1;	
+	char *cmd = Malloc(sizeof(char)*len);
+	sprintf(cmd,"%s%s",sabrDir,end);
+	Free(sabrDir);
+	
+	return cmd;
+}
+
 void execute(treeNode *root){
 
 	rootData *rdata = root->data;
@@ -913,15 +925,9 @@ void execute(treeNode *root){
 	
 	if(command == COMMAND_ALL || command == COMMAND_NONE){
 		// system
-		
-		int last = 0;
-		int i;
-		
-		for(i=0;i<strlen(sabrPath);i++)
-			if(sabrPath[i] == '/')
-				last = i;
-		
-		system("./cnfsat dimin.in dimout.out");
+		char *cmd = makeCmd();
+		system(cmd);
+		Free(cmd);
 	}	
 
 	if(command == COMMAND_ALL || command == COMMAND_NONE || command == COMMAND_RESULT){

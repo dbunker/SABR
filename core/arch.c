@@ -504,60 +504,112 @@ void yyerror(char *s) {
 	exit(0);
 }
 
-void printHelp(){
+void endHelp(){
 
-	printf("usage: sabr [--flag] <number of stages> < <path to source>\n");
+	printf("usage: sabr [--flag] <number of stages> <path to source>\n");
 	printf("example: sabr --all 20 < source.tb\n\n");
 	printf("commands:\n");
-	printf("\t\tNo flag will produce the dimin.in for the cnf and produce the result output");
-	printf("initial\t\tThis will only produce the dimin.in");
-	printf("debug\t\tThis will be like initial, but will output dimin.in debug information");
-	printf("result\t\tThis will assume dimout.out will come from another cnf solver");
-	printf("all\t\tThis will run like with no flag, but also output debug results");
-	printf("help\t\tHelp screen");
+	printf("\t\tno flag produces the dimin.in for the cnf and the result output\n");
+	printf("initial\t\tproduces the dimin.in\n");
+	printf("debug\t\tlike initial, but will output dimin.in debug information\n");
+	printf("result\t\tdoesn't use cnf solver, assumes dimout.out will come from other\n");
+	printf("all\t\truns like with no flag, but also outputs debug results\n");
+	printf("help\t\thelp screen\n\n");
+	exit(0);
+}
+
+void endError(char *msg){
+	printf("Error: %s\n",msg);
+	printf("Use --help For More Information\n\n");
+	exit(0);
+}
+
+char *getDir(char *path){
+
+	int last = 0;
+	int i;
+	
+	for(i=0;i<strlen(path);i++)
+		if(path[i] == '/')
+			last = i+1;
+	
+	char *dir = Malloc(sizeof(char)*(last+1));
+	strncpy(dir,path,last);
+	
+	return dir;
+}
+
+void fileRead(char *file){
+
+	// open a file handle to a particular file:
+	FILE *myfile = fopen(file,"r");
+	
+	// make sure it's valid:
+	if (!myfile) {
+		endError("Source File Does Not Exist");
+	}
+	
+	// set lex to read from it instead of defaulting to STDIN
+	yyin = myfile;
 }
 
 int main(int argc,char **argv){
-
-	sabrPath = argv[0];
 	
-	if(argc < 2 || strcmp(argv[1],"--help") == 0){
-		printHelp();
-		exit(0);
+	if(argc == 1){
+		endHelp();
 	}
 	
-	if(!atoi(argv[1])){
-		printf("Error: Positive Integer Number Of Levels Must Be Input First.\n");
-		printf("Use --help For More Information.");
-		exit(0);
-	}
+	sabrDir = getDir(argv[0]);
 	
-	if(argc == 2) 					
-		command = COMMAND_NONE;
-	else if(argc == 3 && strcmp(argv[2],"--initial") == 0)		
+	// current argument
+	int a = 1;
+	
+	if(strcmp(argv[a],"--help") == 0){
+		endHelp();
+	}
+	else if(strcmp(argv[a],"--initial") == 0){	
 		command = COMMAND_INITIAL;
-	else if(argc == 3 && strcmp(argv[2],"--debug") == 0)		
+	}
+	else if(strcmp(argv[a],"--debug") == 0){		
 		command = COMMAND_DEBUG;
-	else if(argc == 3 && strcmp(argv[2],"--result") == 0)		
+	}
+	else if(strcmp(argv[a],"--result") == 0){	
 		command = COMMAND_RESULT;
-	else if(argc == 3 && strcmp(argv[2],"--all") == 0)		
+	}
+	else if(strcmp(argv[a],"--all") == 0){
 		command = COMMAND_ALL;
-	else{
-		printf("Error: Invalid Flag.\n");
-		printf("Use --help For More Information.");
-		exit(0);
+	}
+	else if(argv[a][0] == '-' && argv[a][1] == '-'){
+		endError("Invalid Flag");
+	}
+	else{	
+		command = COMMAND_NONE;
+		a--;
 	}
 	
-	if(argc < 3){
-		printHelp();
-		exit(0);
+	a++;
+	if(argc <= a || !atoi(argv[a])){
+		endError("Positive Integer Number Of Levels Must Be Input First");
 	}
-
+	
 	curLineNum = 1;
-	numStages = atoi(argv[1]);
+	numStages = atoi(argv[a]);
 	inventNameNum = 0;
 	endFile = 0;
-
+	
+	a++;
+	if(argc <= a){
+		endError("Must Enter Source File");
+	}
+	
+	char *file = argv[a];
+	fileRead(file);
+	
+	a++;
+	if(argc > a){
+		endError("Too Many Arguments");
+	}
+	
 	initSym();
 	printf("Start\n");
 

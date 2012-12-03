@@ -45,7 +45,9 @@ int command;
 int curLineNum;
 
 // directory
-char *sabrPath;
+char *sabrDir;
+
+FILE *yyin;
 
 // each corresponds to a node type
 typedef enum { 	rootType, symType, boardType, startType, endType, transType, transSimType,
