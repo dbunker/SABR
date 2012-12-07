@@ -15,29 +15,15 @@ class SabrObj:
 	def setBoard(self,arr):
 		self.board = arr;
 		
-	def addReq(self,name,arr):
+	def addReqGroup(self,name,arr):
 		self.reqList.append((name,arr))
-	
+		
 	def addAllDif(self,name,num):
-		
-		for y in range(0,num):
-			req = []
-			for x in range(0,num):
-				val = '!v'
-				if x == y:
-					val = ' v'
-				req.append(val)
-			
-			self.addReq(name,req)
+		arr = [[' v' if x == y else '!v' for y in range(0,num)] for x in range(0,num)]
+		self.addReqGroup(name,arr)
 	
-	def addDesObj(self,name,arr):
+	def addDesObjGroup(self,name,arr):
 		self.desObjList.append((name,arr))
-		
-	def addReqSpace(self):
-		self.reqList.append((None,None))
-
-	def addDesObjSpace(self):
-		self.desObjList.append((None,None))
 	
 	def outElem(self,arr):
 		
@@ -60,12 +46,11 @@ class SabrObj:
 	
 	def outArray(self,type,arr):
 		out = ''
-		for (name,req) in arr:
-			if name == None:
-				out += '\n'
-			else:
+		for (name,constList) in arr:
+			for const in constList:
 				out += type + ' ' + name
-				out += self.outElem(req)
+				out += self.outElem(const)
+			out += '\n'
 		return out
 	
 	def toString(self):
@@ -77,10 +62,10 @@ class SabrObj:
 		out += 'Board' + self.outElem(self.board) + '\n'
 		
 		# req
-		out += self.outArray('Req',self.reqList) + '\n'
+		out += self.outArray('Req',self.reqList)
 		
 		# desobj
-		out += self.outArray('DesObj',self.desObjList) + '\n'
+		out += self.outArray('DesObj',self.desObjList)
 		
 		return out
 	
