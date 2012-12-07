@@ -1,80 +1,86 @@
 # top95.txt from http://norvig.com/sudoku.html
 
-import sys
+import sys, time, random, sudokurand
 sys.path.append("..")
 import sabr
 
-def makeConstraints(boardSet):
+def makeConstraints(boardStr):
 
-	letterArr = 'abcdefghi'
+	rows = 'ABCDEFGHI'
+	nums = '123456789'
+	cols = nums
 	sabrObj = sabr.SabrObj()
 	
+	def cross(A, B):
+		return [a+b for a in A for b in B]
+	
 	# sym
-	sabrObj.setSym(['1','2','3','4','5','6','7','8','9'])
+	sabrObj.setSym(list(nums))
 	
 	# board
-	boardArr = [['.']*9 for x in xrange(9)]
-	for y in range(0,9):
-		for x in range(0,9):
-			boardArr[y][x] = letterArr[y] + str(x)
-			
-	sabrObj.setBoard(boardArr)
+	board = [cross(rows, c) for c in cols]
+	sabrObj.setBoard(board)
 	
 	# req board
-	boardArr = [['.']*9 for x in xrange(9)]
-	for y in range(0,9):
-		for x in range(0,9):
-			val = boardSet[y*9+x]
-			if val == '.':
-				val = '?'
-			boardArr[y][x] = val
-			
-	sabrObj.addReq('Board',boardArr)
-	sabrObj.addReqSpace()
+	boardArr = [list(boardStr[i:i+9]) for i in range(0,len(boardStr),9)]
+	sabrObj.addReqGroup('Board',[boardArr])
 	
 	# all different
 	sabrObj.addAllDif('RowColBlock',9)
 	
 	# desobj row
-	for y in range(0,9):
-		desObjRow = []
-		for x in range(0,9):
-			desObjRow.append(letterArr[y] + str(x))
-		sabrObj.addDesObj('RowColBlock',desObjRow)
-		
-	sabrObj.addDesObjSpace()
+	des = [cross(rows, c) for c in cols]
+	sabrObj.addDesObjGroup('RowColBlock',des)
 	
 	# desobj column
-	for y in range(0,9):
-		desObjCol = []
-		for x in range(0,9):
-			desObjCol.append(letterArr[x] + str(y))
-		sabrObj.addDesObj('RowColBlock',desObjCol)
-		
-	sabrObj.addDesObjSpace()
+	des = [cross(r, cols) for r in rows]
+	sabrObj.addDesObjGroup('RowColBlock',des)
 	
 	# desobj block
-	for blockY in range(0,3):
-		for blockX in range(0,3):
-		
-			desObjBlock = []
-			for y in range(0,3):
-				for x in range(0,3):
-					val = letterArr[blockY*3+y] + str(blockX*3+x)
-					desObjBlock.append(val)
-					
-			sabrObj.addDesObj('RowColBlock',desObjBlock)
+	des = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+	sabrObj.addDesObjGroup('RowColBlock',des)
 	
 	return sabrObj
 
 # for each new line in file create new board req
-probs = open('top95.txt','r')
-for line in probs:
-	arr = list(line)
-	
-	sabrObj = makeConstraints(arr)
-	
-	# process
-	(out,stats) = sabrObj.process('../../sabr')
-	print line,out,stats
+def hardTests():
+	probs = open('top95.txt','r')
+	for line in probs:
+		
+		# process
+		sabrObj = makeConstraints(line.strip().replace('.','?'))
+		(out,stats) = sabrObj.process('../../sabr')
+		
+		print line,out,stats
 
+# create random sudokus to solve
+def randomTests():
+
+	outFile = open('tests.txt','w')
+	for _ in range(0,1000000):
+		
+		# random puzzle
+		line = sudokurand.random_puzzle()
+		
+		# process
+		sabrObj = makeConstraints(line.strip().replace('.','?'))
+		(out,stats) = sabrObj.process('../../sabr')
+		
+		# get time
+		part1 = stats.split('CPU time              : ')[1]
+		strNum = part1.split('s')[0].strip()
+		num = float(strNum)
+		
+		# output time to solve, then the puzzle
+		outLine = str(num) + ' \t' + line
+		print outLine
+		outFile.write(outLine+'\n')
+
+def pythonSolve():
+	easy1 = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+	sudokurand.solve_all([easy1])
+	
+	hard1 = '.....6....59.....82....8....45........3........6..3.54...325..6..................'
+	sudokurand.solve_all([hard1])
+
+randomTests()
