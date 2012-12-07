@@ -83,9 +83,5 @@ class SabrObj:
 		res = resultFile.read()
 		resultFile.close()
 		
-		statsFile = open('stats.txt','r')
-		stat = statsFile.read()
-		statsFile.close()
-		
-		return (res,stat)
+		return res
 		

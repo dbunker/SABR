@@ -4,7 +4,8 @@ import sys, time, random, sudokurand
 sys.path.append("..")
 import sabr
 
-def makeConstraints(boardStr):
+def sabrSolver(boardStr):
+	boardStr = boardStr.strip().replace('.','?')
 
 	rows = 'ABCDEFGHI'
 	nums = '123456789'
@@ -40,47 +41,35 @@ def makeConstraints(boardStr):
 	des = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
 	sabrObj.addDesObjGroup('RowColBlock',des)
 	
-	return sabrObj
+	return sabrObj.process('../../sabr')
 
-# for each new line in file create new board req
-def hardTests():
-	probs = open('top95.txt','r')
-	for line in probs:
-		
-		# process
-		sabrObj = makeConstraints(line.strip().replace('.','?'))
-		(out,stats) = sabrObj.process('../../sabr')
-		
-		print line,out,stats
-
-# create random sudokus to solve
-def randomTests():
-
-	outFile = open('tests.txt','w')
-	for _ in range(0,1000000):
-		
-		# random puzzle
-		line = sudokurand.random_puzzle()
-		
-		# process
-		sabrObj = makeConstraints(line.strip().replace('.','?'))
-		(out,stats) = sabrObj.process('../../sabr')
-		
-		# get time
-		part1 = stats.split('CPU time              : ')[1]
-		strNum = part1.split('s')[0].strip()
-		num = float(strNum)
-		
-		# output time to solve, then the puzzle
-		outLine = str(num) + ' \t' + line
-		print outLine
-		outFile.write(outLine+'\n')
-
-def pythonSolve():
-	easy1 = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
-	sudokurand.solve_all([easy1])
+# generateTest takes an integer argument for test number
+def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0):
 	
-	hard1 = '.....6....59.....82....8....45........3........6..3.54...325..6..................'
-	sudokurand.solve_all([hard1])
+	file = open(outFile,'w')
+	for i in range(numTests):
+	
+		line = generateTest(i)
+		start = time.clock()
+		solver(line)
+		tm = time.clock()-start
+		
+		outLine = str(tm) + '\t' + line
+		file.write(outLine)
+		
+		if tm > threshold:
+			print outLine
 
-randomTests()
+# closure
+def fileTestGen(name):
+	file = open(name,'r')
+	lines = file.read().split('\n')
+	
+	return lambda i: lines[i]
+
+# random
+def randomTest(_):
+	return sudokurand.random_puzzle()
+
+runTests(randomTest,sabrSolver,100)
+#runTests(randomTest,sudokurand.solve,100)
