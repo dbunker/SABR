@@ -50,6 +50,9 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 	for i in range(numTests):
 	
 		line = generateTest(i)
+		if line == None:
+			return
+		
 		start = time.clock()
 		solver(line)
 		tm = time.clock()-start
@@ -63,13 +66,23 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 # closure
 def fileTestGen(name):
 	file = open(name,'r')
-	lines = file.read().split('\n')
+	lines = file.read().strip().split('\n')
 	
-	return lambda i: lines[i]
+	def fileTest(i):
+		if i >= len(lines):
+			return None
+		return lines[i]
+		
+	return fileTest
 
 # random
 def randomTest(_):
 	return sudokurand.random_puzzle()
 
-runTests(randomTest,sabrSolver,100)
+fileTest = fileTestGen('top95.txt')
+
+#runTests(fileTest,sabrSolver,1000)
+#runTests(randomTest,sabrSolver,1000)
+
+#runTests(fileTest,sudokurand.solve,1000)
 #runTests(randomTest,sudokurand.solve,100)
