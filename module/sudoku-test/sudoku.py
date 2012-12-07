@@ -53,9 +53,9 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 		if line == None:
 			return
 		
-		start = time.clock()
+		start = time.time()
 		solver(line)
-		tm = time.clock()-start
+		tm = time.time()-start
 		
 		outLine = str(tm) + '\t' + line
 		file.write(outLine)
@@ -81,8 +81,8 @@ def randomTest(_):
 
 fileTest = fileTestGen('top95.txt')
 
-#runTests(fileTest,sabrSolver,1000)
-#runTests(randomTest,sabrSolver,1000)
+#runTests(fileTest,sabrSolver,100)
+#runTests(randomTest,sabrSolver,100)
 
-#runTests(fileTest,sudokurand.solve,1000)
+#runTests(fileTest,sudokurand.solve,100)
 #runTests(randomTest,sudokurand.solve,100)
