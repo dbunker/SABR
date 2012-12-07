@@ -77,7 +77,9 @@ class SabrObj:
 		sourceFile.write(out)
 		sourceFile.close()
 		
-		os.system(sabrPath + ' 1 source.tb > stats.txt')
+		cmd = sabrPath + ' 1 source.tb > stats.txt'
+		os.system(cmd)
+		print cmd
 		
 		resultFile = open('result.txt','r')
 		res = resultFile.read()

@@ -1,15 +1,20 @@
 # top95.txt from http://norvig.com/sudoku.html
 
-import sys, time, random, sudokurand
+import sys, time, random, math, sudokurand
 sys.path.append("..")
 import sabr
 
 def sabrSolver(boardStr):
 	boardStr = boardStr.strip().replace('.','?')
 
-	rows = 'ABCDEFGHI'
-	nums = '123456789'
+	# rows = 'ABCDEFGHI'
+	# nums = '123456789'
+	
+	rows = 'ABCDEFGHIJKLMNOP' 
+	nums = '123456789abcdefg'
+	
 	cols = nums
+	size = len(rows)
 	sabrObj = sabr.SabrObj()
 	
 	def cross(A, B):
@@ -23,11 +28,11 @@ def sabrSolver(boardStr):
 	sabrObj.setBoard(board)
 	
 	# req board
-	boardArr = [list(boardStr[i:i+9]) for i in range(0,len(boardStr),9)]
+	boardArr = [list(boardStr[i:i+size]) for i in range(0,len(boardStr),size)]
 	sabrObj.addReqGroup('Board',[boardArr])
 	
 	# all different
-	sabrObj.addAllDif('RowColBlock',9)
+	sabrObj.addAllDif('RowColBlock',size)
 	
 	# desobj row
 	des = [cross(rows, c) for c in cols]
@@ -38,7 +43,11 @@ def sabrSolver(boardStr):
 	sabrObj.addDesObjGroup('RowColBlock',des)
 	
 	# desobj block
-	des = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+	blen = int(math.sqrt(size)+0.5)
+	rb = [rows[i:i+blen] for i in range(0,size,blen)]
+	cb = [cols[i:i+blen] for i in range(0,size,blen)]
+	
+	des = [cross(rs, cs) for rs in rb for cs in cb]
 	sabrObj.addDesObjGroup('RowColBlock',des)
 	
 	return sabrObj.process('../../sabr')
@@ -56,6 +65,9 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 		start = time.time()
 		solver(line)
 		tm = time.time()-start
+		
+		rows = 'ABCDEFGHIJKLMNOP' 
+		nums = '123456789abcdefg'
 		
 		outLine = str(tm) + '\t' + line
 		file.write(outLine)
@@ -81,8 +93,8 @@ def randomTest(_):
 
 fileTest = fileTestGen('top95.txt')
 
-#runTests(fileTest,sabrSolver,100)
-#runTests(randomTest,sabrSolver,100)
+#runTests(fileTest,sabrSolver,1)
+#runTests(randomTest,sabrSolver,1)
 
-#runTests(fileTest,sudokurand.solve,100)
-#runTests(randomTest,sudokurand.solve,100)
+#runTests(fileTest,sudokurand.solve,1)
+#runTests(randomTest,sudokurand.solve,1)

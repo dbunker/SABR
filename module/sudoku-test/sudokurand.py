@@ -11,17 +11,28 @@
 ##   grid is a grid,e.g. 81 non-blank chars, e.g. starting with '.18...7...
 ##   values is a dict of possible values, e.g. {'A1':'12349', 'A2':'8', ...}
 
+import math
+
 def cross(A, B):
     "Cross product of elements in A and elements in B."
     return [a+b for a in A for b in B]
 
-digits   = '123456789'
-rows     = 'ABCDEFGHI'
+#digits   = '123456789'
+#rows     = 'ABCDEFGHI'
+
+digits   = '123456789abcdefg'
+rows     = 'ABCDEFGHIJKLMNOP'
 cols     = digits
 squares  = cross(rows, cols)
+
+size = len(rows)
+blen = int(math.sqrt(size)+0.5)
+rb = [rows[i:i+blen] for i in range(0,size,blen)]
+cb = [cols[i:i+blen] for i in range(0,size,blen)]
+	
 unitlist = ([cross(rows, c) for c in cols] +
             [cross(r, cols) for r in rows] +
-            [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')])
+            [cross(rs, cs) for rs in rb for cs in cb])
 units = dict((s, [u for u in unitlist if s in u])
              for s in squares)
 peers = dict((s, set(sum(units[s],[]))-set([s]))
@@ -58,7 +69,7 @@ def parse_grid(grid):
 def grid_values(grid):
     "Convert grid into a dict of {square: char} with '0' or '.' for empties."
     chars = [c for c in grid if c in digits or c in '0.']
-    assert len(chars) == 81
+    assert len(chars) == size*size
     return dict(zip(squares, chars))
 
 ################ Constraint Propagation ################
