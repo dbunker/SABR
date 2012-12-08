@@ -10,9 +10,9 @@ Programs compile to CNF (Conjunctive Normal Form), which is then solved by a CNF
 
 The goal of the language is to make representing operations research problems not just possible, but also intuitive and the solving of these problems efficient. 
 
-From a theoretical perspective, the language can also be used to prove a problem is NP-Easy and can be used to verify properties about automata and systems that can be modeled as automata such as circuits and programs.
+From a theoretical perspective, the language can also be used to prove a problem is NP-Easy and to verify properties about automata and systems that can be modeled as automata such as circuits and programs.
 
-website: sabrlang.org
+Website: sabrlang.org
 
 Install
 -------------------------
@@ -28,7 +28,7 @@ python setup.py help
 Run
 -------------------------
 
-To run SABR, provide the number of stages to use, an optional flag, and the input code.
+To run SABR, provide an optional flag, the number of stages to use, and the input source path.
 
 Example:  
 ./sabr 20 test/Simple/simple.tb
