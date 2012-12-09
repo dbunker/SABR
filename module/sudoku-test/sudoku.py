@@ -1,14 +1,14 @@
 # top95.txt from http://norvig.com/sudoku.html
 
-import sys, time, random, math, sudokurand
+import sys, os, time, random, math, sudokurand
 sys.path.append("..")
 import sabr
 
 def sabrSolver(boardStr):
 	boardStr = boardStr.strip().replace('.','?')
 
-	# rows = 'ABCDEFGHI'
-	# nums = '123456789'
+	#rows = 'ABCDEFGHI'
+	#nums = '123456789'
 	
 	rows = 'ABCDEFGHIJKLMNOP' 
 	nums = '123456789abcdefg'
@@ -75,6 +75,39 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 		if tm > threshold:
 			print outLine
 
+# need to install minizinc from http://www.g12.csse.unimelb.edu.au/minizinc/download.html
+# and place in system path to run this test
+def minizincSolver(line):
+	
+	blockSize = int(math.sqrt(math.sqrt(len(line)+0.5)))
+	size = blockSize * blockSize
+	
+	outStr = 'include "sudokusolve.mzn";\n\n'
+	outStr += 'S=' + str(blockSize) + ';\n'
+	outStr += 'puzzle=[|\n'
+	
+	for y in range(size):
+		for x in range(size):
+			elem = line[y*size+x]
+			newElem = elem
+			
+			if elem == '.':
+				newElem = '_'
+				
+			if ord(elem) > 96:
+				newElem = str(ord(elem)-87)
+				
+			outStr += newElem + ', '
+		outStr = outStr[:-2] + '|\n'
+	outStr += '|];'
+	
+	source = open('puzzle.mzn','w')
+	source.write(outStr)
+	source.close()
+	
+	cmd = 'minizinc puzzle.mzn > puzzle-out.txt'
+	os.system(cmd)
+
 # closure
 def fileTestGen(name):
 	file = open(name,'r')
@@ -91,10 +124,13 @@ def fileTestGen(name):
 def randomTest(_):
 	return sudokurand.random_puzzle()
 
-fileTest = fileTestGen('top95.txt')
+file95Test = fileTestGen('top95.txt')
 
-#runTests(fileTest,sabrSolver,1)
-#runTests(randomTest,sabrSolver,1)
+# file95Test, randomTest
+tester = randomTest
 
-#runTests(fileTest,sudokurand.solve,1)
-#runTests(randomTest,sudokurand.solve,1)
+# sabrSolver, minizincSolver, sudokurand.solve
+solver = sabrSolver
+
+runTests(tester,solver,1000)
+

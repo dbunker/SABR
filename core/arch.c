@@ -427,7 +427,7 @@ treeNode *setVarNode(int tok,int varId,treeNode *varList){
 
 treeNode *nameNode(int tok,treeNode *stagesNode,int nameId,int objId,treeNode *set){
 
-	nodeType type;
+	nodeType type = objType;
 	switch(tok){
 		case OBJECT:		type = objType; 	break;
 		case DESOBJECT:		type = desObjType; 	if(!nameId) nameId = inventName("DesObj");		break;

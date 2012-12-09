@@ -11,7 +11,7 @@
 ##   grid is a grid,e.g. 81 non-blank chars, e.g. starting with '.18...7...
 ##   values is a dict of possible values, e.g. {'A1':'12349', 'A2':'8', ...}
 
-import math
+import math, time, random
 
 def cross(A, B):
     "Cross product of elements in A and elements in B."
@@ -22,6 +22,7 @@ def cross(A, B):
 
 digits   = '123456789abcdefg'
 rows     = 'ABCDEFGHIJKLMNOP'
+
 cols     = digits
 squares  = cross(rows, cols)
 
@@ -37,22 +38,6 @@ units = dict((s, [u for u in unitlist if s in u])
              for s in squares)
 peers = dict((s, set(sum(units[s],[]))-set([s]))
              for s in squares)
-
-################ Unit Tests ################
-
-def test():
-    "A set of tests that must pass."
-    assert len(squares) == 81
-    assert len(unitlist) == 27
-    assert all(len(units[s]) == 3 for s in squares)
-    assert all(len(peers[s]) == 20 for s in squares)
-    assert units['C2'] == [['A2', 'B2', 'C2', 'D2', 'E2', 'F2', 'G2', 'H2', 'I2'],
-                           ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'],
-                           ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']]
-    assert peers['C2'] == set(['A2', 'B2', 'D2', 'E2', 'F2', 'G2', 'H2', 'I2',
-                               'C1', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9',
-                               'A1', 'A3', 'B1', 'B3'])
-    print 'All tests pass.'
 
 ################ Parse a Grid ################
 
@@ -110,14 +95,7 @@ def eliminate(values, s, d):
 ################ Display as 2-D grid ################
 
 def display(values):
-    "Display these values as a 2-D grid."
-    width = 1+max(len(values[s]) for s in squares)
-    line = '+'.join(['-'*(width*3)]*3)
-    for r in rows:
-        print ''.join(values[r+c].center(width)+('|' if c in '36' else '')
-                      for c in cols)
-        if r in 'CF': print line
-    print
+    print values
 
 ################ Search ################
 
@@ -153,8 +131,6 @@ def shuffled(seq):
     return seq
 
 ################ System test ################
-
-import time, random
 
 def solve_all(grids, name='', showif=0.0):
     """Attempt to solve a sequence of grids. Report results.
@@ -193,17 +169,6 @@ def random_puzzle(N=17):
         if len(ds) >= N and len(set(ds)) >= 8:
             return ''.join(values[s] if len(values[s])==1 else '.' for s in squares)
     return random_puzzle(N) ## Give up and make a new puzzle
-
-grid1  = '003020600900305001001806400008102900700000008006708200002609500800203009005010300'
-grid2  = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
-hard1  = '.....6....59.....82....8....45........3........6..3.54...325..6..................'
-    
-if __name__ == '__main__':
-    test()
-    solve_all(from_file("easy50.txt", '========'), "easy", None)
-    solve_all(from_file("top95.txt"), "hard", None)
-    solve_all(from_file("hardest.txt"), "hardest", None)
-    solve_all([random_puzzle() for _ in range(99)], "random", 100.0)
 
 ## References used:
 ## http://www.scanraid.com/BasicStrategies.htm

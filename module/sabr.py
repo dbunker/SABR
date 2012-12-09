@@ -79,7 +79,6 @@ class SabrObj:
 		
 		cmd = sabrPath + ' 1 source.tb > stats.txt'
 		os.system(cmd)
-		print cmd
 		
 		resultFile = open('result.txt','r')
 		res = resultFile.read()

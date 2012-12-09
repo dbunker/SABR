@@ -39,10 +39,16 @@ Example:
 Testing
 -------------------------
 
-Testing is done with test.py. For more documentation check /doc/LANGUAGE.
+Testing can be done with test.py. 
 
 python test.py all  
 	Runs all tests
 
 python test.py help  
 	For more commands
+
+Other
+-------------------------
+
+For more documentation check /doc/LANGUAGE.  
+Simple python module can be found at /module/sabr.py  

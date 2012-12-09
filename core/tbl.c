@@ -762,13 +762,17 @@ void printClauses(FILE *file,indexList *varList,linkedList clauseList){
 	}
 }
 
+void checkRes(){}
+
 int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *varList,linkedList fullTransNodes){
 
 	FILE *inFile = fopen(inFileStr,"r");
 	FILE *outFile = fopen(outFileStr,"w");
 	char word[10];
 
-	fscanf(inFile,"%s",word);
+	int res = fscanf(inFile,"%s",word);
+	checkRes(res);
+	
 	if(strcmp(word,"UNSAT") == 0){
 		fprintf(outFile,"UNSATISFIABLE");
 		fclose(inFile);
@@ -782,7 +786,8 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 	
 	indexList *outVars = createVarIndex();
 	int ret;
-	fscanf(inFile,"%i",&ret);
+	res = fscanf(inFile,"%i",&ret);
+	checkRes(res);
 
 	while(ret != 0){
 		
@@ -790,7 +795,8 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 		// get varData of this variable in out sat
 		varData *vdata = getVarByValue(varList,ret);
 		
-		fscanf(inFile,"%i",&ret);
+		res = fscanf(inFile,"%i",&ret);
+		checkRes(res);
 
 		if(!vdata)
 			continue;
@@ -922,7 +928,8 @@ void execute(treeNode *root){
 	if(flag == FLAG_RUN){
 		// system
 		char *cmd = combineStr(sabrDir,"cnfsat cnf.txt vars.txt");
-		system(cmd);
+		int res = system(cmd);
+		checkRes(res);
 		Free(cmd);
 	}	
 
