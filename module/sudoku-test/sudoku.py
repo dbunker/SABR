@@ -1,3 +1,4 @@
+# test sudoku using various solvers
 # top95.txt from http://norvig.com/sudoku.html
 
 import sys, os, time, random, math, sudokurand
@@ -59,6 +60,7 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 	for i in range(numTests):
 	
 		line = generateTest(i)
+		line = line.strip()
 		if line == None:
 			return
 		
@@ -69,7 +71,7 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 		rows = 'ABCDEFGHIJKLMNOP' 
 		nums = '123456789abcdefg'
 		
-		outLine = str(tm) + '\t' + line
+		outLine = str(tm) + '\t' + line + '\n'
 		file.write(outLine)
 		
 		if tm > threshold:
@@ -126,11 +128,11 @@ def randomTest(_):
 
 file95Test = fileTestGen('top95.txt')
 
-# file95Test, randomTest
+# test options: file95Test, randomTest
 tester = randomTest
 
-# sabrSolver, minizincSolver, sudokurand.solve
+# solver options: sabrSolver, minizincSolver, sudokurand.solve
 solver = sabrSolver
 
-runTests(tester,solver,1000)
+runTests(tester,solver,100)
 
