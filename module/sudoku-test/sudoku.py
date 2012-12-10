@@ -5,17 +5,18 @@ import sys, os, time, random, math, sudokurand
 sys.path.append("..")
 import sabr
 
-def sabrSolver(boardStr):
+def sabrSolver(boardStr,blockSize):
 	boardStr = boardStr.strip().replace('.','?')
-
-	#rows = 'ABCDEFGHI'
-	#nums = '123456789'
 	
-	rows = 'ABCDEFGHIJKLMNOP' 
-	nums = '123456789abcdefg'
+	size = blockSize * blockSize
+	nums = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMO'
+	rows = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmo'
+	
+	nums = nums[:size]
+	rows = rows[:size]
 	
 	cols = nums
-	size = len(rows)
+	
 	sabrObj = sabr.SabrObj()
 	
 	def cross(A, B):
@@ -53,25 +54,25 @@ def sabrSolver(boardStr):
 	
 	return sabrObj.process('../../sabr')
 
-# generateTest takes an integer argument for test number
-def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0):
+# generateTest takes an integer argument for test number as well as 
+# blockSize which is block width
+def runTests(blockSize,generateTest,solver,shower,numTests=100,
+				outFile='tests.txt',threshold=-1.0):
 	
 	file = open(outFile,'w')
 	for i in range(numTests):
 	
-		line = generateTest(i)
-		line = line.strip()
+		line = generateTest(blockSize,i)
+		
 		if line == None:
 			return
+		line = line.strip()
 		
 		start = time.time()
-		solver(line)
+		res = solver(line,blockSize)
 		tm = time.time()-start
 		
-		rows = 'ABCDEFGHIJKLMNOP' 
-		nums = '123456789abcdefg'
-		
-		outLine = str(tm) + '\t' + line + '\n'
+		outLine = shower(line,res,tm)
 		file.write(outLine)
 		
 		if tm > threshold:
@@ -79,9 +80,10 @@ def runTests(generateTest,solver,numTests=100,outFile='tests.txt',threshold=-1.0
 
 # need to install minizinc from http://www.g12.csse.unimelb.edu.au/minizinc/download.html
 # and place in system path to run this test
-def minizincSolver(line):
-	
-	blockSize = int(math.sqrt(math.sqrt(len(line)+0.5)))
+def minizincSolver(line,blockSize):
+
+	nums = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMO'
+
 	size = blockSize * blockSize
 	
 	outStr = 'include "sudokusolve.mzn";\n\n'
@@ -95,9 +97,8 @@ def minizincSolver(line):
 			
 			if elem == '.':
 				newElem = '_'
-				
-			if ord(elem) > 96:
-				newElem = str(ord(elem)-87)
+			else:
+				newElem = str(nums.index(elem)+1)
 				
 			outStr += newElem + ', '
 		outStr = outStr[:-2] + '|\n'
@@ -110,21 +111,36 @@ def minizincSolver(line):
 	cmd = 'minizinc puzzle.mzn > puzzle-out.txt'
 	os.system(cmd)
 
+# random
+def randomTest(size,i):
+	res = sudokurand.random_puzzle(size)
+	return res
+
+def regShower(line,res,tm):
+	
+	return str(tm) + '\t' + line + '\n'
+
+# show sabr stats
+def statsShower(line,res,tm):
+	
+	statsFile = open('stats.txt','r')
+	stats = statsFile.read()
+	arr1 = stats.split('CPU time              : ')[1]
+	numStr = arr1.split('s',)[0].strip();
+	
+	return regShower(line,res,numStr)
+
 # closure
 def fileTestGen(name):
 	file = open(name,'r')
 	lines = file.read().strip().split('\n')
 	
-	def fileTest(i):
+	def fileTest(size,i):
 		if i >= len(lines):
 			return None
 		return lines[i]
 		
 	return fileTest
-
-# random
-def randomTest(_):
-	return sudokurand.random_puzzle()
 
 file95Test = fileTestGen('top95.txt')
 
@@ -134,5 +150,8 @@ tester = randomTest
 # solver options: sabrSolver, minizincSolver, sudokurand.solve
 solver = sabrSolver
 
-runTests(tester,solver,100)
+# time showing options: regShower, statsShower
+shower = regShower
+
+runTests(5,tester,solver,shower,1)
 

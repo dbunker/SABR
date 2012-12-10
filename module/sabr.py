@@ -19,7 +19,7 @@ class SabrObj:
 		self.reqList.append((name,arr))
 		
 	def addAllDif(self,name,num):
-		arr = [[' v' if x == y else '!v' for y in range(0,num)] for x in range(0,num)]
+		arr = [[' val' if x == y else '!val' for y in range(0,num)] for x in range(0,num)]
 		self.addReqGroup(name,arr)
 	
 	def addDesObjGroup(self,name,arr):
