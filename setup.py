@@ -26,6 +26,7 @@ def parser():
 		exit()
 	os.system('mv y.tab.c parser')
 	os.system('mv y.tab.h parser')
+	print 'Compiled Parser'
 
 def sabr():
 
@@ -34,6 +35,7 @@ def sabr():
 	cmd += 'parser/y.tab.c parser/lex.yy.c '
 	cmd += 'core/arch.c core/structs.c core/debug.c core/tbl.c core/req.c core/var.c'
 	os.system(cmd)
+	print 'Compiled SABR'
 
 def clean():
 	
