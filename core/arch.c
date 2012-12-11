@@ -510,7 +510,7 @@ void endError(){
 		fclose(tempClausesFileGlobal);
 		deleteFile(TEMP_CLAUSE_FILE);
 	}
-	exit(-1);
+	exit(0);
 }
 
 void endErrorMsg(char *msg){

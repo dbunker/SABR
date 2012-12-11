@@ -63,7 +63,7 @@ void printDebugClause(FILE *file,linkedList clause){
 
 void printDebugClauses(char *fileName,indexList *varList,linkedList clauseList){
 
-	FILE *file = fopen(fileName,"r");
+	FILE *file = fopen(fileName,"w");
 
 	int i,c;
 	int numVar = sizeVarList(varList);

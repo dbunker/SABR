@@ -69,7 +69,6 @@ if len(sys.argv) == 2:
 		sabr()
 	elif sys.argv[1] == 'build':
 		minisat()
-		parser()
 		sabr()
 	elif sys.argv[1] == 'clean':
 		clean()

@@ -1,31 +1,44 @@
 # see license at project root
 
-import os
-import sys
+import os, sys
+
+def checkFile(elem,cmdExec,toCheck):
+
+	if os.path.isfile('test/' + elem + '-' + toCheck):
+	
+		cmdDif = 'diff -B -w ' + toCheck + ' test/' + elem + '-' + toCheck
+		ans = os.system(cmdDif)
+		
+		if ans != 0:
+			print 'Error ' + toCheck + ' ' + cmdExec
+			exit()
+
+def checkRun(ans,cmdExec):
+	if ans != 0:
+		print 'Failed Run: ' + cmdExec
+		exit()
 
 # just test, don't write
-def proc(newList,size,checkDebug=False):
+def proc(newList,size):
 	
 	for elem in newList:
 		
 		# example: ./sabr 20 test/Simple/simple.tb
 		cmdExec = './sabr ' + str(size) + ' test/' + elem + '.tb'
-		os.system(cmdExec)
+		ans = os.system(cmdExec)
+		checkRun(ans,cmdExec)
 		
-		# check debug
-		if checkDebug:
+		# compare if possible
+		checkFile(elem,cmdExec,'cnf.txt')
+		checkFile(elem,cmdExec,'vars.txt')
 		
-			# create debug result
+		# create debug and compare if possible
+		if os.path.isfile('test/' + elem + '-debug.txt'):
+		
 			cmdExec = './sabr --debug ' + str(size) + ' test/' + elem + '.tb'
-			os.system(cmdExec)
-		
-			# compare it
-			cmdDif = 'diff -B -w debug.txt test/' + elem + '-debug.txt'
-			ans = os.system(cmdDif)
-		
-			if ans != 0:
-				print 'Error Debug ' + cmdExec
-				exit()
+			ans = os.system(cmdExec)
+			checkRun(ans,cmdExec)
+			checkFile(elem,cmdExec,'debug.txt')
 		
 		# check expected results
 		cmdDif = 'diff -B -w result.txt test/' + elem + '-expected.txt'
@@ -39,32 +52,37 @@ def proc(newList,size,checkDebug=False):
 
 # run tests, and write out results
 # use with caution
-def full(newList,size):
+def procWrite(newList,size):
 
 	for elem in newList:
 
+		# main results
 		cmdExec = './sabr ' + str(size) + ' test/' + elem + '.tb > stats.txt'
-		os.system(cmdExec)
+		ans = os.system(cmdExec)
+		checkRun(ans,cmdExec)
 
-		# output
-		cmdPrint = 'cat stats.txt'
-		os.system(cmdPrint)
-
-		# this can be used when it is known the debug results are correct
+		# debug results
 		cmdExec = './sabr --debug ' + str(size) + ' test/' + elem + '.tb'
-		os.system(cmdExec)
+		ans = os.system(cmdExec)
+		checkRun(ans,cmdExec)
 		
-		cmd = 'cp debug.txt test/' + elem + '-debug.txt'
-		ans = os.system(cmd)
+		# these can be used when it is known the preliminary results correct
+		cmd = 'cp cnf.txt test/' + elem + '-cnf.txt'
+		os.system(cmd)
+		
+		cmd = 'cp vars.txt test/' + elem + '-vars.txt'
+		os.system(cmd)
 
-		# this can be used when it is known the full results are correct
+		cmd = 'cp debug.txt test/' + elem + '-debug.txt'
+		os.system(cmd)
+		
+		cmd = 'cp stats.txt test/' + elem + '-stats.txt'
+		os.system(cmd)
+
+		# this can be used when it is known the final results are correct
 		# cmd = 'cp result.txt test/' + elem + '-expected.txt'
 		# ans = os.system(cmd)
 
-		# this can be used when it is known the full out results are correct
-		cmd = 'cp stats.txt test/' + elem + '-full.txt'
-		ans = os.system(cmd)
-		
 		print 'Wrote ' + elem
 
 # test post process debugger
@@ -72,18 +90,15 @@ def debug(newList):
 
 	for elem in newList:
 
-		cmdExec = './sabr --all 1 test/Debug/' + elem + '/debug.tb > full.out'
+		cmdExec = './sabr 1 test/Debug/' + elem + '/debug.tb > full.txt'
 		ans = os.system(cmdExec)
-
-		if ans != 0:
-			print 'Error Debug ' + cmdExec
-			exit()
+		checkRun(ans,cmdExec)
 
 		# this can be used when it is known the debug results are correct
-		cmd = 'cp full.out test/Debug/' + elem + '/full.txt'
-		ans = os.system(cmd)
+		# cmd = 'cp full.txt test/Debug/' + elem + '/full.txt'
+		# ans = os.system(cmd)
 
-		cmdDif = 'diff -B -w full.out test/Debug/' + elem + '/full.txt'
+		cmdDif = 'diff -B -w full.txt test/Debug/' + elem + '/full.txt'
 		ans = os.system(cmdDif)
 	
 		if ans != 0:
@@ -92,8 +107,12 @@ def debug(newList):
 
 		print 'Passed ' + elem
 
-def clear(newList):
+def clear(newList,size):
 	for elem in newList:
+		cmd = 'rm test/' + elem + '-cnf.txt'
+		os.system(cmd)
+		cmd = 'rm test/' + elem + '-vars.txt'
+		os.system(cmd)
 		cmd = 'rm test/' + elem + '-debug.txt'
 		os.system(cmd)
 
@@ -135,7 +154,7 @@ simple			Simple tests for compiler functionality
 adv 			Advanced tests for compiler functionality
 hard			Difficult tests for compiler functionality
 all 			All tests for compiler functionality
-all-full		Like all, but also saves debug and stats files
+write-all		Like all, but also saves debug and output files
 clear-debug		Clear all debug info
 help			Help screen
 """
@@ -152,22 +171,21 @@ if len(sys.argv) == 2:
 	elif sys.argv[1] == 'hard':
 		hardProbs(proc)
 	elif sys.argv[1] == 'all':
+		debug(debugList)
 		proc(simpleList,20)
 		proc(advList,20)
 		hardProbs(proc)
 		
-	elif sys.argv[1] == 'all-full':
-		full(simpleList,20)
-		full(advList,20)
-		hardProbs(full)
+	elif sys.argv[1] == 'write-all':
+		procWrite(simpleList,20)
+		procWrite(advList,20)
+		hardProbs(procWrite)
 
 	# debug files take up a lot of space, clearing them frees this
 	elif sys.argv[1] == 'clear-debug':
 		clear(simpleList)
 		clear(advList)
-		clear(hardList1)
-		clear(hardList2)
-		clear(hardList3)
+		hardProbs(clear)
 	else:
 		print "Improper Command"
 		exit()
