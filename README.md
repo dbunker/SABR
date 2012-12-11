@@ -12,7 +12,7 @@ The goal of the language is to make representing operations research problems no
 
 From a theoretical perspective, the language can also be used to prove a problem is NP-Easy and to verify properties about automata and systems that can be modeled as automata such as circuits and programs.
 
-Website: sabrlang.org
+Website: http://sabrlang.org
 
 Install
 -------------------------
