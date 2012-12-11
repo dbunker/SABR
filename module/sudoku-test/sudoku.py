@@ -149,10 +149,10 @@ file95Test = fileTestGen('top95.txt')
 tester = randomTest
 
 # solver options: sabrSolver, minizincSolver, sudokurand.solve
-solver = sudokurand.solve
+solver = sabrSolver
 
 # time showing options: regLineShower, statsLineShower
 shower = regLineShower
 
-runTests(7,tester,solver,shower,1)
+runTests(5,tester,solver,shower,1)
 
