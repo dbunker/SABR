@@ -163,7 +163,13 @@ linkedList createVarList(rootData *rdata,linkedList fullTransNodes){
 // clause contains list of clauseVar
 int addClause(linkedList clauseList,linkedList clause){
 
-	/*
+	// sometimes adding a clause is not to the global clauseList
+	// but to a clause list that will be added to the global clauseList later
+	if(clauseList != clauseListGlobal){
+		addTailLinked(clauseList,clause);
+		return 0;
+	}
+	
 	if(flagGlobal != FLAG_DEBUG){
 		assert(tempClausesFileGlobal,"temp clause file");
 			
@@ -187,9 +193,7 @@ int addClause(linkedList clauseList,linkedList clause){
 	else{
 		printDebugClause(tempClausesFileGlobal,clause);
 	}
-	*/
 	
-	addTailLinked(clauseList,clause);
 	numClausesGlobal++;
 	return 0;
 }
@@ -801,9 +805,6 @@ void printClausesLinked(char *fileName,indexList *varList,linkedList clauseList)
 
 void printClauses(char *fileName,indexList *varList,linkedList clauseList){
 	
-	// printClausesLinked(file,varList,clauseList);
-	// return;
-	
 	FILE *file = fopen(fileName,"w");
 	
 	int numVar = sizeVarList(varList);
@@ -967,6 +968,8 @@ void execute(treeNode *root){
 	indexList *varList = createVarList(rdata,fullTransNodes);
 
 	linkedList clauseList = createLinked(Malloc,Free);
+	clauseListGlobal = clauseList;
+	
 	startEndClauses(rdata,varList,clauseList);
 
 	infraClauses(rdata,varList,clauseList,fullTransNodes,1,1);
@@ -980,12 +983,11 @@ void execute(treeNode *root){
 	tempClausesFileGlobal = NULL;
 
 	if(flagGlobal == FLAG_DEBUG){
-		// printDebugClauses(dfile,varList,clauseList);
-		printDebugClauses(DEBUG_CLAUSE_FILE,varList,clauseList);
+		printClauses(DEBUG_CLAUSE_FILE,varList,clauseList);
 	}
 
 	if(flagGlobal == FLAG_CNF || flagGlobal == FLAG_RUN){
-		printClausesLinked(CNF_FILE,varList,clauseList);
+		printClauses(CNF_FILE,varList,clauseList);
 	}
 	
 	if(flagGlobal == FLAG_RUN){

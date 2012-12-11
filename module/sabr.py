@@ -68,14 +68,25 @@ class SabrObj:
 		out += self.outArray('DesObj',self.desObjList)
 		
 		return out
+		
+	def source(self,fileName):
+	
+		out = self.toString()
+		sourceFile = open(fileName,'w')
+		sourceFile.write(out)
+		sourceFile.close()
+		
+	def cnf(self,sabrPath):
+	
+		self.source('source.tb')
+	
+		cmd = sabrPath + ' --cnf 1 source.tb > stats.txt'
+		os.system(cmd)
 	
 	# source.tb
 	def process(self,sabrPath):
 	
-		out = self.toString()
-		sourceFile = open('source.tb','w')
-		sourceFile.write(out)
-		sourceFile.close()
+		self.source('source.tb')
 		
 		cmd = sabrPath + ' 1 source.tb > stats.txt'
 		os.system(cmd)

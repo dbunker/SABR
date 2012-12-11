@@ -82,6 +82,7 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 # and place in system path to run this test
 def minizincSolver(line,blockSize):
 
+	# to get the number associated with the char
 	nums = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMO'
 
 	size = blockSize * blockSize
@@ -116,12 +117,12 @@ def randomTest(size,i):
 	res = sudokurand.random_puzzle(size)
 	return res
 
-def regShower(line,res,tm):
+def regLineShower(line,res,tm):
 	
 	return str(tm) + '\t' + line + '\n'
 
 # show sabr stats
-def statsShower(line,res,tm):
+def statsLineShower(line,res,tm):
 	
 	statsFile = open('stats.txt','r')
 	stats = statsFile.read()
@@ -148,10 +149,10 @@ file95Test = fileTestGen('top95.txt')
 tester = randomTest
 
 # solver options: sabrSolver, minizincSolver, sudokurand.solve
-solver = sabrSolver
+solver = sudokurand.solve
 
-# time showing options: regShower, statsShower
-shower = regShower
+# time showing options: regLineShower, statsLineShower
+shower = regLineShower
 
-runTests(5,tester,solver,shower,1)
+runTests(7,tester,solver,shower,1)
 

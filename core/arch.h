@@ -63,6 +63,9 @@ int numClausesGlobal;
 // source file to read from for yacc
 FILE *yyin;
 
+// global clauseList
+linkedList clauseListGlobal;
+
 // each corresponds to a node type
 typedef enum { 	rootType, symType, boardType, startType, endType, transType, transSimType,
 		tempSetType, objType, desObjType, reqType, optType,
