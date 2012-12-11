@@ -892,7 +892,7 @@ curLineNum++;
 case 18:
 YY_RULE_SETUP
 #line 62 "parser/tbl.l"
-{ printf("Error: Unknown Character On Line %i\n",curLineNum); exit(0); }
+{ printf("Error: Unknown Character On Line %i\n",curLineNum); endError(); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP

@@ -21,6 +21,7 @@ limitations under the License.
 
 int globalLogSetting;
 
+char *combineStrArr(char**,int);
 void assert(void *nonZero,char *str);
 void assertBool(int nonZero,char *str);
 void *Malloc(size_t len);

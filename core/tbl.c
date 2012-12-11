@@ -160,6 +160,40 @@ linkedList createVarList(rootData *rdata,linkedList fullTransNodes){
 	return varList;
 }
 
+// clause contains list of clauseVar
+int addClause(linkedList clauseList,linkedList clause){
+
+	/*
+	if(flagGlobal != FLAG_DEBUG){
+		assert(tempClausesFileGlobal,"temp clause file");
+			
+		clauseVarData *var;
+		while((var = popLinked(clause))){
+	
+			varData *data = var->data;
+			int printInt = data->value;
+			if(var->negate)
+				printInt = -printInt;
+			fprintf(tempClausesFileGlobal,"%i ",printInt);
+			Free(var);
+		}
+	
+		fprintf(tempClausesFileGlobal,"0\n");
+		destroyLinked(clause,NULL);
+	}
+	
+	// if showing debug, place in clauseList to print later
+	// could also print now in to temp clause file
+	else{
+		printDebugClause(tempClausesFileGlobal,clause);
+	}
+	*/
+	
+	addTailLinked(clauseList,clause);
+	numClausesGlobal++;
+	return 0;
+}
+
 clauseVarData *createClauseVar(varData *var,int neg){
 
 	assert(var,"Var Is Null\n");
@@ -315,7 +349,7 @@ void advInfraTrans(rootData *rdata,indexList *varList,linkedList clauseList,link
 				clauseVar = createClauseVar(part,isNeg);
 				addTailLinked(clause,clauseVar);
 				
-				addTailLinked(clauseList,clause);
+				addClause(clauseList,clause);
 			}
 		}
 	}
@@ -499,7 +533,7 @@ void setUsedClauses(rootData *rdata,indexList *varList,linkedList clauseList,lin
 						addTailLinked(clause,clauseVar);
 
 						assertBool(sizeLinked(clause) != 0,"Empty Clause Used");
-						addTailLinked(clauseList,clause);
+						addClause(clauseList,clause);
 
 						clauseVar = createClauseVar(tv,0);
 						addTailLinked(transListClause,clauseVar);
@@ -516,7 +550,7 @@ void setUsedClauses(rootData *rdata,indexList *varList,linkedList clauseList,lin
 				clauseVar = createClauseVar(used,1);
 				pushLinked(transListClause,clauseVar);
 
-				addTailLinked(clauseList,transListClause);
+				addClause(clauseList,transListClause);
 
 				// for TransSim
 				atMostOne(transSimAtMostList,clauseList);
@@ -582,7 +616,7 @@ void usedClauses(rootData *rdata,indexList *varList,linkedList clauseList,linked
 					addTailLinked(clause,clauseVar);
 
 					assertBool(sizeLinked(clause) != 0,"Empty Clause Used");
-					addTailLinked(clauseList,clause);
+					addClause(clauseList,clause);
 
 					clause = createLinked(Malloc,Free);
 					clauseVar = createClauseVar(used,0);
@@ -593,7 +627,7 @@ void usedClauses(rootData *rdata,indexList *varList,linkedList clauseList,linked
 					addTailLinked(clause,clauseVar);
 
 					assertBool(sizeLinked(clause) != 0,"Empty Clause Used");
-					addTailLinked(clauseList,clause);
+					addClause(clauseList,clause);
 				}
 			}
 		}
@@ -737,7 +771,9 @@ void reqOptClauses(rootData *rdata,indexList *varList,linkedList clauseList){
 }
 
 // this prints the clauses to be read by the CNF solver
-void printClauses(FILE *file,indexList *varList,linkedList clauseList){
+void printClausesLinked(char *fileName,indexList *varList,linkedList clauseList){
+
+	FILE *file = fopen(fileName,"w");
 
 	int numVar = sizeVarList(varList);
 	int numClause = sizeLinked(clauseList);
@@ -760,6 +796,30 @@ void printClauses(FILE *file,indexList *varList,linkedList clauseList){
 		fprintf(file,"0\n");
 		destroyLinked(clause,NULL);
 	}
+	fclose(file);
+}
+
+void printClauses(char *fileName,indexList *varList,linkedList clauseList){
+	
+	// printClausesLinked(file,varList,clauseList);
+	// return;
+	
+	FILE *file = fopen(fileName,"w");
+	
+	int numVar = sizeVarList(varList);
+	int numClause = numClausesGlobal;
+	fprintf(file,"p cnf %i %i\n",numVar,numClause);
+	
+	// read from temp file
+	FILE *tempClausesFile = fopen(TEMP_CLAUSE_FILE,"r");
+	
+	char line[100];
+	while(fgets(line, 100, tempClausesFile) != NULL){
+		fprintf(file,"%s",line);
+	}
+	
+	fclose(tempClausesFile);
+	fclose(file);
 }
 
 void checkRes(){}
@@ -781,7 +841,7 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 	}
 	if(strcmp(word,"SAT") != 0){
 		printf("Error: Sat File Parsing Error.");
-		exit(0);
+		endError();
 	}
 	
 	indexList *outVars = createVarIndex();
@@ -886,12 +946,13 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 	return 0;
 }
 
-char *combineStr(char *str1,char *str2){
+void deleteFile(char *fileName){
 
-	int len = strlen(str1) + strlen(str2) + 1;	
-	char *both = Malloc(sizeof(char)*len);
-	sprintf(both,"%s%s",str1,str2);
-	return both;
+	char *arr[] = { "rm ",fileName };
+	char *cmd = combineStrArr(arr,2);
+	int res = system(cmd);
+	if(res == 0){}
+	Free(cmd);
 }
 
 void execute(treeNode *root){
@@ -899,6 +960,8 @@ void execute(treeNode *root){
 	rootData *rdata = root->data;
 	compilerDebug(rdata);
 	postProc(rdata);
+	
+	tempClausesFileGlobal = fopen(TEMP_CLAUSE_FILE,"w");
 	
 	linkedList fullTransNodes = expandTrans(rdata);
 	indexList *varList = createVarList(rdata,fullTransNodes);
@@ -912,32 +975,35 @@ void execute(treeNode *root){
 
 	transClauses(rdata,varList,clauseList);
 	reqOptClauses(rdata,varList,clauseList);
+	
+	fclose(tempClausesFileGlobal);
+	tempClausesFileGlobal = NULL;
 
-	if(flag == FLAG_DEBUG){
-		FILE *dfile = fopen("debug.txt","w");
-		printDebugClauses(dfile,varList,clauseList);
-		fclose(dfile);
+	if(flagGlobal == FLAG_DEBUG){
+		// printDebugClauses(dfile,varList,clauseList);
+		printDebugClauses(DEBUG_CLAUSE_FILE,varList,clauseList);
 	}
 
-	if(flag == FLAG_CNF || flag == FLAG_RUN){
-		FILE *ofile = fopen("cnf.txt","w");
-		printClauses(ofile,varList,clauseList);
-		fclose(ofile);
+	if(flagGlobal == FLAG_CNF || flagGlobal == FLAG_RUN){
+		printClausesLinked(CNF_FILE,varList,clauseList);
 	}
 	
-	if(flag == FLAG_RUN){
+	if(flagGlobal == FLAG_RUN){
 		// system
-		char *cmd = combineStr(sabrDir,"cnfsat cnf.txt vars.txt");
+		char *arr[] = { sabrDir,CNF_EXEC," ",CNF_FILE," ",OUT_VARS_FILE };
+		char *cmd = combineStrArr(arr,6);
 		int res = system(cmd);
 		checkRes(res);
 		Free(cmd);
 	}	
 
-	if(flag == FLAG_RESULT || flag == FLAG_RUN){
+	if(flagGlobal == FLAG_RESULT || flagGlobal == FLAG_RUN){
 		// read in from dimout.out
 		// convert output from minisat to human readable
-		createSatOut("vars.txt","result.txt",rdata,varList,fullTransNodes);
+		createSatOut(OUT_VARS_FILE,RESULT_FILE,rdata,varList,fullTransNodes);
 	}
+	
+	deleteFile(TEMP_CLAUSE_FILE);
 	
 	Free(sabrDir);
 	freeArch(root);

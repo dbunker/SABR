@@ -27,13 +27,38 @@ int globalInitDebug = 0;
 // malloc holder skip list
 skipList globalMemHolder;
 
+char *combineStrArr(char **str,int numArg){
+
+	// for terminal null
+	int len = 1;
+	int i,n;
+	
+	for(i=0;i<numArg;i++)
+		len += strlen(str[i]);
+		
+	char *cmb = Malloc(sizeof(char)*len);
+	
+	int curPlace = 0;
+	for(i=0;i<numArg;i++){
+		int size = strlen(str[i]);
+		
+		for(n=0;n<size;n++){
+			cmb[curPlace] = str[i][n];
+			curPlace++;
+		}
+	}
+	cmb[curPlace] = '\0';
+	
+	return cmb;
+}
+
 void compAssert(char *str){
 
 	printf("%s\n",str);
 	// cause segfault for easy gdb stack trace (can be removed)
 	volatile int i = *(int*)0x4;
 	printf("%d\n",i);
-	exit(0);
+	exit(-1);
 }
 
 void assert(void *nonZero,char *str){

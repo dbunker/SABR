@@ -38,7 +38,15 @@ int numStages;
 #define FLAG_CNF	2	// prog.tbl =compile=> dimin.in
 #define FLAG_RUN 	3	// prog.tbl =compile=> dimin.in =cnf=> dimout.out =postproc=> result.out
 #define FLAG_RESULT	4	// prog.tbl =compile=> =nothing=> dimout.out =postproc=> result.out
-int flag;
+int flagGlobal;
+
+// define files
+#define CNF_EXEC			"cnfsat"
+#define TEMP_CLAUSE_FILE	".temp-clauses.txt"
+#define CNF_FILE			"cnf.txt"
+#define OUT_VARS_FILE		"vars.txt"
+#define RESULT_FILE			"result.txt"
+#define DEBUG_CLAUSE_FILE	"debug.txt"
 
 // line number
 int curLineNum;
@@ -46,6 +54,13 @@ int curLineNum;
 // directory
 char *sabrDir;
 
+// temporary file
+FILE *tempClausesFileGlobal;
+
+// clauses
+int numClausesGlobal;
+
+// source file to read from for yacc
 FILE *yyin;
 
 // each corresponds to a node type
@@ -174,6 +189,7 @@ typedef struct {
 int initSym();
 int addSymbol(char*);
 void yyerror(char*);
+void endError();
 void *Malloc(size_t);
 void Free(void*);
 void execute(treeNode*);

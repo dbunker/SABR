@@ -162,7 +162,7 @@ treeNode *symNode(treeNode *newSymListNode,treeNode *symLists){
 
 	if(height > 1){
 		printf("Error: Symbols Must Be On One Line.");
-		exit(0);
+		endError();
 	}	
 
 	linkedList newSymList = createLinked(Malloc,Free);
@@ -501,13 +501,22 @@ int yywrap(){
 void yyerror(char *s) {
 
 	printf("Error: Syntax Error On Line %i.\n",curLineNum);
-	exit(0);
+	endError();
 }
 
-void endError(char *msg){
+void endError(){
+	// clean up
+	if(tempClausesFileGlobal != NULL){
+		fclose(tempClausesFileGlobal);
+		deleteFile(TEMP_CLAUSE_FILE);
+	}
+	exit(-1);
+}
+
+void endErrorMsg(char *msg){
 	printf("Error: %s\n",msg);
 	printf("Use --help For More Information\n\n");
-	exit(0);
+	endError();
 }
 
 void endHelp(){
@@ -518,9 +527,9 @@ void endHelp(){
 	printf("\t\tNo flag produces the result output\n");
 	printf("cnf\t\tProduces the cnf.txt containing the conjunctive normal form\n");
 	printf("debug\t\tLike cnf, but will show cnf in more detail in debug.txt\n");
-	printf("result\t\tSDesn't use minisat, assumes vars.out will come from other solver\n");
+	printf("result\t\tDoesn't use minisat, assumes vars.out from other solver\n");
 	printf("help\t\tHelp screen\n\n");
-	exit(0);
+	endError();
 }
 
 char *getDir(char *path){
@@ -545,7 +554,7 @@ void fileRead(char *file){
 	
 	// make sure it's valid:
 	if (!myfile) {
-		endError("Source File Does Not Exist");
+		endErrorMsg("Source File Does Not Exist");
 	}
 	
 	// set lex to read from it instead of defaulting to STDIN
@@ -555,7 +564,7 @@ void fileRead(char *file){
 int processFlags(int argc,char **argv){
 
 	int a=1;
-	flag = FLAG_RUN;
+	flagGlobal = FLAG_RUN;
 
 	// while processing flags
 	while(a < argc && argv[a][0] == '-' && argv[a][1] == '-'){
@@ -564,16 +573,16 @@ int processFlags(int argc,char **argv){
 			endHelp();
 		}
 		else if(strcmp(argv[a],"--debug") == 0){	
-			flag = FLAG_DEBUG;
+			flagGlobal = FLAG_DEBUG;
 		}
 		else if(strcmp(argv[a],"--cnf") == 0){		
-			flag = FLAG_CNF;
+			flagGlobal = FLAG_CNF;
 		}
 		else if(strcmp(argv[a],"--result") == 0){	
-			flag = FLAG_RESULT;
+			flagGlobal = FLAG_RESULT;
 		}
 		else{
-			endError("Invalid Flag");
+			endErrorMsg("Invalid Flag");
 		}
 		a++;
 	}
@@ -582,6 +591,9 @@ int processFlags(int argc,char **argv){
 }
 
 int main(int argc,char **argv){
+	
+	tempClausesFileGlobal = NULL;
+	numClausesGlobal = 0;
 	
 	if(argc == 1){
 		endHelp();
@@ -593,7 +605,7 @@ int main(int argc,char **argv){
 	int a = processFlags(argc,argv);
 	
 	if(a >= argc || !atoi(argv[a])){
-		endError("Positive Integer Number Of Levels Must Be Input First");
+		endErrorMsg("Positive Integer Number Of Levels Must Be Input First");
 	}
 	
 	curLineNum = 1;
@@ -603,7 +615,7 @@ int main(int argc,char **argv){
 	
 	a++;
 	if(a >= argc){
-		endError("Must Enter Source File");
+		endErrorMsg("Must Enter Source File");
 	}
 	
 	char *file = argv[a];
@@ -611,7 +623,7 @@ int main(int argc,char **argv){
 	
 	a++;
 	if(a != argc){
-		endError("Too Many Arguments");
+		endErrorMsg("Too Many Arguments");
 	}
 	
 	initSym();
@@ -622,6 +634,6 @@ int main(int argc,char **argv){
 	destroyLinked(symTable,freeSyms);
 	// could use Malloc-L, Free-L and MemInfo to show no memory lost
 	// should say: "Leak Size: 0"
-
+	
 	return 0;
 }

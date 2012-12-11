@@ -50,7 +50,7 @@ void atLeastOne(linkedList newVarList,linkedList clauseList){
 		addTailLinked(clause,clauseVar);
 	}
 	assertBool(sizeLinked(clause) != 0,"Empty Clause At Least One");
-	addTailLinked(clauseList,clause);
+	addClause(clauseList,clause);
 }
 
 // at most one of this list of varData
@@ -82,7 +82,7 @@ void atMostOne(linkedList newVarList,linkedList clauseList){
 			addTailLinked(clause,clauseVar);
 
 			assertBool(sizeLinked(clause) != 0,"Empty Clause At Most One");
-			addTailLinked(clauseList,clause);
+			addClause(clauseList,clause);
 		}
 	}
 }
@@ -124,7 +124,7 @@ int ifThen(linkedList varListA,linkedList varListB,linkedList clauseList){
 			addTailLinked(clause,clauseVarB);
 		}
 		assertBool(sizeLinked(clause) != 0,"Empty Clause If Then");
-		addTailLinked(clauseList,clause);
+		addClause(clauseList,clause);
 	}
 	return 0;
 }
@@ -276,7 +276,7 @@ void handleCell(linkedList symList,indexList *varList,linkedList clauseList,elem
 	else{
 		if(sizeLinked(elemSymList) > 0){
 			assertBool(sizeLinked(elemSymList),"Empty Clause Blank Handle");
-			addTailLinked(clauseList,elemSymList);
+			addClause(clauseList,elemSymList);
 		}
 	}
 }
@@ -580,7 +580,7 @@ void elabClauses(elabFullData *elab,linkedList desObjNodes,indexList *varList,li
 						clauseVar = createClauseVar(trans,1);
 						pushLinked(clause,clauseVar);
 
-						addTailLinked(clauseList,clause);
+						addClause(clauseList,clause);
 					}
 				}
 			}
@@ -597,7 +597,7 @@ void elabClauses(elabFullData *elab,linkedList desObjNodes,indexList *varList,li
 					handleCell(symList,varList,preClauses,elem);
 				
 					while((clause = popLinked(preClauses))){
-						addTailLinked(clauseList,clause);
+						addClause(clauseList,clause);
 					}
 				}
 			}
@@ -621,7 +621,7 @@ void elabClauses(elabFullData *elab,linkedList desObjNodes,indexList *varList,li
 						
 						clauseVar = createClauseVar(opt,1);
 						pushLinked(clause,clauseVar);
-						addTailLinked(clauseList,clause);
+						addClause(clauseList,clause);
 					}
 				}
 			}
@@ -634,7 +634,7 @@ void elabClauses(elabFullData *elab,linkedList desObjNodes,indexList *varList,li
 				handleCell(symList,varList,preClauses,elem);
 				
 				while((clause = popLinked(preClauses))){
-					addTailLinked(clauseList,clause);
+					addClause(clauseList,clause);
 				}
 			}
 			

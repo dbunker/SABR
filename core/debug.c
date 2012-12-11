@@ -36,7 +36,34 @@ int printVar(void *data){
 	return 0;
 }
 
-void printDebugClauses(FILE *file,indexList *varList,linkedList clauseList){
+void printDebugClause(FILE *file,linkedList clause){
+
+	int c;
+	int clauseLen = sizeLinked(clause);
+	clauseVarData **varArray = toArrayLinked(clause);
+	
+	int start = 1;
+	for(c=0;c<clauseLen;c++){	
+
+		clauseVarData *cvd = varArray[c];
+		assert(cvd,"Empty Clause Var");
+		assert(cvd->data,"Empty Clause Var Data");
+
+		if(!start)
+			fprintf(file," OR ");
+		start = 0;
+
+		if(cvd->negate)
+			fprintf(file,"NOT ");
+		
+		printVarData(file,cvd->data);
+	}
+	fprintf(file,"\n");
+}
+
+void printDebugClauses(char *fileName,indexList *varList,linkedList clauseList){
+
+	FILE *file = fopen(fileName,"r");
 
 	int i,c;
 	int numVar = sizeVarList(varList);
@@ -70,6 +97,8 @@ void printDebugClauses(FILE *file,indexList *varList,linkedList clauseList){
 		}
 		fprintf(file,"\n");
 	}
+	
+	fclose(file);
 }
 
 /***************** Compiler Debugger *************/
@@ -149,7 +178,7 @@ void checkSym(rootData *rdata,linkedList symNameList){
 					getStringSym(nameId));
 			else
 				printf("Error: More Than One Generic Sym.\n");
-			exit(0);
+			endError();
 		}
 		addTailLinked(symNameList,curInfo);
 		
@@ -168,7 +197,7 @@ void checkSym(rootData *rdata,linkedList symNameList){
 				else
 					printf("Error: Sym %s In Generic Not Unique.\n",
 						getStringSym(*symbolP));				
-				exit(0);
+				endError();
 			}
 			addTailLinked(upToSymList,symbolP);
 		}
@@ -205,7 +234,7 @@ void checkBoard(rootData *rdata,linkedList symNameList,linkedList boardCellList,
 			if(!symInfo){
 				printf("Error: Symbol List Nonexistant for Board Cell %s.\n",
 					getStringSym(name));
-				exit(0);
+				endError();
 			}
 
 			// enter in symbol-list
@@ -215,7 +244,7 @@ void checkBoard(rootData *rdata,linkedList symNameList,linkedList boardCellList,
 			if(test){
 				printf("Error: Board Cell %s Not Unique.\n",
 					getStringSym(name));
-				exit(0);
+				endError();
 			}
 			addTailLinked(boardCellList,cd);
 		}
@@ -260,7 +289,7 @@ void updateObj(nameData *name,linkedList symNameList,linkedList boardCellList){
 			if(!symInfo){
 				printf("Error: Symbol List Nonexistant for Obj %s Cell %s.\n",
 					getStringSym(id),getStringSym(cellName));
-				exit(0);
+				endError();
 			}
 			cell->symList = symInfo->symbols;
 		}
@@ -294,7 +323,7 @@ nameData *createObjDesObj(nameData *name,linkedList boardCellList){
 			if(!cell){
 				printf("Error: Board Cell %s In %s:%s Does Not Exist\n",
 					getStringSym(*cellNameP),getStringSym(name->nameId),getStringSym(name->objId));
-				exit(0);
+				endError();
 			}
 
 			// new obj cell mimics board cell
@@ -343,7 +372,7 @@ void checkObj(rootData *rdata,linkedList symNameList,linkedList boardCellList,li
 		if(test){
 			printf("Error: Object %s Not Unique.\n",
 				getStringSym(objId));
-			exit(0);
+			endError();
 		}
 		updateObj(name,symNameList,boardCellList);
 		
@@ -400,7 +429,7 @@ void checkObj(rootData *rdata,linkedList symNameList,linkedList boardCellList,li
 		if(desObjHeight != objHeight || desObjWidth != objWidth){
 			printf("Error: DesObj %s:%s Does Not Match Object Size.\n",
 				getStringSym(name->nameId),getStringSym(name->objId));
-			exit(0);
+			endError();
 		}
 
 		for(y=0;y<desObjHeight;y++){
@@ -412,7 +441,7 @@ void checkObj(rootData *rdata,linkedList symNameList,linkedList boardCellList,li
 				if((!many && objCell) || (many && !objCell)){
 					printf("Error: DesObj %s:%s Does Not Match Object Shape.\n",
 						getStringSym(name->nameId),getStringSym(name->objId));
-					exit(0);
+					endError();
 				}
 
 				if(!many)
@@ -423,13 +452,13 @@ void checkObj(rootData *rdata,linkedList symNameList,linkedList boardCellList,li
 				if(!boardCell){
 					printf("Error: Board Cell %s In %s:%s Does Not Exist.\n",
 						getStringSym(*cellNameP),getStringSym(name->nameId),getStringSym(name->objId));
-					exit(0);
+					endError();
 				}
 				
 				if(isStrongObj && boardCell->symListName != objCell->symListName){
 					printf("Error: DesObj %s:%s Cell %s Does Not Match Object Symbol List.\n",
 						getStringSym(name->nameId),getStringSym(name->objId),getStringSym(*cellNameP));
-					exit(0);
+					endError();
 				}
 			}
 		}
@@ -438,7 +467,7 @@ void checkObj(rootData *rdata,linkedList symNameList,linkedList boardCellList,li
 		if(test){
 			printf("Error: Describe Object %s:%s Not Unique.\n",
 				getStringSym(name->nameId),getStringSym(name->objId));
-			exit(0);
+			endError();
 		}
 		addTailLinked(names,name);
 	}
@@ -501,7 +530,7 @@ void checkTemp(char *elabTypeName,int elabNameId,int elabObjId,int tempVarName,i
 		if(test){
 			printf("Error: %s %s:%s Temporary Variable %s Can't Have Same Name As A Symbol.\n",
 				elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId),getStringSym(tempVarName));
-			exit(0);
+			endError();
 		}
 	}
 
@@ -512,7 +541,7 @@ void checkTemp(char *elabTypeName,int elabNameId,int elabObjId,int tempVarName,i
 		printf("Error: %s %s:%s Temporary Variable %s Connects Symbol List %s To %s.\n",
 			elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId),getStringSym(tempVarName),
 			getStringSym(getSymListName),getStringSym(mySymListName));
-		exit(0);
+		endError();
 	}
 }
 
@@ -550,7 +579,7 @@ void checkElabSpecObj(char *elabTypeName,int elabNameId,int elabObjId,setData *n
 	if(nameWidth != objWidth || nameHeight != objHeight){
 		printf("Error: %s %s:%s Does Not Match Object Size.\n",
 			elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId));
-		exit(0);
+		endError();
 	}
 	
 	for(y=0;y<nameHeight;y++){
@@ -561,7 +590,7 @@ void checkElabSpecObj(char *elabTypeName,int elabNameId,int elabObjId,setData *n
 			if((elab && !cell) || (!elab && cell)){
 				printf("Error: %s %s:%s Does Not Match Object Shape.\n",
 					elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId));
-				exit(0);
+				endError();
 			}
 			
 			if(!elab)
@@ -583,7 +612,7 @@ void checkElabSpecObj(char *elabTypeName,int elabNameId,int elabObjId,setData *n
 					if(sizeLinked(negVars) > 0 || sizeLinked(posVars) > 0){
 						printf("Error: %s %s:%s Symbol %s Cannot Have Additional Constraints.\n",
 							elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId),getStringSym(tempVarName));
-						exit(0);
+						endError();
 					}
 					continue;
 				}
@@ -617,7 +646,7 @@ void checkTempInst(char *elabTypeName,int elabNameId,int elabObjId,linkedList te
 	if(tv){
 		printf("Error: %s %s:%s Symbol %s Only Exists Within Parentheses.\n",
 			elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId),getStringSym(tv->tempId));
-		exit(0);
+		endError();
 	}
 }
 
@@ -630,14 +659,14 @@ void checkElabDet(char *elabTypeName,int elabNameId,int elabObjId,setData *nameS
 	if(stages && (stages->start < 0 || stages->end > numStages)){
 		printf("Error: %s %s:%s Stage Outside Bounds.\n",
 			elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId));
-		exit(0);
+		endError();
 	}
 
 	objHolder *oh = getLinked(objList,objSearch,&elabObjId);
 	if(!oh){
 		printf("Error: %s %s Invalid Object.\n",
 			elabTypeName, getStringSym(elabNameId));
-		exit(0);
+		endError();
 	}
 
 	nameData *obj = oh->obj;
@@ -691,7 +720,7 @@ void checkReq(rootData *rdata,linkedList allSymLists,linkedList objList){
 		if(test){
 			printf("Error: Require %s:%s Not Unique.\n",
 				getStringSym(nameId),getStringSym(objId));
-			exit(0);
+			endError();
 		}
 		addTailLinked(names,name);
 	}
@@ -742,7 +771,7 @@ void checkTrans(rootData *rdata,linkedList allSymLists,linkedList objList){
 		if(test){
 			printf("Error: Transform %s:%s Not Unique.\n",
 				getStringSym(nameId),getStringSym(objId));
-			exit(0);
+			endError();
 		}
 		addTailLinked(names,name);
 	}

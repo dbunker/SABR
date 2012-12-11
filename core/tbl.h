@@ -22,5 +22,7 @@ limitations under the License.
 #include "structs.h"
 
 clauseVarData *createClauseVar(varData *var,int neg);
+int addClause(linkedList,linkedList);
+void deleteFile(char*);
 
 #endif

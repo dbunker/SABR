@@ -59,7 +59,7 @@ limitations under the License.
 
 [\n]					curLineNum++;
 
-.						{ printf("Error: Unknown Character On Line %i\n",curLineNum); exit(0); }
+.						{ printf("Error: Unknown Character On Line %i\n",curLineNum); endError(); }
 
 %%
 
