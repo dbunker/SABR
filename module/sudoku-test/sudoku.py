@@ -1,11 +1,11 @@
 # test sudoku using various solvers
 # top95.txt from http://norvig.com/sudoku.html
 
-import sys, os, time, random, math, sudokurand
+import sys, os, time, random, math, sudokurand, cvc4sudo
 sys.path.append("..")
 import sabr
 
-def sabrSolver(boardStr,blockSize):
+def sabrSolver(blockSize,boardStr):
 	boardStr = boardStr.strip().replace('.','?')
 	
 	size = blockSize * blockSize
@@ -69,7 +69,7 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		line = line.strip()
 		
 		start = time.time()
-		res = solver(line,blockSize)
+		res = solver(blockSize,line)
 		tm = time.time()-start
 		
 		outLine = shower(line,res,tm)
@@ -80,7 +80,7 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 
 # need to install minizinc from http://www.g12.csse.unimelb.edu.au/minizinc/download.html
 # and place in system path to run this test
-def minizincSolver(line,blockSize):
+def minizincSolver(blockSize,line):
 
 	# to get the number associated with the char
 	nums = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMO'
@@ -148,11 +148,11 @@ file95Test = fileTestGen('top95.txt')
 # test options: file95Test, randomTest
 tester = randomTest
 
-# solver options: sabrSolver, minizincSolver, sudokurand.solve
+# solver options: sabrSolver, minizincSolver, sudokurand.solve, cvc4sudo.solve
 solver = sabrSolver
 
 # time showing options: regLineShower, statsLineShower
 shower = regLineShower
 
-runTests(5,tester,solver,shower,1)
+runTests(3,tester,solver,shower,1)
 

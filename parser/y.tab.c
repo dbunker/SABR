@@ -1536,7 +1536,7 @@ yyreduce:
 
 /* Line 1806 of yacc.c  */
 #line 67 "parser/tbl.y"
-    { if(endFile) execute((yyvsp[(1) - (1)].node)); }
+    { if(endFileGlobal) execute((yyvsp[(1) - (1)].node)); }
     break;
 
   case 3:

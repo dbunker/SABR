@@ -22,16 +22,16 @@ limitations under the License.
 #include "../utils/linkedlist.h"
 
 // for unnamed DesObj, Req, etc. name invention
-int inventNameNum;
+int inventNameNumGlobal;
 
 // indicates if the end of file has been reached
-int endFile;
+int endFileGlobal;
 
 // the symbol table produced by lex
-linkedList symTable;
+linkedList symTableGlobal;
 
 // the user gives the number of stages they are willing to test up to
-int numStages;
+int numStagesGlobal;
 
 // potential command line argument
 #define FLAG_DEBUG 	1	// prog.tbl =compile=> debug.out
@@ -49,10 +49,10 @@ int flagGlobal;
 #define DEBUG_CLAUSE_FILE	"debug.txt"
 
 // line number
-int curLineNum;
+int curLineNumGlobal;
 
 // directory
-char *sabrDir;
+char *sabrDirGlobal;
 
 // temporary file
 FILE *tempClausesFileGlobal;
@@ -60,11 +60,11 @@ FILE *tempClausesFileGlobal;
 // clauses
 int numClausesGlobal;
 
-// source file to read from for yacc
-FILE *yyin;
-
 // global clauseList
 linkedList clauseListGlobal;
+
+// source file to read from for yacc
+FILE *yyin;
 
 // each corresponds to a node type
 typedef enum { 	rootType, symType, boardType, startType, endType, transType, transSimType,

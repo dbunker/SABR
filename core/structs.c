@@ -85,7 +85,7 @@ int findValue(void *param,void *data){
 // stringData
 char *getStringSym(int value){
 
-	stringData *data = getLinked(symTable,findValue,&value);
+	stringData *data = getLinked(symTableGlobal,findValue,&value);
 	assert(data,"StringSym Does Not Exist");
 	return data->str;
 }

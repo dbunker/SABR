@@ -61,8 +61,8 @@ treeNode *statementNodes(treeNode *symbols,treeNode *board,treeNode *start,treeN
 int inventName(char *name){
 
 	char str[30];
-	sprintf(str,"+%s%i+",name,inventNameNum);
-	inventNameNum++;
+	sprintf(str,"+%s%i+",name,inventNameNumGlobal);
+	inventNameNumGlobal++;
 	return addSymbol(str);
 }
 
@@ -78,7 +78,7 @@ treeNode *choiceNode(int tok,treeNode *choice,treeNode *root){
 		if(!choice->stages){
 			nodeStages *stages = Malloc(sizeof(nodeStages));
 			stages->start = 0;
-			stages->end = numStages;
+			stages->end = numStagesGlobal;
 			choice->stages = stages;
 		}
 	}
@@ -469,7 +469,7 @@ void freeSyms(void *data){
 
 int addSymbol(char *sym){
 
-	stringData *retSym = getLinked(symTable,findString,sym);
+	stringData *retSym = getLinked(symTableGlobal,findString,sym);
 	if(retSym)
 		return retSym->value;
 	
@@ -478,29 +478,29 @@ int addSymbol(char *sym){
 	strcpy(newStr,sym);
 	stringData *newSym = Malloc(sizeof(stringData));
 	
-	int nextVar = sizeLinked(symTable)+1;
+	int nextVar = sizeLinked(symTableGlobal)+1;
 	newSym->value = nextVar;
 	newSym->str = newStr;
 	
-	pushLinked(symTable,newSym);	
+	pushLinked(symTableGlobal,newSym);	
 	return nextVar;
 }
 
 int initSym(){
 
-	symTable = createLinked(Malloc,Free);
+	symTableGlobal = createLinked(Malloc,Free);
 	return 0;
 }
 
 int yywrap(){
 	
-	endFile = 1;
+	endFileGlobal = 1;
 	return 1;
 }
 
 void yyerror(char *s) {
 
-	printf("Error: Syntax Error On Line %i.\n",curLineNum);
+	printf("Error: Syntax Error On Line %i.\n",curLineNumGlobal);
 	endError();
 }
 
@@ -599,7 +599,7 @@ int main(int argc,char **argv){
 		endHelp();
 	}
 	
-	sabrDir = getDir(argv[0]);
+	sabrDirGlobal = getDir(argv[0]);
 	
 	// current argument
 	int a = processFlags(argc,argv);
@@ -608,10 +608,10 @@ int main(int argc,char **argv){
 		endErrorMsg("Positive Integer Number Of Levels Must Be Input First");
 	}
 	
-	curLineNum = 1;
-	numStages = atoi(argv[a]);
-	inventNameNum = 0;
-	endFile = 0;
+	curLineNumGlobal = 1;
+	numStagesGlobal = atoi(argv[a]);
+	inventNameNumGlobal = 0;
+	endFileGlobal = 0;
 	
 	a++;
 	if(a >= argc){
@@ -631,7 +631,7 @@ int main(int argc,char **argv){
 
 	yyparse();
 
-	destroyLinked(symTable,freeSyms);
+	destroyLinked(symTableGlobal,freeSyms);
 	// could use Malloc-L, Free-L and MemInfo to show no memory lost
 	// should say: "Leak Size: 0"
 	

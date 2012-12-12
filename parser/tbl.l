@@ -53,13 +53,13 @@ limitations under the License.
 
 #\([^(\)#)]*\)#			;
 
-#[^\n]*[\n]				curLineNum++;
+#[^\n]*[\n]				curLineNumGlobal++;
 
 [ \t\r]+				;
 
-[\n]					curLineNum++;
+[\n]					curLineNumGlobal++;
 
-.						{ printf("Error: Unknown Character On Line %i\n",curLineNum); endError(); }
+.						{ printf("Error: Unknown Character On Line %i\n",curLineNumGlobal); endError(); }
 
 %%
 

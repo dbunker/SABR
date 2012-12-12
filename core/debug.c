@@ -656,7 +656,7 @@ void checkElabDet(char *elabTypeName,int elabNameId,int elabObjId,setData *nameS
 	
 	int i;
 	
-	if(stages && (stages->start < 0 || stages->end > numStages)){
+	if(stages && (stages->start < 0 || stages->end > numStagesGlobal)){
 		printf("Error: %s %s:%s Stage Outside Bounds.\n",
 			elabTypeName,getStringSym(elabNameId),getStringSym(elabObjId));
 		endError();

@@ -64,7 +64,7 @@ int yylex(void);
 %%
 
 root:
-	  statements							{ if(endFile) execute($1); }
+	  statements							{ if(endFileGlobal) execute($1); }
 	;
 
 statements:

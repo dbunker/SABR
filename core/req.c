@@ -629,7 +629,7 @@ void elabClauses(elabFullData *elab,linkedList desObjNodes,indexList *varList,li
 			else if(type == startType || type == endType){		
 
 				if(type == startType)	elem->myStage = 0;
-				else			elem->myStage = numStages-1;
+				else			elem->myStage = numStagesGlobal-1;
 
 				handleCell(symList,varList,preClauses,elem);
 				

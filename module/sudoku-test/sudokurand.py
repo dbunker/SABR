@@ -110,7 +110,7 @@ def setData(blockSize):
 
 	return data
 
-def solve(grid,blockSize): 
+def solve(blockSize,grid): 
 
 	data = setData(blockSize)
 	return search(data,parse_grid(data,grid))
@@ -157,7 +157,7 @@ def random_puzzle(blockSize,N=17):
 		if not assign(data,values, s, random.choice(values[s])):
 			break
 		ds = [values[s] for s in data.squares if len(values[s]) == 1]
-		if len(ds) >= N and len(set(ds)) >= 8:
+		if len(ds) >= blockSize*blockSize-1 and len(set(ds)) >= blockSize*blockSize-1:
 			return ''.join(values[s] if len(values[s])==1 else '.' for s in data.squares)
 	return random_puzzle(blockSize,N) ## Give up and make a new puzzle
 

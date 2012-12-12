@@ -876,7 +876,7 @@ case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
 #line 56 "parser/tbl.l"
-curLineNum++;
+curLineNumGlobal++;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
@@ -887,12 +887,12 @@ case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
 #line 60 "parser/tbl.l"
-curLineNum++;
+curLineNumGlobal++;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 62 "parser/tbl.l"
-{ printf("Error: Unknown Character On Line %i\n",curLineNum); endError(); }
+{ printf("Error: Unknown Character On Line %i\n",curLineNumGlobal); endError(); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP

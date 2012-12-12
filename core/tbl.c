@@ -110,13 +110,13 @@ linkedList createVarList(rootData *rdata,linkedList fullTransNodes){
 				for(i=0;i<symWidth;i++){
 					int symId = *symArray[i];
 				
-					for(n=0;n<numStages;n++){
+					for(n=0;n<numStagesGlobal;n++){
 						createSymCellVar(varList,symId,cellName,x,y,n,NULL);
 					}
 				}
 			}
 			else{
-				for(n=0;n<numStages;n++){
+				for(n=0;n<numStagesGlobal;n++){
 					int symId = *symArray[0];
 					varData *vdat = createSymCellVar(varList,symId,cellName,x,y,n,NULL);
 					symId = *symArray[1];
@@ -151,7 +151,7 @@ linkedList createVarList(rootData *rdata,linkedList fullTransNodes){
 				continue;
 			cellData *cell = boardVars[y*boardWidth+x];
 			
-			for(n=0;n<numStages-1;n++){
+			for(n=0;n<numStagesGlobal-1;n++){
 				createUsedVar(varList,cell->cellName,x,y,n);
 			}
 		}
@@ -255,7 +255,7 @@ void stdInfraTrans(rootData *rdata,indexList *varList,linkedList clauseList,link
 	// can have an empty state with zero transitions	
 	// at most one
 
-	for(n=0;n<numStages-1;n++){
+	for(n=0;n<numStagesGlobal-1;n++){
 
 		linkedList *transList = createLinked(Malloc,Free);
 		for(i=0;i<transWidth;i++){
@@ -325,7 +325,7 @@ void advInfraTrans(rootData *rdata,indexList *varList,linkedList clauseList,link
 		if(tv->isSim)
 			continue;
 		
-		for(n=0;n<numStages-1;n++){
+		for(n=0;n<numStagesGlobal-1;n++){
 
 			if(n < stages->start || n > stages->end)
 				continue;
@@ -383,7 +383,7 @@ void infraClauses(rootData *rdata,indexList *varList,linkedList clauseList,linke
 			int symWidth = sizeLinked(symList);
 			int **symArray = toArrayLinked(symList);
 
-			for(n=0;n<numStages;n++){
+			for(n=0;n<numStagesGlobal;n++){
 			
 				if(symWidth > 2){
 				
@@ -475,7 +475,7 @@ void setUsedClauses(rootData *rdata,indexList *varList,linkedList clauseList,lin
 			cellData *boardCell = boardVars[boardY*boardWidth+boardX];
 			int boardCellName = boardCell->cellName;
 
-			for(n=0;n<numStages-1;n++){
+			for(n=0;n<numStagesGlobal-1;n++){
 				
 				varData *used = getUsedVar(varList,boardX,boardY,n);
 				assert(used,"Used NULL");
@@ -594,7 +594,7 @@ void usedClauses(rootData *rdata,indexList *varList,linkedList clauseList,linked
 			int symWidth = sizeLinked(symList);
 			int **symArray = toArrayLinked(symList);
 
-			for(n=0;n<numStages-1;n++){
+			for(n=0;n<numStagesGlobal-1;n++){
 
 				varData *used = getUsedVar(varList,boardX,boardY,n);
 				assert(used,"No Used\n");
@@ -719,7 +719,7 @@ void reqOptClauses(rootData *rdata,indexList *varList,linkedList clauseList){
 	
 	// at least one Opt-<Opt>-<Any Number>-DesObj-<DesObj>-Stage<Stage>
 	int n,i,c,x;
-	for(n=0;n<numStages;n++){
+	for(n=0;n<numStagesGlobal;n++){
 		
 		for(x=0;x<optGroupSize;x++){
 
@@ -885,7 +885,7 @@ int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *var
 	int spaceIter;
 	int foundTrans = 1;
 
-	for(n=0;n<numStages;n++){
+	for(n=0;n<numStagesGlobal;n++){
 
 		if(foundTrans){
 			for(y=0;y<boardHeight;y++){
@@ -992,7 +992,7 @@ void execute(treeNode *root){
 	
 	if(flagGlobal == FLAG_RUN){
 		// system
-		char *arr[] = { sabrDir,CNF_EXEC," ",CNF_FILE," ",OUT_VARS_FILE };
+		char *arr[] = { sabrDirGlobal,CNF_EXEC," ",CNF_FILE," ",OUT_VARS_FILE };
 		char *cmd = combineStrArr(arr,6);
 		int res = system(cmd);
 		checkRes(res);
@@ -1007,7 +1007,7 @@ void execute(treeNode *root){
 	
 	deleteFile(TEMP_CLAUSE_FILE);
 	
-	Free(sabrDir);
+	Free(sabrDirGlobal);
 	freeArch(root);
 	
 	destroyLinked(fullTransNodes,singleFree);
