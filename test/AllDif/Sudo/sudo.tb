@@ -1,0 +1,43 @@
+# see license at project root
+
+# solves sudoku 4x4
+
+Sym{
+	0 1 2 3;
+}
+
+Board{
+	a0 a1	a2 a3;
+	b0 b1	b2 b3;
+	
+	c0 c1	c2 c3;
+	d0 d1	d2 d3;
+}
+
+Req Board{
+	3 ?	? ?;
+	? ?	? 3;
+
+	? 1	? ?;
+	? ?	? 2;
+}
+
+# row
+AllDif { a0 a1 a2 a3 }
+AllDif { b0 b1 b2 b3 }
+AllDif { c0 c1 c2 c3 }
+AllDif { d0 d1 d2 d3 }
+
+# column
+AllDif { a0 b0 c0 d0 }
+AllDif { a1 b1 c1 d1 }
+AllDif { a2 b2 c2 d2 }
+AllDif { a3 b3 c3 d3 }
+
+# block
+AllDif { a0 a1 b0 b1 }
+AllDif { a2 a3 b2 b3 }
+AllDif { c0 c1 d0 d1 }
+AllDif { c2 c3 d2 d3 }
+
+
