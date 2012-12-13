@@ -35,6 +35,7 @@ treeNode *makeRoot(){
 	rootData *data = Malloc(sizeof(rootData));
 	data->objNodes = createLinked(Malloc,Free);
 	data->desObjNodes = createLinked(Malloc,Free);
+	data->allDifNodes = createLinked(Malloc,Free);
 	data->transNodes = createLinked(Malloc,Free);
 	data->reqNodes = createLinked(Malloc,Free);
 	data->optNodes = createLinked(Malloc,Free);
@@ -87,6 +88,7 @@ treeNode *choiceNode(int tok,treeNode *choice,treeNode *root){
 		case TRANSFORM: 	pushLinked(data->transNodes,choice);	break;
 		case OBJECT: 		pushLinked(data->objNodes,choice); 		break;
 		case DESOBJECT: 	pushLinked(data->desObjNodes,choice); 	break;
+		case ALLDIF: 		pushLinked(data->allDifNodes,choice); 	break;
 		case REQUIRE: 		pushLinked(data->reqNodes,choice); 		break;
 		case OPTION: 		pushLinked(data->optNodes,choice); 		break;
 		default:			assert(NULL,"Node Error");
@@ -431,6 +433,8 @@ treeNode *nameNode(int tok,treeNode *stagesNode,int nameId,int objId,treeNode *s
 	switch(tok){
 		case OBJECT:		type = objType; 	break;
 		case DESOBJECT:		type = desObjType; 	if(!nameId) nameId = inventName("DesObj");		break;
+		case ALLDIF:		type = allDifType; 	nameId = addSymbol("+AllDif+");		
+												objId  = addSymbol("+AllDifObj+");				break;
 		case REQUIRE:		type = reqType; 	if(!nameId) nameId = inventName("Req");			break;
 		case OPTION:		type = optType; 	if(!nameId) nameId = addSymbol("+NoNameOpt+");	break;
 		case START:			type = startType;	break;

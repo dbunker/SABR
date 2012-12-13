@@ -265,6 +265,7 @@ void stdInfraTrans(rootData *rdata,indexList *varList,linkedList clauseList,link
 			int transId = tv->transId;
 			nodeStages *stages = tv->stages;
 		
+			// multiple transitions can happen simultaneously
 			if(tv->isSim)
 				continue;
 			
@@ -654,6 +655,82 @@ int findGroup(void *param,void *data){
 	return -1;
 }
 
+// for all distinct variables
+void allDifClauses(rootData *rdata,indexList *varList,linkedList clauseList){
+	
+	int n,c,s,x,y;
+	linkedList allDifNodes = rdata->allDifNodes;
+	
+	int allDifWidth = sizeLinked(allDifNodes);
+	treeNode **allDifArray = toArrayLinked(allDifNodes);
+
+	for(n=0;n<numStagesGlobal;n++){
+	
+		for(c=0;c<allDifWidth;c++){
+		
+			treeNode *allDifNode = allDifArray[c];
+			nameData *allDifData = allDifNode->data;
+			
+			nodeStages *stages = allDifNode->stages;
+			
+			if(stages != NULL){
+				// stages are inclusive between start and end for both
+				int start = stages->start;
+				int end = stages->end;
+			
+				if(n < start || n > end)
+					continue;
+			}
+			
+			setData *allDifSet = allDifData->set;
+			manyData **many = allDifSet->setVars;
+			
+			int height = allDifSet->height;
+			int width = allDifSet->width;
+			
+			if(width == 0)
+				return;
+			
+			// these should all have the same symlist
+			manyData *manyThis = many[0];
+			linkedList symList = manyThis->symList;
+			
+			int symWidth = sizeLinked(symList);
+			int **symArray = toArrayLinked(symList);
+			
+			for(s=0;s<symWidth;s++){
+			
+				int symId = *symArray[s];
+				
+				// must be exactly one
+				linkedList singleVars = createLinked(Malloc,Free);
+			
+				for(y=0;y<height;y++){
+					for(x=0;x<width;x++){
+						
+						manyThis = many[width*y+x];
+						assertBool(manyThis->symList == symList,"SymList Did Not Match.");
+						
+						linkedList brackVars = manyThis->brackVars;
+						int *boardCellP = peekLinked(brackVars);
+						int boardCell = *boardCellP;
+						
+						varData *v = getSymCellVarByName(varList,boardCell,symId,n);
+						assert(v,"AllDif Variable Not Found.");
+						
+						addTailLinked(singleVars,v);
+					}
+				}
+				
+				atMostOne(singleVars,clauseList);
+				atLeastOne(singleVars,clauseList);
+				
+				destroyLinked(singleVars,NULL);
+			}
+		}
+	}
+}
+
 // Req and DesObj
 // Opt and DesObj
 void reqOptClausesInit(nodeType type,linkedList elabNodes,linkedList desObjNodes,indexList *varList,linkedList clauseList,linkedList optGroupList){
@@ -975,7 +1052,9 @@ void execute(treeNode *root){
 	infraClauses(rdata,varList,clauseList,fullTransNodes,1,1);
 	setUsedClauses(rdata,varList,clauseList,fullTransNodes);
 	usedClauses(rdata,varList,clauseList,fullTransNodes);
-
+	
+	allDifClauses(rdata,varList,clauseList);
+	
 	transClauses(rdata,varList,clauseList);
 	reqOptClauses(rdata,varList,clauseList);
 	

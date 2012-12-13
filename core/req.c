@@ -74,9 +74,11 @@ void atMostOne(linkedList newVarList,linkedList clauseList){
 			varData *var2 = newVarArray[c];
 			
 			clause = createLinked(Malloc,Free);
+			
 			clauseVar = createClauseVar(var1,1);
 			assert(clauseVar->data,"Most");
 			addTailLinked(clause,clauseVar);
+			
 			clauseVar = createClauseVar(var2,1);
 			assert(clauseVar->data,"Most");
 			addTailLinked(clause,clauseVar);

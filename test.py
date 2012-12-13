@@ -135,7 +135,8 @@ advList = [  	'Real/River/V1/river1', 'Real/River/V2/river2', 'Real/Frog/frog',
 		'Real/Slide/sliding', 'Real/Sudo/sudo', 'Real/Tower/tower',
 		'Real/Add/add', 'Real/Mult/mult', 'Real/Mine/mine', 'Real/Pack/BlockPack/pack',
 		'Real/Conc/P1/philo1', 'Real/Conc/P2/philo2', 'Real/Conc/P3/philo3',
-		'Real/Add/add', 'Real/Ein/ein', 'Real/Rube/Easy/1-solve', 'Real/Troyis/troyis'	]
+		'Real/Add/add', 'Real/Ein/ein', 'Real/Rube/Easy/1-solve', 'Real/Troyis/troyis',
+		'AllDif/Sudo/sudo'	]
 
 hardList1 = [	'Hard/Pack/Z-Puzzle/pack'	]
 hardList2 = [	'Hard/Rube/Medium/Six/6-solve'	]

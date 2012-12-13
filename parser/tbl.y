@@ -37,6 +37,7 @@ int yylex(void);
 %token END;
 %token OBJECT;
 %token DESOBJECT;
+%token ALLDIF;
 %token TRANSFORM;
 %token TRANSFORMSIM;
 %token REQUIRE;
@@ -57,7 +58,7 @@ int yylex(void);
 
 %start root
 %type <node> statements choices symbols symlist board start end transform setstages
-	     object desobject require option objset boardset boardvar charset charvar
+	     object desobject alldif require option objset boardset boardvar charset charvar
 	     manyset manyvar elabset elabvar elabcomma;
 %type <val>  transtype anyobject;
 
@@ -75,6 +76,7 @@ statements:
 choices:
 	  object choices			{ $$ = choiceNode(OBJECT,$1,$2); }
 	| desobject choices			{ $$ = choiceNode(DESOBJECT,$1,$2); }
+	| alldif choices			{ $$ = choiceNode(ALLDIF,$1,$2); }
 	| transform choices			{ $$ = choiceNode(TRANSFORM,$1,$2); }
 	| require choices			{ $$ = choiceNode(REQUIRE,$1,$2); }
 	| option choices			{ $$ = choiceNode(OPTION,$1,$2); }
@@ -83,6 +85,7 @@ choices:
 
 setstages:
 	  '(' VARIABLE ':' VARIABLE ')'		{ $$ = setStages($2,$4); }
+	| '(' VARIABLE ')'					{ $$ = setStages($2,$2); }
 	| /* empty */						{ $$ = NULL; }
 	;
 
@@ -136,6 +139,11 @@ desobject:
 			
 	| DESOBJECT VARIABLE '{' manyset '}'
 			{ $$ = nameNode(DESOBJECT,NULL,0,$2,$4); }
+	;
+	
+alldif:
+	  ALLDIF setstages '{' manyset '}'		
+			{ $$ = nameNode(ALLDIF,$2,0,0,$4); }
 	;
 
 require:

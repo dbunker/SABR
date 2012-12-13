@@ -354,11 +354,11 @@ void printVarData(FILE *file,varData *vd){
 
 	if	(vd->type == symCellVarType)		printSymCellVar(file,vd->data);
 	else if	(vd->type == transVarType)		printTransVar(file,vd->data);
-	else if	(vd->type == transPartVarType)		printTransPartVar(file,vd->data);
+	else if	(vd->type == transPartVarType)	printTransPartVar(file,vd->data);
 	else if	(vd->type == usedVarType)		printUsedVar(file,vd->data);
 	else if	(vd->type == negateVarType)		printNegateVar(file,vd->data);
 	else if	(vd->type == optVarType)		printOptVar(file,vd->data);
-	else						{ assert(NULL,"No Type"); }
+	else									{ assert(NULL,"No Type"); }
 	
 	// print sat value for reference
 	fprintf(file,"(%i)",vd->value);

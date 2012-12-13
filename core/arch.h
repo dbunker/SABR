@@ -68,7 +68,7 @@ FILE *yyin;
 
 // each corresponds to a node type
 typedef enum { 	rootType, symType, boardType, startType, endType, transType, transSimType,
-		tempSetType, objType, desObjType, reqType, optType,
+		tempSetType, objType, desObjType, allDifType, reqType, optType,
 		charType, manyType, elabType } nodeType;
 
 // all nodes on the tree
@@ -110,6 +110,7 @@ typedef struct {
 	// contain treeNodes
 	linkedList objNodes;
 	linkedList desObjNodes;
+	linkedList allDifNodes;
 	linkedList transNodes;
 	linkedList reqNodes;
 	linkedList optNodes;

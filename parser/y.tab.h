@@ -44,23 +44,24 @@
      END = 262,
      OBJECT = 263,
      DESOBJECT = 264,
-     TRANSFORM = 265,
-     TRANSFORMSIM = 266,
-     REQUIRE = 267,
-     OPTION = 268,
-     ARROW = 269,
-     SEMI = 270,
-     CHARVAR = 271,
-     BOARDVAR = 272,
-     SPACEVAR = 273,
-     MANYVAR = 274,
-     MANYBRACK = 275,
-     ELABTEMP = 276,
-     ELABQUEST = 277,
-     ELABVAR = 278,
-     ELABNEG = 279,
-     ELABPAREN = 280,
-     ELABCOL = 281
+     ALLDIF = 265,
+     TRANSFORM = 266,
+     TRANSFORMSIM = 267,
+     REQUIRE = 268,
+     OPTION = 269,
+     ARROW = 270,
+     SEMI = 271,
+     CHARVAR = 272,
+     BOARDVAR = 273,
+     SPACEVAR = 274,
+     MANYVAR = 275,
+     MANYBRACK = 276,
+     ELABTEMP = 277,
+     ELABQUEST = 278,
+     ELABVAR = 279,
+     ELABNEG = 280,
+     ELABPAREN = 281,
+     ELABCOL = 282
    };
 #endif
 /* Tokens.  */
@@ -71,23 +72,24 @@
 #define END 262
 #define OBJECT 263
 #define DESOBJECT 264
-#define TRANSFORM 265
-#define TRANSFORMSIM 266
-#define REQUIRE 267
-#define OPTION 268
-#define ARROW 269
-#define SEMI 270
-#define CHARVAR 271
-#define BOARDVAR 272
-#define SPACEVAR 273
-#define MANYVAR 274
-#define MANYBRACK 275
-#define ELABTEMP 276
-#define ELABQUEST 277
-#define ELABVAR 278
-#define ELABNEG 279
-#define ELABPAREN 280
-#define ELABCOL 281
+#define ALLDIF 265
+#define TRANSFORM 266
+#define TRANSFORMSIM 267
+#define REQUIRE 268
+#define OPTION 269
+#define ARROW 270
+#define SEMI 271
+#define CHARVAR 272
+#define BOARDVAR 273
+#define SPACEVAR 274
+#define MANYVAR 275
+#define MANYBRACK 276
+#define ELABTEMP 277
+#define ELABQUEST 278
+#define ELABVAR 279
+#define ELABNEG 280
+#define ELABPAREN 281
+#define ELABCOL 282
 
 
 
@@ -105,7 +107,7 @@ typedef union YYSTYPE
 
 
 /* Line 2068 of yacc.c  */
-#line 109 "y.tab.h"
+#line 111 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -8,6 +8,7 @@ class SabrObj:
 		self.board = []
 		self.reqList = []
 		self.desObjList = []
+		self.allDifList = []
     	
 	def setSym(self,arr):
 		self.sym = arr;
@@ -18,13 +19,12 @@ class SabrObj:
 	def addReqGroup(self,name,arr):
 		self.reqList.append((name,arr))
 		
-	def addAllDif(self,name,num):
-		arr = [[' val' if x == y else '!val' for y in range(0,num)] for x in range(0,num)]
-		self.addReqGroup(name,arr)
-	
 	def addDesObjGroup(self,name,arr):
 		self.desObjList.append((name,arr))
-	
+		
+	def addAllDifGroup(self,arr):
+		self.allDifList.append((None,arr))
+		
 	def outElem(self,arr):
 		
 		out = '{'
@@ -48,7 +48,9 @@ class SabrObj:
 		out = ''
 		for (name,constList) in arr:
 			for const in constList:
-				out += type + ' ' + name
+				out += type 
+				if name != None:
+					out += ' ' + name
 				out += self.outElem(const)
 			out += '\n'
 		return out
@@ -66,6 +68,9 @@ class SabrObj:
 		
 		# desobj
 		out += self.outArray('DesObj',self.desObjList)
+		
+		# alldif
+		out += self.outArray('AllDif',self.allDifList)
 		
 		return out
 		

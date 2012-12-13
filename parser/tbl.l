@@ -35,6 +35,7 @@ limitations under the License.
 "End"					{ return END;		}
 "Obj"					{ return OBJECT;	}
 "DesObj"				{ return DESOBJECT;	}
+"AllDif"				{ return ALLDIF;	}
 "Trans"					{ return TRANSFORM;	}
 "TransSim"				{ return TRANSFORMSIM;	}
 "Req"					{ return REQUIRE;	}

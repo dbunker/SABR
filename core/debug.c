@@ -296,8 +296,8 @@ void updateObj(nameData *name,linkedList symNameList,linkedList boardCellList){
 	}
 }
 
-// create obj list item from desobj
-nameData *createObjDesObj(nameData *name,linkedList boardCellList){
+// create obj list item from desobj or alldif
+nameData *createObj(nameData *name,linkedList boardCellList){
 	
 	int x,y;
 	int desObjObjId = name->objId;
@@ -416,7 +416,7 @@ void checkObj(rootData *rdata,linkedList symNameList,linkedList boardCellList,li
 		int isStrongObj = 1;
 
 		if(!objName){
-			objName = createObjDesObj(name,boardCellList);
+			objName = createObj(name,boardCellList);
 			addTailLinked(oh->assocObjs,objName);
 			isStrongObj = 0;
 		}
@@ -472,6 +472,20 @@ void checkObj(rootData *rdata,linkedList symNameList,linkedList boardCellList,li
 		addTailLinked(names,name);
 	}
 	destroyLinked(names,NULL);
+}
+
+void checkAllDif(rootData *rdata,linkedList boardCellList){
+
+	linkedList nodes = rdata->allDifNodes;
+	treeNode **vars = toArrayLinked(nodes);
+	int size = sizeLinked(nodes);
+	
+	int i;
+	for(i=0;i<size;i++){
+		treeNode *node = vars[i];
+		nameData *name = node->data;
+		createObj(name,boardCellList);
+	}
 }
 
 typedef struct {
@@ -909,7 +923,7 @@ void addBoard(rootData *rdata){
 }
 
 // for each DesObj insert its cellData
-void symListToDesObj(rootData *rdata){
+void symListToCells(rootData *rdata,linkedList desObjNodes){
 	
 	// board
 	treeNode *boardNode = rdata->boardNode;
@@ -920,7 +934,6 @@ void symListToDesObj(rootData *rdata){
 	int boardWidth = boardSet->width;
 	
 	// desobj 
-	linkedList desObjNodes = rdata->desObjNodes;
 	int desObjWidth = sizeLinked(desObjNodes);
 	treeNode **desObjArray = toArrayLinked(desObjNodes);
 	
@@ -976,7 +989,12 @@ void postProc(rootData *rdata){
 
 	completeBoard(rdata);
 	addBoard(rdata);
-	symListToDesObj(rdata);
+	
+	linkedList desObjNodes = rdata->desObjNodes;
+	linkedList allDifNodes = rdata->allDifNodes;
+	
+	symListToCells(rdata,desObjNodes);
+	symListToCells(rdata,allDifNodes);
 }
 
 /***************** Memory Free *************/
@@ -1124,6 +1142,7 @@ void compilerDebug(rootData *rdata){
 	checkStartEnd(rdata,symNameList,objList);
 
 	checkObj(rdata,symNameList,boardCellList,objList);
+	checkAllDif(rdata,boardCellList);
 
 	checkReq(rdata,symNameList,objList);
 	checkOpt(rdata,symNameList,objList);

@@ -33,24 +33,21 @@ def sabrSolver(blockSize,boardStr):
 	boardArr = [list(boardStr[i:i+size]) for i in range(0,len(boardStr),size)]
 	sabrObj.addReqGroup('Board',[boardArr])
 	
-	# all different
-	sabrObj.addAllDif('RowColBlock',size)
-	
-	# desobj row
+	# row
 	des = [cross(rows, c) for c in cols]
-	sabrObj.addDesObjGroup('RowColBlock',des)
+	sabrObj.addAllDifGroup(des)
 	
-	# desobj column
+	# column
 	des = [cross(r, cols) for r in rows]
-	sabrObj.addDesObjGroup('RowColBlock',des)
+	sabrObj.addAllDifGroup(des)
 	
-	# desobj block
+	# block
 	blen = int(math.sqrt(size)+0.5)
 	rb = [rows[i:i+blen] for i in range(0,size,blen)]
 	cb = [cols[i:i+blen] for i in range(0,size,blen)]
 	
 	des = [cross(rs, cs) for rs in rb for cs in cb]
-	sabrObj.addDesObjGroup('RowColBlock',des)
+	sabrObj.addAllDifGroup(des)
 	
 	return sabrObj.process('../../sabr')
 
@@ -145,14 +142,17 @@ def fileTestGen(name):
 
 file95Test = fileTestGen('top95.txt')
 
-# test options: file95Test, randomTest
-tester = randomTest
+testOptions = [ randomTest, file95Test ]
+tester = testOptions[0]
 
-# solver options: sabrSolver, minizincSolver, sudokurand.solve, cvc4sudo.solve
-solver = sabrSolver
+solverOptions = [ sabrSolver, minizincSolver, sudokurand.solve, cvc4sudo.solve ]
+solver = solverOptions[0]
 
-# time showing options: regLineShower, statsLineShower
-shower = regLineShower
+timeShowOptions = [ regLineShower, statsLineShower ]
+shower = timeShowOptions[0]
 
-runTests(3,tester,solver,shower,1)
+boardSize = 6
+numTests = 1
+
+runTests(boardSize,tester,solver,shower,numTests)
 
