@@ -1,5 +1,5 @@
 
-import os
+import os, copy
 
 class SabrObj:
 	
@@ -118,11 +118,7 @@ class SabrObj:
 			out += self.outLines(startArr)
 			
 			if type == 'Trans' or type == 'TransSim':
-				if isinstance(startArr[0],list):
-					out += '=>'
-				else:
-					out += '=>'
-				out += self.outLines(endArr)
+				out += '=>' + self.outLines(endArr)
 			
 			out += '}\n'
 		
@@ -166,6 +162,7 @@ class SabrObj:
 				((_,nameTransY,objY,_,startArrY,endArrY),(_,nameDesObjY,_,_,desObjY,_)) = y
 				
 				def embedList(arr):
+					arr = copy.deepcopy(arr)
 					if isinstance(arr[0],list):
 						return arr
 					return [arr]
@@ -183,6 +180,16 @@ class SabrObj:
 				newObjId = objX + '-' + objY
 				newTransId = nameTransX + '-' + nameTransY
 				newDesObjId = nameDesObjX + '-' + nameDesObjY
+				
+				# duplicate DesObj values should be replaced with single values in trans
+				# this will be the inclusive set of what these values can be
+				
+				
+				# perform 1st trans
+				
+				
+				# perform 2nd trans
+				
 				
 				self.addTrans(newTransId,newObjId,newStartArr,newEndArr)
 				self.addDesObj(newDesObjId,newObjId,newDesObj)
