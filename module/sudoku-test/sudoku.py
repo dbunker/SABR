@@ -31,15 +31,21 @@ def sabrSolver(blockSize,boardStr):
 	
 	# req board
 	boardArr = [list(boardStr[i:i+size]) for i in range(0,len(boardStr),size)]
-	sabrObj.addReqGroup('Board',[boardArr])
+	sabrObj.addReq(None,'Board',boardArr)
+	sabrObj.addSpace()
+	
+	def addGroup(des):
+		for elem in des:
+			sabrObj.addAllDif(elem)
+		sabrObj.addSpace()
 	
 	# row
 	des = [cross(rows, c) for c in cols]
-	sabrObj.addAllDifGroup(des)
+	addGroup(des)
 	
 	# column
 	des = [cross(r, cols) for r in rows]
-	sabrObj.addAllDifGroup(des)
+	addGroup(des)
 	
 	# block
 	blen = int(math.sqrt(size)+0.5)
@@ -47,7 +53,7 @@ def sabrSolver(blockSize,boardStr):
 	cb = [cols[i:i+blen] for i in range(0,size,blen)]
 	
 	des = [cross(rs, cs) for rs in rb for cs in cb]
-	sabrObj.addAllDifGroup(des)
+	addGroup(des)
 	
 	return sabrObj.process('../../sabr')
 
@@ -118,7 +124,7 @@ def regLineShower(line,res,tm):
 	
 	return str(tm) + '\t' + line + '\n'
 
-# show sabr stats
+# show sabr stats and regular
 def statsLineShower(line,res,tm):
 	
 	statsFile = open('stats.txt','r')
@@ -126,7 +132,8 @@ def statsLineShower(line,res,tm):
 	arr1 = stats.split('CPU time              : ')[1]
 	numStr = arr1.split('s',)[0].strip();
 	
-	return regShower(line,res,numStr)
+	ret = str(tm) + '\t' + str(numStr) + '\t' + line + '\n'
+	return ret
 
 # closure
 def fileTestGen(name):
@@ -151,7 +158,7 @@ solver = solverOptions[0]
 timeShowOptions = [ regLineShower, statsLineShower ]
 shower = timeShowOptions[0]
 
-boardSize = 6
+boardSize = 3
 numTests = 1
 
 runTests(boardSize,tester,solver,shower,numTests)
