@@ -1,2 +1,1 @@
-Start
 Error: Setup Start:Board Temporary Variable temp Connects Symbol List n1 To n2.

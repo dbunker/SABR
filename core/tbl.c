@@ -704,11 +704,17 @@ void allDifClauses(rootData *rdata,indexList *varList,linkedList clauseList){
 				
 				// must be exactly one
 				linkedList singleVars = createLinked(Malloc,Free);
-			
+				
+				int numCells = 0;
 				for(y=0;y<height;y++){
 					for(x=0;x<width;x++){
 						
 						manyThis = many[width*y+x];
+						
+						// may not have rectangle shape
+						if(!manyThis)
+							continue;
+						
 						assertBool(manyThis->symList == symList,"SymList Did Not Match.");
 						
 						linkedList brackVars = manyThis->brackVars;
@@ -719,11 +725,14 @@ void allDifClauses(rootData *rdata,indexList *varList,linkedList clauseList){
 						assert(v,"AllDif Variable Not Found.");
 						
 						addTailLinked(singleVars,v);
+						numCells++;
 					}
 				}
 				
 				atMostOne(singleVars,clauseList);
-				atLeastOne(singleVars,clauseList);
+				
+				if(numCells == symWidth)
+					atLeastOne(singleVars,clauseList);
 				
 				destroyLinked(singleVars,NULL);
 			}

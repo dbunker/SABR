@@ -1,2 +1,1 @@
-Start
 Error: Symbol List Nonexistant for Board Cell a.

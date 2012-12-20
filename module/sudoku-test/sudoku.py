@@ -158,7 +158,7 @@ solver = solverOptions[0]
 timeShowOptions = [ regLineShower, statsLineShower ]
 shower = timeShowOptions[0]
 
-boardSize = 3
+boardSize = 6
 numTests = 1
 
 runTests(boardSize,tester,solver,shower,numTests)

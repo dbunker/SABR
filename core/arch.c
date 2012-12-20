@@ -163,7 +163,7 @@ treeNode *symNode(treeNode *newSymListNode,treeNode *symLists){
 	int **set = setD->setVars;
 
 	if(height > 1){
-		printf("Error: Symbols Must Be On One Line.");
+		printf("Error: Symbols Must Be On One Line.\n");
 		endError();
 	}	
 
@@ -631,7 +631,6 @@ int main(int argc,char **argv){
 	}
 	
 	initSym();
-	printf("Start\n");
 
 	yyparse();
 

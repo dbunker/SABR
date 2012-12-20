@@ -1,2 +1,1 @@
-Start
 Error: Syntax Error On Line 4.

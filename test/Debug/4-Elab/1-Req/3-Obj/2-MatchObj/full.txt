@@ -1,2 +1,1 @@
-Start
 Error: Require +Req0+:MyObj Does Not Match Object Shape.

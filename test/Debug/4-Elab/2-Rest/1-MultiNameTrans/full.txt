@@ -1,2 +1,1 @@
-Start
 Error: Transform Com0:Board Not Unique.

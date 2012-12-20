@@ -56,8 +56,8 @@ void compAssert(char *str){
 
 	printf("%s\n",str);
 	// cause segfault for easy gdb stack trace (can be removed)
-	volatile int i = *(int*)0x4;
-	printf("%d\n",i);
+	// volatile int i = *(int*)0x4;
+	// printf("%d\n",i);
 	exit(-1);
 }
 

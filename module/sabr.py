@@ -173,23 +173,101 @@ class SabrObj:
 					arr2 = embedList(arr2)
 					return arr1 + arr2
 					
-				newStartArr = makeList(startArrX,startArrY)
-				newEndArr = makeList(endArrX,endArrY)
-				newDesObj = makeList(desObjX,desObjY)
+				firstTransStart = embedList(startArrX)
+				firstTransEnd = embedList(endArrX)
+				firstTransDesObj = embedList(desObjX)
 				
-				newObjId = objX + '-' + objY
-				newTransId = nameTransX + '-' + nameTransY
-				newDesObjId = nameDesObjX + '-' + nameDesObjY
+				secondTransStart = embedList(startArrY)
+				secondTransEnd = embedList(endArrY)
+				secondTransDesObj = embedList(desObjY)
 				
-				# duplicate DesObj values should be replaced with single values in trans
-				# this will be the inclusive set of what these values can be
+				# becomes start and end of mainTrans
+				mainTransPartFirst = embedList(startArrX)
+				mainTransPartSecond = embedList(startArrY)
 				
+				####################
+				
+				# v1 v2;
+				# w1 w2;
+	
+				# T1) v1 v2 => v2 v1
+				# T2) w1 w2 => w2 w1
+
+				# a b;
+				# b c;
+				
+				firstTransStart = [['v1','v2']]
+				firstTransEnd = [['v2', 'v1']]
+				firstTransDesObj = [['a', 'b']]
+				
+				secondTransStart = [['w1', 'w2']]
+				secondTransEnd = [['w2', 'w1']]
+				secondTransDesObj = [['b', 'c']]
+				
+				# becomes start and end of mainTrans
+				mainTransPartFirst = [['v1', 'v2']]
+				mainTransPartSecond = [['w1', 'w2']]
+				
+				height = len(firstTransDesObj)
+				width = len(firstTransDesObj[0])
+				
+				allCells = [(y, x) for x in range(width) for y in range(height)]
+				
+				# remove all duplicate cells from mainTransPartSecond based on first cells
+				cellsPresent = {}
+				for (a,b) in allCells:
+					elem = firstTransDesObj[a][b]
+					cellsPresent[elem] = firstTransStart[a][b]
+				
+				for (a,b) in allCells:
+					elem = secondTransDesObj[a][b]
+					if elem in cellsPresent:
+						secondTransStart[a][b] = cellsPresent[elem]
+				
+				startTransPartFirst = embedList(mainTransPartFirst)
+				startTransPartSecond = embedList(mainTransPartSecond)
 				
 				# perform 1st trans
 				
+				# find all
+				
+				# use TransSim, do not have DesObj with no common values form a new trans
+				# remove redundant or useless transitions
+
+				# T1) v1 v2 => v2 v1
+				# a b;
+
+				# T2) w1 w2 => w2 w1
+				# b c;
+
+				# TM) 
+
+				# b0: [v2]
+				# b1: [v1]		[w1]
+				# b2: 			[w2]
+
+				# a			b		c
+				# v1-w1		v2		w2		=>
+				# v2		v1-w1	w2		=>
+				# v2		w2		v1-w1
+
+				# match T1_End to T2_Start
+ 
+				
+				# change secondTrans to match new board
 				
 				# perform 2nd trans
 				
+				# create final result to add
+				
+				# remove redundancy
+				
+				exit()
+				
+				# names
+				newObjId = objX + '-' + objY
+				newTransId = nameTransX + '-' + nameTransY
+				newDesObjId = nameDesObjX + '-' + nameDesObjY
 				
 				self.addTrans(newTransId,newObjId,newStartArr,newEndArr)
 				self.addDesObj(newDesObjId,newObjId,newDesObj)
