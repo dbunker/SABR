@@ -158,9 +158,7 @@ class SabrObj:
 			for y in transDesObjList:
 		
 				self.unrollTrans(x,y)
-				
-				exit()
-		
+
 	def unrollTrans(self,trans1,trans2):
 	
 		((_,nameTransX,objX,_,startArrX,endArrX),(_,nameDesObjX,_,_,desObjX,_)) = trans1
@@ -168,25 +166,70 @@ class SabrObj:
 	
 		####################
 		
-		# T1) v1 v2 => v2 v1
-		# a b;
-
-		# T2) w1 w2 => w2 w1
-		# b c;
+		# <place> : ([<name> list of all names it has],
+		#				[[(varName,isNeg,isSym) OR ...] AND ...]) 
 		
+		# convert to dict
+		# turn the string 'v1:(!0,v2)' to 
+		# (set(['v1']),set([set([('0',True,True),('v2',False,False)])]))
+		
+		# consolidate duplicate cells
+		# regardless of placement, unrolling puts all on single line, original order
+		
+		# if a cell does not have a name, it is given the name of its cell *<cell>*<stage>*
+		# the * cannot normally appear in valid programs, these are removed at end
+		
+		# example:
 		# T1) a0:(v1) b0:(v2) => a1:(v2) b1:(v1)
-
 		# T2) b1:(w1) c1:(w2) => b2:(w2) c2:(w1)
 		
-		t1_StartS = {0:'v1', 1:'v2'}
-		t1_EndS = {0:'v2', 1:'v1'}
-		t1_DesObjS = {0:'a', 1:'b'}
+		# T1)	a0:(v1-w1)	b0:(v2) => 
+		# 		a1:(v2)		b1:(v1-w1) 
 		
-		t2_StartS = {0:'w1', 1:'w2'}
-		t2_EndS = {0:'w2', 1:'w1'}
-		t2_DesObjS = {0:'b', 1:'c'}
+		# T2) 	b1:(v1-w1)	c1:(w2) => 
+		# 		b2:(w2)		c2:(v1-w1)
+		
+		# a0:(v1-w1) 	b0:(v2) => 
+		# a1:(v2) 		b1:(v1-w1) 		c1:(w2) => 
+		# 				b2:(w2) 		c2:(v1-w1)
+		
+		# a			b		c
+		# v1-w1		v2		w2
+		# v2		w2		v1-w1
+		
+		# t1_StartS = {		(0,0):(set([('v1',1)]),set([])),	(0,1):(set([('v2',1)]),set([]))}
+		# t1_EndS = {		(0,0):(set([('v2',1)]),set([])),	(0,1):(set([('v1',1)]),set([]))}
+		# t1_DesObjS = {	(0,0):'a',							(0,1):'b'}
+		
+		# t2_StartS = {		(0,0):(set([('w1',2)]),set([])),	(0,1):(set([('w2',2)]),set([]))}
+		# t2_EndS = {		(0,0):(set([('w2',2)]),set([])),	(0,1):(set([('w1',2)]),set([]))}
+		# t2_DesObjS = {	(0,0):'b', 							(0,1):'c'}
+		
+		def remake(startS,endS,desObjS,tVal):
+			
+			startSRet = {}
+			for i in range(len(startS)):
+				v = startS[i]
+				startSRet[(0,i)] = (set([(v,tVal)]),set([]))
+				
+			endSRet = {}
+			for i in range(len(endS)):
+				v = endS[i]
+				endSRet[(0,i)] = (set([(v,tVal)]),set([]))
+			
+			desObjSRet = {}
+			for i in range(len(desObjS)):
+				v = desObjS[i]
+				desObjSRet[(0,i)] = v
+			
+			return (startSRet,endSRet,desObjSRet)
+		
+		(t1_StartS,t1_EndS,t1_DesObjS) = remake(startArrX,endArrX,desObjX,1)
+		(t2_StartS,t2_EndS,t2_DesObjS) = remake(startArrY,endArrY,desObjY,2)
 		
 		####################
+		# produce:
+		# (cellName,stage) : (<name or None>,[[(varName,isNeg,isSym) OR ...] AND ...])
 		
 		t1_Start = {}
 		t1_End = {}
@@ -196,60 +239,59 @@ class SabrObj:
 		
 		# set T1-0
 		for k,v in t1_DesObjS.items():
-			t1_Start[k] = ((v,0),t1_StartS[k])
+			t1_Start[(v,0)] = t1_StartS[k]
 		
 		# set T1-1
 		for k,v in t1_DesObjS.items():
-			t1_End[k] = ((v,1),t1_EndS[k])
+			t1_End[(v,1)] = t1_EndS[k]
 		
 		# set T2-1
 		for k,v in t2_DesObjS.items():
-			t2_Start[k] = ((v,1),t2_StartS[k])
+			t2_Start[(v,1)] = t2_StartS[k]
 		
 		# set T2-2
 		for k,v in t2_DesObjS.items():
-			t2_End[k] = ((v,2),t2_EndS[k])
+			t2_End[(v,2)] = t2_EndS[k]
 		
-		allT1 = copy.deepcopy([t1_Start, t1_End])
-		allT2 = copy.deepcopy([t2_Start, t2_End])
+		allT = copy.deepcopy([t1_Start, t1_End, t2_Start, t2_End])
 		
 		####################
-		
-		def replace(all,x,y):
-			for li in all:
-				for k,(cell,var) in li.items():
-					if var == x:
-						li[k] = (cell,y)
-			
 		# match T1_End to T2_Start
 		# note, symbol can't be bound to var
 		
+		def addTo(all,varNameFind,varNameAdd,varListAdd):
+		
+			for li in all:
+				for cell,(varNames,varList) in li.items():
+				
+					# add varName, and items that get AND added
+					if len(varNameFind & varNames) > 0:
+						varNames |= varNameAdd
+						varList |= varListAdd
+						
+					for orList in varList:
+						for elem in orList:
+							(storeVarNames,isNeg,isSym) = elem
+							if len(varNameFind & storeVarNames) > 0:
+								storeVarNames |= varNameAdd
+								
 		numCellOverlaps = 0
 		
-		for k1,(cell1,var1) in t1_End.items():
+		# stage1 and stage2 will both be 1
+		for (cell1,stage1),(varName1,varList1) in t1_End.items():
 				
-			for k2,(cell2,var2) in t2_Start.items():
+			for (cell2,stage2),(varName2,varList2) in t2_Start.items():
 				
 				if cell1 == cell2:
 					numCellOverlaps += 1
 					
-					# confirm these are compatible
-					if var1 in self.sym:
+					# replace all var1 with var1,var2
+					addTo(allT,varName1,varName2,varList2)
 					
-						if var2 in self.sym:
-						
-							if var1 != var2:
-								print 'Cannot Unroll Due To Conflict'
-								return
-							else:
-								continue
-					
-					# replace all var1 with var1-var2
-					replace(allT1,var1,var1+'-'+var2)
-					
-					# replace all var2 with var1-var2
-					replace(allT2,var2,var1+'-'+var2)
+					# replace all var2 with var1,var2
+					addTo(allT,varName2,varName1,varList2)
 		
+		# these cells don't overlap
 		if numCellOverlaps == 0:
 			print 'Use TransSim Instead of Unroll'
 			return
@@ -258,66 +300,56 @@ class SabrObj:
 		# apply first based on what appears first
 		# apply last based on what appears last
 		
+		allDict = {}
+		for t in allT:
+			for k,v in t.items():
+				allDict[k] = v
+		
+		desObjOrder = []
+		des = sorted(t1_DesObjS.items()) + sorted(t2_DesObjS.items())
+		for k,v in des:
+			if not v in desObjOrder:
+				desObjOrder.append(v)
+		
 		t_Start = []
 		t_End = []
-		des = []
 		
-		# go through desobj
-		firstDict = {}
-		for k,v in t1_DesObjS.items():
-			((name,stage),var) = allT1[0][k]
-			t_Start.append(var)
-			des.append(name)
-			firstDict[name] = True
+		def toStr(var):
+			
+			(varNames,varList) = var
+			ret = ''
+			for name in varNames:
+				(v,tv) = name
+				ret += v + '_' + str(tv) + '-'
+			return ret[:-1]
 		
-		for k,v in t2_DesObjS.items():
-			((name,stage),var) = allT2[0][k]
-			if not name in firstDict:
-				t_Start.append(var)
-				des.append(name)
-		
-		searchDes = copy.deepcopy(des)
-		for desName in searchDes:
-			
-			def findIn(allList,found,desName):
-			
-				for k,((name,stage),var) in allList.items():
-					if name == desName:
-						if found == False:
-							found = ((name,stage),var)
-							t_End.append(var)
-						elif found[0][1] == stage:
-						
-							# must add for additional constraint
-							des.append(name)
-							t_Start.append('?')
-							t_End.append(var)
-							
-				return found
-						
-			found = False
-			
-			# try to find in last
-			found = findIn(allT2[1],found,desName)
-			
-			# find in second to last
-			found = findIn(allT1[1],found,desName)
-			
-		print t_Start
-		print t_End
-		print des
+		for elem in desObjOrder:
+			if (elem,0) in allDict:
+				t_Start.append(toStr(allDict[(elem,0)]))
+			elif (elem,1) in allDict:
+				t_Start.append(toStr(allDict[(elem,1)]))
+			else:
+				print 'Failed'
+				exit()
+				
+		for elem in desObjOrder:
+			if (elem,2) in allDict:
+				t_End.append(toStr(allDict[(elem,2)]))
+			elif (elem,1) in allDict:
+				t_End.append(toStr(allDict[(elem,1)]))
+			else:
+				print 'Failed'
+				exit()
 		
 		####################
-		
-		exit()
 		
 		# names
 		newObjId = objX + '-' + objY
 		newTransId = nameTransX + '-' + nameTransY
 		newDesObjId = nameDesObjX + '-' + nameDesObjY
 		
-		self.addTrans(newTransId,newObjId,newStartArr,newEndArr)
-		self.addDesObj(newDesObjId,newObjId,newDesObj)
+		self.addTransSim(newTransId,newObjId,t_Start,t_End)
+		self.addDesObj(newDesObjId,newObjId,desObjOrder)
 		self.addSpace()
 				
 	def source(self,fileName):
