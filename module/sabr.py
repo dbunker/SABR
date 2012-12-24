@@ -108,7 +108,7 @@ class SabrObj:
 				out = out[:-1]
 			
 			if stages != None and stages != ():
-				if instanceof(stages,int):
+				if isinstance(stages,int):
 					out += '(' + str(stages) + ')'
 				else:
 					(startStage,endStage) = stages
@@ -206,6 +206,13 @@ class SabrObj:
 		# t2_DesObjS = {	(0,0):'b', 							(0,1):'c'}
 		
 		def remake(startS,endS,desObjS,tVal):
+		
+			def flatten(arr):
+				return [elem for li in arr for elem in li]
+			
+			startS = flatten(startS)
+			endS = flatten(endS)
+			desObjS = flatten(desObjS)
 			
 			startSRet = {}
 			for i in range(len(startS)):
@@ -292,8 +299,8 @@ class SabrObj:
 					addTo(allT,varName2,varName1,varList2)
 		
 		# these cells don't overlap
+		# Use TransSim Instead of Unroll
 		if numCellOverlaps == 0:
-			print 'Use TransSim Instead of Unroll'
 			return
 		
 		####################
@@ -344,14 +351,261 @@ class SabrObj:
 		####################
 		
 		# names
-		newObjId = objX + '-' + objY
 		newTransId = nameTransX + '-' + nameTransY
 		newDesObjId = nameDesObjX + '-' + nameDesObjY
+		newObjId = newTransId + '-' + newDesObjId + '-' + objX + '-' + objY
 		
-		self.addTransSim(newTransId,newObjId,t_Start,t_End)
+		self.addTrans(newTransId,newObjId,t_Start,t_End)
 		self.addDesObj(newDesObjId,newObjId,desObjOrder)
 		self.addSpace()
+		
+	def readFromFile(self,fileName):
+		
+		# read from file
+		progFi = open(fileName,'r')
+		prog = progFi.read()
+		
+		# return (type,name,obj,arr1,arr2,remainingStr)
+		def getInfo(remStr):
+			
+			type = remStr.split(None,1)[0].replace('{','')
+			
+			stages = None
+			stagesArr = remStr.split('{',1)[0].split('(',1)
+			if len(stagesArr) > 1:
+				stagesArr = stagesArr[1].split(')',1)
+				stagesArr = stagesArr[0].split(':')
 				
+				if len(stagesArr) > 1:
+					stages = (int(stagesArr[0]),int(stagesArr[1]))
+				else:
+					stages = (int(stagesArr[0]),int(stagesArr[0]))
+			
+			nameArr = remStr.split('{',1)[0].split(None,1)
+			
+			name = None
+			obj = None
+			
+			arr1 = None
+			arr2 = None
+			
+			# has name or obj
+			if len(nameArr) > 1:
+				
+				nameSplit = nameArr[1].split(':',1)
+				obj = nameSplit[0].strip()
+				
+				if len(nameSplit) > 1:
+					
+					name = nameSplit[0].strip()
+					obj = nameSplit[1].strip()
+			
+			arrSplit = remStr.split('{',1)[1].split('}',1)[0]
+			
+			transSplit = arrSplit.split('=>',1)
+			
+			def procArr(arrStr):
+				
+				arr = arrStr.split(';')
+				
+				ret = []
+				for li in arr:
+				
+					liSplit = li.split()
+					if len(liSplit) > 0:
+						ret.append(liSplit)
+				
+				if len(ret) == 1:
+					ret = ret[0]
+				
+				return ret
+				
+			arr1 = procArr(transSplit[0])
+			
+			if len(transSplit) > 1:
+				arr2 = procArr(transSplit[1])
+			
+			rem = remStr.split('}',1)
+			rem = rem[1]
+			
+			return 	(type,name,obj,arr1,arr2,stages,rem)
+		
+		# split file
+		rem = prog
+		
+		# Sym Board Start End AllDif Req Opt Trans TransSim DesObj
+		while(rem.strip() != ''):
+			
+			(type,name,obj,arr1,arr2,stages,rem) = getInfo(rem)
+			
+			if type == 'Sym':
+				self.setSym(arr1)
+		
+			elif type == 'Board':
+				self.setBoard(arr1)
+	
+			elif type == 'Start':
+				self.setStart(arr1)
+		
+			elif type == 'End':
+				self.setEnd(arr1)
+		
+			else:
+			
+				if type == 'AllDif':
+					self.addAllDif(arr1,stages)
+				
+				elif type == 'Req':
+					self.addReq(name,obj,arr1,stages)
+				
+				elif type == 'Opt':
+					self.addOpt(name,obj,arr1,stages)
+				
+				elif type == 'Trans':
+					self.addTrans(name,obj,arr1,arr2,stages)
+				
+				elif type == 'TransSim':
+					self.addTransSim(name,obj,arr1,arr2,stages)
+					
+				elif type == 'DesObj':
+					self.addDesObj(name,obj,arr1)
+				
+				self.addSpace()
+				
+	def removeUseless(self):
+		
+		def flatten(arr):
+			return [elem for li in arr for elem in li]
+			
+		transList = [ const for const in self.constraints 
+			if const != None and (const[0] == 'Trans' or const[0] == 'TransSim') ]
+			
+		# remove transitions that don't create change 
+		constraints = copy.copy(transList)
+		for const in constraints:
+			(type,name,obj,stages,startArr,endArr) = const
+			
+			startArr = flatten(startArr)
+			endArr = flatten(endArr)
+			
+			unchanged = True
+			for i in range(len(startArr)):
+				if startArr[i] != endArr[i]:
+					unchanged = False
+					break
+			
+			if unchanged and const in self.constraints:
+				self.constraints.remove(const)
+		
+		# remove redundant transitions, values may not have exact same names
+		constraints = copy.copy(transList)
+		for i in range(0,len(constraints)):
+			compConst = constraints[i]
+			(compType,compName,compObj,compStages,compStartArr,compEndArr) = compConst
+				
+			compFullArr = flatten(compStartArr) + flatten(compEndArr)
+			
+			for n in range(i+1,len(constraints)):
+				curConst = constraints[n]
+				(curType,curName,curObj,curStages,curStartArr,curEndArr) = curConst
+	
+				curFullArr = flatten(curStartArr) + flatten(curEndArr)
+				
+				if len(compFullArr) != len(curFullArr):
+					continue
+				
+				# check indexes compFullArr matches indexes curFullArr 
+				isDup = True
+				for k in range(len(compFullArr)):
+						
+					# all indexes where arr is v
+					def getIndexes(v,arr):
+						return [ x for x in range(len(arr)) if arr[v] == arr[x] ]
+					
+					compIndexes = getIndexes(k,compFullArr)
+					curIndexes = getIndexes(k,curFullArr)
+					
+					if compIndexes != curIndexes:
+						isDup = False
+						break
+				
+				if isDup:
+					
+					if curConst in self.constraints:
+						self.constraints.remove(curConst)
+					
+					# reset all des-obj to this
+					for constInd in range(len(self.constraints)):
+						
+						if self.constraints[constInd] == None:
+							continue
+						
+						(type,name,obj,stages,startArr,endArr) = self.constraints[constInd]
+						
+						if type == 'DesObj' and obj == curObj:
+							self.constraints[constInd] = (type,name,compObj,stages,startArr,endArr)
+	
+		def isGenConst(type):
+			return (type == 'Req' or type == 'Opt' or type == 'Trans' or type == 'TransSim')
+		
+		def isDesObj(type):
+			return (type == 'DesObj')
+		
+		# remove any redundant sets (ex. DesObj)
+		constraints = copy.copy(self.constraints)
+		for i in range(0,len(constraints)):
+			const1 = constraints[i]
+			if const1 == None:
+				continue
+			
+			(type1,name1,obj1,stages1,startArr1,endArr1) = const1
+			check1 = (type1,None,obj1,stages1,startArr1,endArr1)
+			
+			for n in range(i+1,len(constraints)):
+				const2 = constraints[n]
+				if const2 == None:
+					continue
+				
+				(type2,name2,obj2,stages2,startArr2,endArr2) = const2
+				check2 = (type2,None,obj2,stages2,startArr2,endArr2)
+						
+				if check1 == check2 and const2 in self.constraints:
+					self.constraints.remove(const2)
+		
+		# remove desobj without constraint and constraint without desobj		
+		constraints = copy.copy(self.constraints)
+		for i in range(0,len(constraints)):
+			const1 = constraints[i]
+			if const1 == None:
+				continue
+			
+			(type1,name1,obj1,stages1,startArr1,endArr1) = const1
+			check1 = (type1,None,obj1,stages1,startArr1,endArr1)
+			
+			desObjMatch = False
+			genConstMatch = False
+			
+			for n in range(0,len(constraints)):
+				const2 = constraints[n]
+				if const2 == None:
+					continue
+				
+				(type2,name2,obj2,stages2,startArr2,endArr2) = const2
+				check2 = (type2,None,obj2,stages2,startArr2,endArr2)
+				
+				if obj1 == obj2:
+					
+					if isGenConst(type2):
+						genConstMatch = True
+						
+					if isDesObj(type2):
+						desObjMatch = True
+
+			if ((isDesObj(type1) and not genConstMatch) or 
+				(isGenConst(type1) and not desObjMatch)) and (const1 in self.constraints):
+				
+				self.constraints.remove(const1)
+
 	def source(self,fileName):
 	
 		out = self.toString()
