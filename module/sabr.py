@@ -644,11 +644,14 @@ class SabrObj:
 			
 				for i in range(len(arr)):
 					elem = arr[i]
-					newBoard[boardLineNum][i] = elem
+					if isinstance(newBoard[0],list):
+						newBoard[boardLineNum][i] = elem
+					else:
+						newBoard[i] = elem
 					
 				boardLineNum += 1
 
-				if boardLineNum >= len(newBoard):
+				if not isinstance(newBoard[0],list) or boardLineNum >= len(newBoard):
 					boardList.append(newBoard)
 					isBoard = False
 					

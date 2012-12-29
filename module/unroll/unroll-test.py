@@ -30,11 +30,11 @@ def sabrUnroll():
 	sabrObj.addDesObj('D3','O1',['b','c'])
 	
 	sabrObj.unroll()
-	
 	sabrObj.removeUseless()
 	
 	sabrObj.source('unroll.tb')
 	
-	# sabrObj.process('../../sabr')
+	res = sabrObj.process('../../sabr',2)
+	print res
 
 sabrUnroll()

@@ -10,14 +10,14 @@ def sabrUnroll():
 	
 	sabrObj = sabr.SabrObj()
 	
-	sabrObj.readFromFile('10-solve.tb')
+	sabrObj.readFromFile('6-solve.tb')
 			
 	sabrObj.unroll()
 	sabrObj.removeUseless()
 	
 	sabrObj.source('unroll.tb')
 	
-	# sabrObj.process('../../sabr',6)
+	sabrObj.process('../../sabr',4)
 
 sabrUnroll()
 

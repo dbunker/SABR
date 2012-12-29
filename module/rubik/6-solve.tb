@@ -3,46 +3,46 @@ Sym{ b o w r g y }
 
 Board{
 .....		b1 b2 b3;
-.....		b4 b5 b6;
+.....		b4 .  b6;
 .....		b7 b8 b9;
 o1 o2 o3	w1 w2 w3 	r1 r2 r3;
-o4 o5 o6	w4 w5 w6 	r4 r5 r6;
+o4 .  o6	w4 .  w6 	r4 .  r6;
 o7 o8 o9	w7 w8 w9 	r7 r8 r9;
 .....		g1 g2 g3;
-.....		g4 g5 g6;
+.....		g4 .  g6;
 .....		g7 g8 g9;
 .....		y1 y2 y3;
-.....		y4 y5 y6;
+.....		y4 .  y6;
 .....		y7 y8 y9;
 }
 
 Start{
 		r r b;
-		b b y;
+		b   y;
 		w w b;
-y y o		g g o		w r w;
-b o o		g w o		w r g;
-b o o		g w w		r b y;
+y y o	g g o		w r w;
+b   o	g   o		w   g;
+b o o	g w w		r b y;
 		y r g;
-		y g w;
+		y   w;
 		y o o;
 		r b b;
-		r y y;
+		r   y;
 		g g r;
 }
 
 End{
 		b b b;
+		b   b;
 		b b b;
-		b b b;
-o o o		w w w 		r r r;
-o o o		w w w 		r r r;
-o o o		w w w 		r r r;
+o o o	w w w 		r r r;
+o   o	w   w 		r   r;
+o o o	w w w 		r r r;
 		g g g;
-		g g g;
+		g   g;
 		g g g;
 		y y y;
-		y y y;
+		y   y;
 		y y y;
 }
 
@@ -51,7 +51,7 @@ TransSim Clock:Side{
 	t1 t2 t3;
 
 l3	f1 f2 f3	r1;
-l2	f4 f5 f6	r2;
+l2	f4    f6	r2;
 l1	f7 f8 f9	r3;
 
 	b1 b2 b3;
@@ -59,7 +59,7 @@ l1	f7 f8 f9	r3;
 	l1 l2 l3;
 
 b1	f7 f4 f1	t1;
-b2	f8 f5 f2	t2;
+b2	f8    f2	t2;
 b3	f9 f6 f3	t3;
 
 	r3 r2 r1;
@@ -70,7 +70,7 @@ TransSim CounterClock:Side{
 	t1 t2 t3;
 
 l3	f1 f2 f3	r1;
-l2	f4 f5 f6	r2;
+l2	f4    f6	r2;
 l1	f7 f8 f9	r3;
 
 	b1 b2 b3;
@@ -78,36 +78,17 @@ l1	f7 f8 f9	r3;
 	r1 r2 r3;
 
 t3	f3 f6 f9	b3;
-t2	f2 f5 f8	b2;
+t2	f2    f8	b2;
 t1	f1 f4 f7	b1;
 
 	l3 l2 l1;
-}
-
-TransSim FullFace:Side{
-
-	t1 t2 t3;
-
-l3	f1 f2 f3	r1;
-l2	f4 f5 f6	r2;
-l1	f7 f8 f9	r3;
-
-	b1 b2 b3;
-=>
-	b3 b2 b1;
-
-r3	f9 f8 f7	l1;
-r2	f6 f5 f4	l2;
-r1	f3 f2 f1	l3;
-
-	t3 t2 t1;
 }
 
 DesObj Front:Side{
 	b7 b8 b9;
 	
 o3	w1 w2 w3	r1;
-o6	w4 w5 w6	r4;
+o6	w4    w6	r4;
 o9	w7 w8 w9	r7;
 	
 	g1 g2 g3;
@@ -117,7 +98,7 @@ DesObj Top:Side{
 	y7 y8 y9;
 
 o1	b1 b2 b3	r3;
-o2	b4 b5 b6	r2;
+o2	b4    b6	r2;
 o3	b7 b8 b9	r1;
 
 	w1 w2 w3;
@@ -127,7 +108,7 @@ DesObj Back:Side{
 	g7 g8 g9;
 
 o7	y1 y2 y3	r9;
-o4	y4 y5 y6	r6;
+o4	y4    y6	r6;
 o1	y7 y8 y9	r3;
 
 	b1 b2 b3;
@@ -137,7 +118,7 @@ DesObj Bottom:Side{
 	w7 w8 w9;
 
 o9	g1 g2 g3	r7;
-o8	g4 g5 g6	r8;
+o8	g4    g6	r8;
 o7	g7 g8 g9	r9;
 
 	y1 y2 y3;
@@ -147,7 +128,7 @@ DesObj Left:Side{
 	b1 b4 b7;
 
 y7	o1 o2 o3	w1;
-y4	o4 o5 o6	w4;
+y4	o4    o6	w4;
 y1	o7 o8 o9	w7;
 
 	g7 g4 g1;
@@ -157,7 +138,7 @@ DesObj Right:Side{
 	b9 b6 b3;
 
 w3	r1 r2 r3	y9;
-w6	r4 r5 r6	y6;
+w6	r4    r6	y6;
 w9	r7 r8 r9	y3;
 
 	g3 g6 g9;

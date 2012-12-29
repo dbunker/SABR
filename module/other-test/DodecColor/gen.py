@@ -42,7 +42,7 @@ def gen():
 			sabrObj.addAllDif([cell,linkCell])
 		sabrObj.addSpace()
 	
-	return sabrObj.process('../../../sabr')
+	return sabrObj.process('../../../sabr',1)
 
 def bruteForce():
 	
@@ -86,4 +86,7 @@ def checkResult():
 options = [gen,bruteForce]
 
 res = options[0]()
+print res
+
+res = options[1]()
 print res
