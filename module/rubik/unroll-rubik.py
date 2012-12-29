@@ -1,7 +1,5 @@
 # shell game
 
-print 'start'
-
 import sys, os, re, time, random, math
 sys.path.append("..")
 import sabr
@@ -17,7 +15,12 @@ def sabrUnroll():
 	
 	sabrObj.source('unroll.tb')
 	
-	sabrObj.process('../../sabr',4)
-
+	res = sabrObj.process('../../sabr',4)
+	if res != None:
+		(board,trans) = res
+		print trans
+	else:
+		print None
+		
 sabrUnroll()
 
