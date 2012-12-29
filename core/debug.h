@@ -27,6 +27,7 @@ limitations under the License.
 int printVar(void *data);
 void printVarData(FILE *file,varData *vd);
 void printDebugClause(FILE *fileName,linkedList clause);
+void printDebugClausesVars(char *debugFileName,indexList *varList,linkedList clauseList);
 void printDebugClauses(char *fileName,indexList *varList,linkedList clauseList);
 void compilerDebug(rootData *rdata);
 void postProc(rootData *rdata);

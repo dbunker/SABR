@@ -526,12 +526,12 @@ void endErrorMsg(char *msg){
 void endHelp(){
 
 	printf("usage: sabr [--flag] <number of stages> <path to source>\n");
-	printf("example: sabr --all 20 < source.tb\n\n");
+	printf("example: sabr --debug 20 source.tb\n\n");
 	printf("flags:\n");
-	printf("\t\tNo flag produces the result output\n");
-	printf("cnf\t\tProduces the cnf.txt containing the conjunctive normal form\n");
-	printf("debug\t\tLike cnf, but will show cnf in more detail in debug.txt\n");
-	printf("result\t\tDoesn't use minisat, assumes vars.out from other solver\n");
+	printf("\t\tNo flag produces the result.txt output\n");
+	printf("cnf\t\tOnly produces cnf.txt containing the conjunctive normal form\n");
+	printf("debug\t\tLike cnf, but shows variable and clause details in debug.txt\n");
+	printf("result\t\tDoesn't use minisat, assumes vars.txt from other solver\n");
 	printf("help\t\tHelp screen\n\n");
 	endError();
 }

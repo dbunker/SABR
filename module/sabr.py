@@ -1,5 +1,31 @@
 import os, copy
 
+def clean(arr):
+	if not isinstance(arr,list) or arr == []:
+		print 'Malformed List Entered'
+		exit()
+		
+	for y in range(len(arr)):
+		if isinstance(arr[y],list):
+			for x in range(len(arr[y])):
+				arr[y][x] = str(arr[y][x])
+		else:
+			arr[y] = str(arr[y])
+	
+	return arr
+
+# change [[...],...] to [...]
+def flatten(arr):
+	
+	if isinstance(arr[0],list):
+		ret = []
+		for line in arr:
+			for elem in line:
+				ret.append(elem)
+		return ret
+	else:
+		return arr
+
 class SabrObj:
 	
 	def __init__(self):
@@ -10,43 +36,46 @@ class SabrObj:
 		
 		# AllDif, Req, Opt, Trans, TransSim, DesObj
 		self.constraints = []
-    	
+		
+		# ( [[<board>]], [<list of trans to get from last>] )
+		self.results = []
+				
     # [<symbols>]
 	def setSym(self,arr):
-		self.sym = arr
+		self.sym = clean(arr)
 	
 	# [<board array>]
 	def setBoard(self,arr):
-		self.board = arr
+		self.board = clean(arr)
 	
 	# [<start req var>]
 	def setStart(self,arr):
-		self.start = arr
+		self.start = clean(arr)
 	
 	# [<end req var>]
 	def setEnd(self,arr):
-		self.end = arr
-	
+		self.end = clean(arr)
+
 	# all constraints are: 
 	# ('<type>','<name>','<obj>',(stagesStart,stagesEnd),[<start array>],[end array])
 	
 	def addAllDif(self,arr,stages=None):
-		self.constraints.append(('AllDif',None,None,stages,arr,None))
+		self.constraints.append(('AllDif',None,None,stages,clean(arr),None))
 	
 	def addReq(self,name,obj,arr,stages=None):
-		self.constraints.append(('Req',name,obj,stages,arr,None))
+		self.constraints.append(('Req',name,obj,stages,clean(arr),None))
 	
 	def addOpt(self,name,obj,arr,stages=None):
-		self.constraints.append(('Opt',name,obj,stages,arr,None))
+		self.constraints.append(('Opt',name,obj,stages,clean(arr),None))
 	
 	def addTrans(self,name,obj,arrStart,arrEnd,stages=None):
-		self.constraints.append(('Trans',name,obj,stages,arrStart,arrEnd))
+		self.constraints.append(('Trans',name,obj,stages,clean(arrStart),clean(arrEnd)))
 	
 	def addTransSim(self,name,obj,arrStart,arrEnd,stages=None):
-		self.constraints.append(('TransSim',name,obj,stages,arrStart,arrEnd))
+		self.constraints.append(('TransSim',name,obj,stages,clean(arrStart),clean(arrEnd)))
 	
 	def addDesObj(self,name,obj,arr):
-		self.constraints.append(('DesObj',name,obj,None,arr,None))
+		self.constraints.append(('DesObj',name,obj,None,clean(arr),None))
 		
 	def addSpace(self):
 		self.constraints.append(None)
@@ -76,6 +105,10 @@ class SabrObj:
 		return name + ' {' + self.outLines(arr) + '}\n\n'
 	
 	def toString(self):
+		
+		if self.sym == [] or self.board == [] or (bool(self.start != []) ^ bool(self.end != [])):
+			print 'Must have Sym, Board and possibly Start and End'
+			exit()
 		
 		# sym
 		out = self.singleWrap('Sym',self.sym)
@@ -124,8 +157,170 @@ class SabrObj:
 		return out
 	
 	def unroll(self):
+	
+		def unrollTrans(trans1,trans2):
 		
-		self.addSpace()
+			((_,nameTransX,objX,_,startArrX,endArrX),(_,nameDesObjX,_,_,desObjX,_)) = trans1
+			((_,nameTransY,objY,_,startArrY,endArrY),(_,nameDesObjY,_,_,desObjY,_)) = trans2
+	
+			# example:
+			# T1) a0:(v1) b0:(v2) => a1:(v2) b1:(v1)
+			# T2) b1:(w1) c1:(w2) => b2:(w2) c2:(w1)
+	
+			# a0:(v1-w1) 	b0:(v2) => 
+			# a1:(v2) 		b1:(v1-w1) 		c1:(w2) => 
+			# 				b2:(w2) 		c2:(v1-w1)
+			
+			def remake(startS,endS,desObjS,tVal):
+			
+				startS = flatten(startS)
+				endS = flatten(endS)
+				desObjS = flatten(desObjS)
+				
+				startSRet = {}
+				for i in range(len(startS)):
+					v = startS[i]
+					startSRet[(0,i)] = (set([(v,tVal)]),set([]))
+					
+				endSRet = {}
+				for i in range(len(endS)):
+					v = endS[i]
+					endSRet[(0,i)] = (set([(v,tVal)]),set([]))
+				
+				desObjSRet = {}
+				for i in range(len(desObjS)):
+					v = desObjS[i]
+					desObjSRet[(0,i)] = v
+				
+				return (startSRet,endSRet,desObjSRet)
+			
+			(t1_StartS,t1_EndS,t1_DesObjS) = remake(startArrX,endArrX,desObjX,1)
+			(t2_StartS,t2_EndS,t2_DesObjS) = remake(startArrY,endArrY,desObjY,2)
+			
+			####################
+			# produce:
+			# (cellName,stage) : (<name or None>,[[(varName,isNeg,isSym) OR ...] AND ...])
+			
+			t1_Start = {}
+			t1_End = {}
+			
+			t2_Start = {}
+			t2_End = {}
+			
+			# set T1-0
+			for k,v in t1_DesObjS.items():
+				t1_Start[(v,0)] = t1_StartS[k]
+			
+			# set T1-1
+			for k,v in t1_DesObjS.items():
+				t1_End[(v,1)] = t1_EndS[k]
+			
+			# set T2-1
+			for k,v in t2_DesObjS.items():
+				t2_Start[(v,1)] = t2_StartS[k]
+			
+			# set T2-2
+			for k,v in t2_DesObjS.items():
+				t2_End[(v,2)] = t2_EndS[k]
+			
+			allT = copy.deepcopy([t1_Start, t1_End, t2_Start, t2_End])
+			
+			####################
+			# match T1_End to T2_Start
+			# note, symbol can't be bound to var
+			
+			def addTo(all,varNameFind,varNameAdd,varListAdd):
+			
+				for li in all:
+					for cell,(varNames,varList) in li.items():
+					
+						# add varName, and items that get AND added
+						if len(varNameFind & varNames) > 0:
+							varNames |= varNameAdd
+							varList |= varListAdd
+							
+						for orList in varList:
+							for elem in orList:
+								(storeVarNames,isNeg,isSym) = elem
+								if len(varNameFind & storeVarNames) > 0:
+									storeVarNames |= varNameAdd
+									
+			numCellOverlaps = 0
+			
+			# stage1 and stage2 will both be 1
+			for (cell1,stage1),(varName1,varList1) in t1_End.items():
+					
+				for (cell2,stage2),(varName2,varList2) in t2_Start.items():
+					
+					if cell1 == cell2:
+						numCellOverlaps += 1
+						
+						# replace all var1 with var1,var2
+						addTo(allT,varName1,varName2,varList2)
+						
+						# replace all var2 with var1,var2
+						addTo(allT,varName2,varName1,varList2)
+			
+			# these cells don't overlap
+			# Use TransSim Instead of Unroll
+			if numCellOverlaps == 0:
+				return
+			
+			####################
+			# apply first based on what appears first
+			# apply last based on what appears last
+			
+			allDict = {}
+			for t in allT:
+				for k,v in t.items():
+					allDict[k] = v
+			
+			desObjOrder = []
+			des = sorted(t1_DesObjS.items()) + sorted(t2_DesObjS.items())
+			for k,v in des:
+				if not v in desObjOrder:
+					desObjOrder.append(v)
+			
+			t_Start = []
+			t_End = []
+			
+			def toStr(var):
+				
+				(varNames,varList) = var
+				ret = ''
+				for name in varNames:
+					(v,tv) = name
+					ret += v + '_' + str(tv) + '-'
+				return ret[:-1]
+			
+			for elem in desObjOrder:
+				if (elem,0) in allDict:
+					t_Start.append(toStr(allDict[(elem,0)]))
+				elif (elem,1) in allDict:
+					t_Start.append(toStr(allDict[(elem,1)]))
+				else:
+					print 'Failed'
+					exit()
+					
+			for elem in desObjOrder:
+				if (elem,2) in allDict:
+					t_End.append(toStr(allDict[(elem,2)]))
+				elif (elem,1) in allDict:
+					t_End.append(toStr(allDict[(elem,1)]))
+				else:
+					print 'Failed'
+					exit()
+			
+			####################
+			
+			# names
+			newTransId = nameTransX + '-' + nameTransY
+			newDesObjId = nameDesObjX + '-' + nameDesObjY
+			newObjId = newTransId + '-' + newDesObjId + '-' + objX + '-' + objY
+			
+			self.addTrans(newTransId,newObjId,t_Start,t_End)
+			self.addDesObj(newDesObjId,newObjId,desObjOrder)
+			self.addSpace()
 		
 		# we take a cross of all trans-desobj
 		# (trans,desobj)
@@ -152,211 +347,13 @@ class SabrObj:
 				if objTrans == objDesObj:
 					transDesObjList.append((constTrans,constDesObj))
 	
+		self.addSpace()
+	
 		for x in transDesObjList:
 			
 			for y in transDesObjList:
 		
-				self.unrollTrans(x,y)
-
-	def unrollTrans(self,trans1,trans2):
-	
-		((_,nameTransX,objX,_,startArrX,endArrX),(_,nameDesObjX,_,_,desObjX,_)) = trans1
-		((_,nameTransY,objY,_,startArrY,endArrY),(_,nameDesObjY,_,_,desObjY,_)) = trans2
-	
-		####################
-		
-		# <place> : ([<name> list of all names it has],
-		#				[[(varName,isNeg,isSym) OR ...] AND ...]) 
-		
-		# convert to dict
-		# turn the string 'v1:(!0,v2)' to 
-		# (set(['v1']),set([set([('0',True,True),('v2',False,False)])]))
-		
-		# consolidate duplicate cells
-		# regardless of placement, unrolling puts all on single line, original order
-		
-		# if a cell does not have a name, it is given the name of its cell *<cell>*<stage>*
-		# the * cannot normally appear in valid programs, these are removed at end
-		
-		# example:
-		# T1) a0:(v1) b0:(v2) => a1:(v2) b1:(v1)
-		# T2) b1:(w1) c1:(w2) => b2:(w2) c2:(w1)
-		
-		# T1)	a0:(v1-w1)	b0:(v2) => 
-		# 		a1:(v2)		b1:(v1-w1) 
-		
-		# T2) 	b1:(v1-w1)	c1:(w2) => 
-		# 		b2:(w2)		c2:(v1-w1)
-		
-		# a0:(v1-w1) 	b0:(v2) => 
-		# a1:(v2) 		b1:(v1-w1) 		c1:(w2) => 
-		# 				b2:(w2) 		c2:(v1-w1)
-		
-		# a			b		c
-		# v1-w1		v2		w2
-		# v2		w2		v1-w1
-		
-		# t1_StartS = {		(0,0):(set([('v1',1)]),set([])),	(0,1):(set([('v2',1)]),set([]))}
-		# t1_EndS = {		(0,0):(set([('v2',1)]),set([])),	(0,1):(set([('v1',1)]),set([]))}
-		# t1_DesObjS = {	(0,0):'a',							(0,1):'b'}
-		
-		# t2_StartS = {		(0,0):(set([('w1',2)]),set([])),	(0,1):(set([('w2',2)]),set([]))}
-		# t2_EndS = {		(0,0):(set([('w2',2)]),set([])),	(0,1):(set([('w1',2)]),set([]))}
-		# t2_DesObjS = {	(0,0):'b', 							(0,1):'c'}
-		
-		def remake(startS,endS,desObjS,tVal):
-		
-			def flatten(arr):
-				return [elem for li in arr for elem in li]
-			
-			startS = flatten(startS)
-			endS = flatten(endS)
-			desObjS = flatten(desObjS)
-			
-			startSRet = {}
-			for i in range(len(startS)):
-				v = startS[i]
-				startSRet[(0,i)] = (set([(v,tVal)]),set([]))
-				
-			endSRet = {}
-			for i in range(len(endS)):
-				v = endS[i]
-				endSRet[(0,i)] = (set([(v,tVal)]),set([]))
-			
-			desObjSRet = {}
-			for i in range(len(desObjS)):
-				v = desObjS[i]
-				desObjSRet[(0,i)] = v
-			
-			return (startSRet,endSRet,desObjSRet)
-		
-		(t1_StartS,t1_EndS,t1_DesObjS) = remake(startArrX,endArrX,desObjX,1)
-		(t2_StartS,t2_EndS,t2_DesObjS) = remake(startArrY,endArrY,desObjY,2)
-		
-		####################
-		# produce:
-		# (cellName,stage) : (<name or None>,[[(varName,isNeg,isSym) OR ...] AND ...])
-		
-		t1_Start = {}
-		t1_End = {}
-		
-		t2_Start = {}
-		t2_End = {}
-		
-		# set T1-0
-		for k,v in t1_DesObjS.items():
-			t1_Start[(v,0)] = t1_StartS[k]
-		
-		# set T1-1
-		for k,v in t1_DesObjS.items():
-			t1_End[(v,1)] = t1_EndS[k]
-		
-		# set T2-1
-		for k,v in t2_DesObjS.items():
-			t2_Start[(v,1)] = t2_StartS[k]
-		
-		# set T2-2
-		for k,v in t2_DesObjS.items():
-			t2_End[(v,2)] = t2_EndS[k]
-		
-		allT = copy.deepcopy([t1_Start, t1_End, t2_Start, t2_End])
-		
-		####################
-		# match T1_End to T2_Start
-		# note, symbol can't be bound to var
-		
-		def addTo(all,varNameFind,varNameAdd,varListAdd):
-		
-			for li in all:
-				for cell,(varNames,varList) in li.items():
-				
-					# add varName, and items that get AND added
-					if len(varNameFind & varNames) > 0:
-						varNames |= varNameAdd
-						varList |= varListAdd
-						
-					for orList in varList:
-						for elem in orList:
-							(storeVarNames,isNeg,isSym) = elem
-							if len(varNameFind & storeVarNames) > 0:
-								storeVarNames |= varNameAdd
-								
-		numCellOverlaps = 0
-		
-		# stage1 and stage2 will both be 1
-		for (cell1,stage1),(varName1,varList1) in t1_End.items():
-				
-			for (cell2,stage2),(varName2,varList2) in t2_Start.items():
-				
-				if cell1 == cell2:
-					numCellOverlaps += 1
-					
-					# replace all var1 with var1,var2
-					addTo(allT,varName1,varName2,varList2)
-					
-					# replace all var2 with var1,var2
-					addTo(allT,varName2,varName1,varList2)
-		
-		# these cells don't overlap
-		# Use TransSim Instead of Unroll
-		if numCellOverlaps == 0:
-			return
-		
-		####################
-		# apply first based on what appears first
-		# apply last based on what appears last
-		
-		allDict = {}
-		for t in allT:
-			for k,v in t.items():
-				allDict[k] = v
-		
-		desObjOrder = []
-		des = sorted(t1_DesObjS.items()) + sorted(t2_DesObjS.items())
-		for k,v in des:
-			if not v in desObjOrder:
-				desObjOrder.append(v)
-		
-		t_Start = []
-		t_End = []
-		
-		def toStr(var):
-			
-			(varNames,varList) = var
-			ret = ''
-			for name in varNames:
-				(v,tv) = name
-				ret += v + '_' + str(tv) + '-'
-			return ret[:-1]
-		
-		for elem in desObjOrder:
-			if (elem,0) in allDict:
-				t_Start.append(toStr(allDict[(elem,0)]))
-			elif (elem,1) in allDict:
-				t_Start.append(toStr(allDict[(elem,1)]))
-			else:
-				print 'Failed'
-				exit()
-				
-		for elem in desObjOrder:
-			if (elem,2) in allDict:
-				t_End.append(toStr(allDict[(elem,2)]))
-			elif (elem,1) in allDict:
-				t_End.append(toStr(allDict[(elem,1)]))
-			else:
-				print 'Failed'
-				exit()
-		
-		####################
-		
-		# names
-		newTransId = nameTransX + '-' + nameTransY
-		newDesObjId = nameDesObjX + '-' + nameDesObjY
-		newObjId = newTransId + '-' + newDesObjId + '-' + objX + '-' + objY
-		
-		self.addTrans(newTransId,newObjId,t_Start,t_End)
-		self.addDesObj(newDesObjId,newObjId,desObjOrder)
-		self.addSpace()
+				unrollTrans(x,y)
 		
 	def readFromFile(self,fileName):
 		
@@ -472,9 +469,6 @@ class SabrObj:
 				self.addSpace()
 				
 	def removeUseless(self):
-		
-		def flatten(arr):
-			return [elem for li in arr for elem in li]
 			
 		transList = [ const for const in self.constraints 
 			if const != None and (const[0] == 'Trans' or const[0] == 'TransSim') ]
@@ -619,17 +613,163 @@ class SabrObj:
 		cmd = sabrPath + ' --cnf 1 source.tb > stats.txt'
 		os.system(cmd)
 	
-	# source.tb
-	def process(self,sabrPath):
+	def getResultVar(self,resultStr):
 	
+		return resultStr
+	
+	def getResult(self,resultStr):
+	
+		# ( [ [[<board>]],... ], [<list of trans to get from last>] )
+		
+		boardList = []
+		transList = []
+		
+		isBoard = True
+		boardLineNum = 0
+		
+		newBoard = copy.deepcopy(self.board)
+		newTrans = []
+		
+		resultStrArr = resultStr.split('\n')
+		
+		if resultStrArr[0] == 'UNSATISFIABLE':
+			return None
+		
+		for line in resultStrArr:
+			arr = line.split()
+			
+			if isBoard:
+				
+				boardLine = self.board[boardLineNum]
+			
+				for i in range(len(arr)):
+					elem = arr[i]
+					newBoard[boardLineNum][i] = elem
+					
+				boardLineNum += 1
+
+				if boardLineNum >= len(newBoard):
+					boardList.append(newBoard)
+					isBoard = False
+					
+			else:
+			
+				if len(arr) == 0:
+					if newTrans != []:
+						transList.append(newTrans)
+					
+						isBoard = True
+						boardLineNum = 0
+						
+						newBoard = copy.deepcopy(self.board)
+						newTrans = []
+				else:
+					newTrans.append((arr[0],arr[1]))
+			
+		return (boardList,transList)
+	
+	# source.tb
+	def process(self,sabrPath,numStages=1):
+		
 		self.source('source.tb')
 		
-		cmd = sabrPath + ' 1 source.tb > stats.txt'
+		cmd = sabrPath + ' ' + str(numStages) + ' source.tb > stats.txt'
 		os.system(cmd)
 		
 		resultFile = open('result.txt','r')
 		res = resultFile.read()
 		resultFile.close()
 		
-		return res
+		return self.getResult(res)
+	
+	def multiProcess(self,sabrPath,numStages=1):
+	
+		ret = None
+	
+		def getTack():
+			
+			fi = open('debug.txt','r')
+			fi.readline()
+			
+			lookFor = []
+			
+			arr = fi.readline().strip().split()
+			while arr != []:
+				
+				if 'Is' in arr[1]:
+					lookFor.append(int(arr[0]))
+				arr = fi.readline().strip().split()
+				
+			fi.close()
+			
+			fi = open('vars.txt','r')
+			line = fi.readline().strip()
+			
+			if line != 'SAT':
+				return None
+			
+			arr = fi.readline().strip().split()
+			
+			toTack = []
+			for elem in arr:
+				elem = int(elem)
+				if abs(elem) in lookFor:
+					toTack.append(-1 * elem)
+			
+			return toTack
+		
+		toTack = []
+		
+		if self.results == []:
+		
+			self.source('source.tb')
+			
+			cmd = sabrPath + ' --debug ' + str(numStages) + ' source.tb'
+			os.system(cmd)
+			
+		else:
+			toTack = getTack()
+		
+		if toTack == None:
+			return None
+		
+		if toTack != []:
+			fir = open('cnf.txt','r')
+			fiw = open('.cnf.txt','w')
+			
+			isFirst = True
+			for line in fir:
+				if isFirst:
+					arr = line.strip().split()					
+					clauseNumStr = str(int(arr[3])+1)
+					fiw.write('p cnf ' + arr[2] + ' ' + clauseNumStr + '\n')
+					isFirst = False
+				else:
+					fiw.write(line)
+			
+			for elem in toTack:
+				fiw.write(str(elem)+' ')
+			fiw.write('0\n')
+				
+			fir.close()
+			fiw.close()
+			
+			cmd = 'mv .cnf.txt cnf.txt'
+			os.system(cmd)
+		
+		cnfPath = sabrPath.replace('sabr','cnfsat')
+		cmd = cnfPath + ' cnf.txt vars.txt > stats.txt'
+		os.system(cmd)
+		
+		cmd = sabrPath + ' --result ' + str(numStages) + ' source.tb'
+		os.system(cmd)
+		
+		resultFile = open('result.txt','r')
+		res = resultFile.read()
+		resultFile.close()
+			
+		ret = self.getResult(res)
+		self.results.append(ret)
+		
+		return ret
 		

@@ -15,35 +15,35 @@ Board {
 }
 
 Start {
-	2     0   ;
-        0     0   ;
-           0     0;
-           0     0;
+	2		0;
+	0		0;
+		0		0;
+		0		0;
 }
 
 End {
-	!0    !0   ;
-        !0    !0   ;
-           !0    !0;
-           !0    !0;
+	!0		!0;
+	!0		!0;
+		!0		!0;
+		!0		!0;
 }
 
-Trans Move {	2 0	=>	1 2	}
-Trans Move {    0 2     =>      2 1	}
+Trans Move {	2 0		=>	1 2	}
+Trans Move {	0 2		=>	2 1	}
 
 DesObj Move {	a0 b2	}
-DesObj Move {   a0 c1   }
+DesObj Move {	a0 c1   }
 
-DesObj Move {   b0 a2   }
-DesObj Move {   b0 d1   }
+DesObj Move {	b0 a2   }
+DesObj Move {	b0 d1   }
 
-DesObj Move {   c1 a2   }
-DesObj Move {   c1 d3   }
+DesObj Move {	c1 a2   }
+DesObj Move {	c1 d3   }
 
-DesObj Move {   d1 b2   }
-DesObj Move {   d1 c3   }
+DesObj Move {	d1 b2   }
+DesObj Move {	d1 c3   }
 
-DesObj Move {   a2 c3   }
-DesObj Move {   b2 d3   }
+DesObj Move {	a2 c3   }
+DesObj Move {	b2 d3   }
 
 

@@ -1,7 +1,5 @@
 # shell game
 
-print 'start'
-
 import sys, os, time, random, math
 sys.path.append("..")
 import sabr
@@ -28,10 +26,10 @@ def sabrUnroll():
 	
 	
 	sabrObj.addDesObj('D1','O1',['a','b'])
-	sabrObj.addDesObj('D2','O2',['c','d'])
-	sabrObj.addDesObj('D3','O2',['a','b'])
+	sabrObj.addDesObj('D2','O2',['b','c'])
+	sabrObj.addDesObj('D3','O1',['b','c'])
 	
-	# sabrObj.unroll()
+	sabrObj.unroll()
 	
 	sabrObj.removeUseless()
 	

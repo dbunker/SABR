@@ -61,7 +61,61 @@ void printDebugClause(FILE *file,linkedList clause){
 	fprintf(file,"\n");
 }
 
-void printDebugClauses(char *fileName,indexList *varList,linkedList clauseList){
+void printDebugClausesVars(char *debugFileName,indexList *varList,linkedList clauseList){
+	
+	FILE *file = fopen(debugFileName,"w");
+	
+	// vars
+	int numVar = sizeVarList(varList);
+	fprintf(file,"variables: %i\n",numVar);
+	
+	int i;
+	for(i=1;i<numVar+1;i++){
+		varData *var = getVarByValue(varList,i);
+		fprintf(file,"%i\t",i);
+		printVarData(file,var);
+		fprintf(file,"\n");
+	}
+	
+	fprintf(file,"\n");
+	
+	// clauses
+	int numClause = numClausesGlobal;
+	fprintf(file,"clauses: %i\n",numClause);
+	
+	// read from temp file
+	FILE *tempClausesFile = fopen(TEMP_CLAUSE_FILE,"r");
+	
+	int val;
+	linkedList clause = createLinked(Malloc,Free);
+	clauseVarData *temp;
+	
+	while(fscanf(tempClausesFile,"%i",&val) >= 0){
+		
+		if(val == 0){
+		
+			printDebugClause(file,clause);
+		
+			// clear clause
+			while((temp = popLinked(clause)))
+				Free(temp);
+		}
+		else{
+			int isNeg = (val < 0);
+			if(isNeg)
+				val = -1 * val;
+		
+			varData *var = getVarByValue(varList,val);
+			temp = createClauseVar(var,isNeg);
+			addTailLinked(clause,temp);
+		}
+	}
+	
+	fclose(tempClausesFile);
+	fclose(file);
+}
+
+void printDebugClausesFromList(char *fileName,indexList *varList,linkedList clauseList){
 
 	FILE *file = fopen(fileName,"w");
 

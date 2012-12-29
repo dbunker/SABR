@@ -1,0 +1,99 @@
+# perform a four coloring of a dodecahedron
+# http://en.wikipedia.org/wiki/Dodecahedron
+
+Sym{ y g b r }
+
+#    0       6 7
+#  1 2 3    8 9 10
+#   4 5       11
+
+Board{ 
+...    0    ....    6 7;
+.    1 2 3  .       8 9 10;
+..    4 5   ....   11;
+}
+
+# 2 connects 0 3 5 4 1
+AllDif{ 2 0 }
+AllDif{ 2 3 }
+AllDif{ 2 5 }
+AllDif{ 2 4 }
+AllDif{ 2 1 }
+
+# 0 connects 1 2 3 7 6
+AllDif{ 0 1 }
+AllDif{ 0 2 }
+AllDif{ 0 3 }
+AllDif{ 0 7 }
+AllDif{ 0 6 }
+
+# 3 connects 0 2 5 6 8
+AllDif{ 3 0 }
+AllDif{ 3 2 }
+AllDif{ 3 5 }
+AllDif{ 3 6 }
+AllDif{ 3 8 }
+
+# 5 connects 4 2 3 8 11
+AllDif{ 5 4 }
+AllDif{ 5 2 }
+AllDif{ 5 3 }
+AllDif{ 5 8 }
+AllDif{ 5 11 }
+
+# 4 connects 1 2 5 11 10
+AllDif{ 4 1 }
+AllDif{ 4 2 }
+AllDif{ 4 5 }
+AllDif{ 4 11 }
+AllDif{ 4 10 }
+
+# 1 connects 0 2 4 10 7
+AllDif{ 1 0 }
+AllDif{ 1 2 }
+AllDif{ 1 4 }
+AllDif{ 1 10 }
+AllDif{ 1 7 }
+
+# 9 connects 6 7 10 11 8
+AllDif{ 9 6 }
+AllDif{ 9 7 }
+AllDif{ 9 10 }
+AllDif{ 9 11 }
+AllDif{ 9 8 }
+
+# 6 connects 8 9 7 3 0
+AllDif{ 6 8 }
+AllDif{ 6 9 }
+AllDif{ 6 7 }
+AllDif{ 6 3 }
+AllDif{ 6 0 }
+
+# 7 connects 6 9 10 0 1
+AllDif{ 7 6 }
+AllDif{ 7 9 }
+AllDif{ 7 10 }
+AllDif{ 7 0 }
+AllDif{ 7 1 }
+
+# 10 connects 7 9 11 1 4
+AllDif{ 10 7 }
+AllDif{ 10 9 }
+AllDif{ 10 11 }
+AllDif{ 10 1 }
+AllDif{ 10 4 }
+
+# 11 connects 8 9 10 4 5
+AllDif{ 11 8 }
+AllDif{ 11 9 }
+AllDif{ 11 10 }
+AllDif{ 11 4 }
+AllDif{ 11 5 }
+
+# 8 connects 6 9 11 5 3
+AllDif{ 8 6 }
+AllDif{ 8 9 }
+AllDif{ 8 11 }
+AllDif{ 8 5 }
+AllDif{ 8 3 }
+

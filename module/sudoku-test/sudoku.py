@@ -55,7 +55,7 @@ def sabrSolver(blockSize,boardStr):
 	des = [cross(rs, cs) for rs in rb for cs in cb]
 	addGroup(des)
 	
-	return sabrObj.process('../../sabr')
+	return sabrObj.process('../../sabr',1)
 
 # generateTest takes an integer argument for test number as well as 
 # blockSize which is block width

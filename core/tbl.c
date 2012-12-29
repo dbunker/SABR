@@ -170,29 +170,21 @@ int addClause(linkedList clauseList,linkedList clause){
 		return 0;
 	}
 	
-	if(flagGlobal != FLAG_DEBUG){
-		assert(tempClausesFileGlobal,"temp clause file");
-			
-		clauseVarData *var;
-		while((var = popLinked(clause))){
-	
-			varData *data = var->data;
-			int printInt = data->value;
-			if(var->negate)
-				printInt = -printInt;
-			fprintf(tempClausesFileGlobal,"%i ",printInt);
-			Free(var);
-		}
-	
-		fprintf(tempClausesFileGlobal,"0\n");
-		destroyLinked(clause,NULL);
+	assert(tempClausesFileGlobal,"temp clause file");
+		
+	clauseVarData *var;
+	while((var = popLinked(clause))){
+
+		varData *data = var->data;
+		int printInt = data->value;
+		if(var->negate)
+			printInt = -printInt;
+		fprintf(tempClausesFileGlobal,"%i ",printInt);
+		Free(var);
 	}
-	
-	// if showing debug, place in clauseList to print later
-	// could also print now in to temp clause file
-	else{
-		printDebugClause(tempClausesFileGlobal,clause);
-	}
+
+	fprintf(tempClausesFileGlobal,"0\n");
+	destroyLinked(clause,NULL);	
 	
 	numClausesGlobal++;
 	return 0;
@@ -911,6 +903,8 @@ void printClauses(char *fileName,indexList *varList,linkedList clauseList){
 
 void checkRes(){}
 
+// read in from dimout.out
+// convert output from minisat to human readable
 int createSatOut(char *inFileStr,char *outFileStr,rootData *rdata,indexList *varList,linkedList fullTransNodes){
 
 	FILE *inFile = fopen(inFileStr,"r");
@@ -1042,19 +1036,19 @@ void deleteFile(char *fileName){
 	Free(cmd);
 }
 
-void execute(treeNode *root){
+void runCnfSolver(){
 
-	rootData *rdata = root->data;
-	compilerDebug(rdata);
-	postProc(rdata);
-	
+	// system
+	char *arr[] = { sabrDirGlobal,CNF_EXEC," ",CNF_FILE," ",OUT_VARS_FILE };
+	char *cmd = combineStrArr(arr,6);
+	int res = system(cmd);
+	checkRes(res);
+	Free(cmd);
+}
+
+void processAllClauses(rootData *rdata,indexList *varList,linkedList clauseList,linkedList fullTransNodes){
+
 	tempClausesFileGlobal = fopen(TEMP_CLAUSE_FILE,"w");
-	
-	linkedList fullTransNodes = expandTrans(rdata);
-	indexList *varList = createVarList(rdata,fullTransNodes);
-
-	linkedList clauseList = createLinked(Malloc,Free);
-	clauseListGlobal = clauseList;
 	
 	startEndClauses(rdata,varList,clauseList);
 
@@ -1069,31 +1063,45 @@ void execute(treeNode *root){
 	
 	fclose(tempClausesFileGlobal);
 	tempClausesFileGlobal = NULL;
+}
 
-	if(flagGlobal == FLAG_DEBUG){
-		printClauses(DEBUG_CLAUSE_FILE,varList,clauseList);
+void execute(treeNode *root){
+
+	tempClausesFileGlobal = NULL;
+	rootData *rdata = root->data;
+	compilerDebug(rdata);
+	postProc(rdata);
+	
+	linkedList fullTransNodes = expandTrans(rdata);
+	indexList *varList = createVarList(rdata,fullTransNodes);
+	
+	linkedList clauseList = createLinked(Malloc,Free);
+	clauseListGlobal = clauseList;
+	
+	// don't need to create clauses if only getting final result
+	if(flagGlobal != FLAG_RESULT){
+		processAllClauses(rdata,varList,clauseList,fullTransNodes);
 	}
-
-	if(flagGlobal == FLAG_CNF || flagGlobal == FLAG_RUN){
+	
+	if(flagGlobal == FLAG_DEBUG){
+		printDebugClausesVars(DEBUG_CLAUSE_FILE,varList,clauseList);
+	}
+	
+	if(flagGlobal == FLAG_CNF || flagGlobal == FLAG_DEBUG || flagGlobal == FLAG_RUN){
 		printClauses(CNF_FILE,varList,clauseList);
 	}
 	
 	if(flagGlobal == FLAG_RUN){
-		// system
-		char *arr[] = { sabrDirGlobal,CNF_EXEC," ",CNF_FILE," ",OUT_VARS_FILE };
-		char *cmd = combineStrArr(arr,6);
-		int res = system(cmd);
-		checkRes(res);
-		Free(cmd);
+		runCnfSolver();
 	}	
 
 	if(flagGlobal == FLAG_RESULT || flagGlobal == FLAG_RUN){
-		// read in from dimout.out
-		// convert output from minisat to human readable
 		createSatOut(OUT_VARS_FILE,RESULT_FILE,rdata,varList,fullTransNodes);
 	}
 	
-	deleteFile(TEMP_CLAUSE_FILE);
+	if(flagGlobal != FLAG_RESULT){
+		deleteFile(TEMP_CLAUSE_FILE);
+	}
 	
 	Free(sabrDirGlobal);
 	freeArch(root);
