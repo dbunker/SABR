@@ -22,7 +22,7 @@ limitations under the License.
 // for data space in varData->data not used
 #define NOT_USED -1
 
-#include "../utils/skiplist.h"
+#include "../utils/uthash.h"
 
 // symCellVarType is associated with a certain symbol-cell-stage being true
 // transVarType is associated with a certain transition-description-stage being true
@@ -47,16 +47,19 @@ typedef struct {
 } varData;
 
 typedef struct {
-	int size;
-
+	
 	// also sequence of int*
 	int *key;
+	int size;
 	varData *vdat;
+	
+	// for hash table
+	UT_hash_handle hh; 
 } varInd;
 
 typedef struct {
 	// contains varInd*
-	skipList keyList;
+	varInd *keyList;
 
 	// contains varData*
 	linkedList fullList;

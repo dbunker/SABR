@@ -26,7 +26,7 @@ limitations under the License.
 #include "req.h"
 #include "var.h"
 #include "../utils/linkedlist.h"
-#include "../utils/skiplist.h"
+#include "../utils/uthash.h"
 #include "../utils/gendebug.h"
 
 int compValueVar(void*,void*);
@@ -37,7 +37,9 @@ int compGenVar(void*,void*);
 indexList *createVarIndex(){
 
 	indexList *retList = Malloc(sizeof(indexList));
-	retList->keyList = createSkip(Malloc,Free,compGenVar);
+	// retList->keyList = createSkip(Malloc,Free,compGenVar);
+	
+	retList->keyList = NULL;
 	retList->fullList = createLinked(Malloc,Free);
 	retList->numVar = 0;
 	return retList;
@@ -59,8 +61,8 @@ void delLink(void *data){
 
 void destroyVarIndex(indexList *ind){
 	
-	destroySkip(ind->keyList,delSkip);
-	destroyLinked(ind->fullList,delLink);
+	// destroySkip(ind->keyList,delSkip);
+	// destroyLinked(ind->fullList,delLink);
 	Free(ind);
 }
 
@@ -71,49 +73,20 @@ int sizeVarList(indexList *varList){
 
 /***************** GenVar *************/
 
-int compGenVar(void *first,void *second){
-
-	varInd *pdat = first;
-	varInd *ldat = second;
-
-	int *paramData = pdat->key;
-	int *listData = ldat->key;
-	int psize = pdat->size;
-	int lsize = ldat->size;
-	int n;
-
-	// first sort by size
-	if(lsize < psize)
-		return -1;
-	if(lsize > psize)
-		return 1;
-
-	// then sort by internals
-	for(n=0;n<psize;n++){
-
-		if(listData[n] < paramData[n])
-			return -1;
-		if(listData[n] > paramData[n])
-			return 1;
-	}
-
-	return 0;
-}
-
 varData *getGenVar(indexList *varList,varType type,int *vals,int size){
 
 	indexList *indList = varList;
-	skipList *sList = indList->keyList;
+	varInd **sListP = &(indList->keyList);
 
-	varInd ind;
-	ind.key = vals;
-	ind.size = size;
-
-	varInd *retInd = getSkip(sList,&ind);
+	varInd *retInd = NULL;
+	HASH_FIND(hh, *sListP, vals, sizeof(int)*size, retInd);
+	
 	if(!retInd)
 		return NULL;
 
 	varData *retData = retInd->vdat;
+	assert(retData,"Variable Index Must Always Have Variable Data");
+	
 	return retData;
 }
 
@@ -132,8 +105,14 @@ void createGenInd(indexList *varList,varData *vdat,int *vals,int size){
 	vind->key = var;
 	vind->vdat = vdat;
 	
-	skipList sList = indList->keyList;
-	insertSkip(sList,vind);
+	varInd **sListP = &(indList->keyList);
+	
+	// check for collision
+	varInd *retInd = NULL;
+	HASH_FIND( hh, *sListP, vals, sizeof(int)*size, retInd );
+	assertBool((retInd == NULL),"Hash Collision");
+	
+	HASH_ADD_KEYPTR(hh, *sListP, vind->key, sizeof(int)*size, vind);
 }
 
 // add to general linkedlist and as a value
