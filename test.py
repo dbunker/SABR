@@ -1,6 +1,6 @@
 # see license at project root
 
-import os, sys
+import os, sys, time
 
 def checkFile(elem,cmdExec,toCheck):
 
@@ -162,6 +162,8 @@ help			Help screen
 
 if len(sys.argv) == 2:
 	
+	start = time.time()
+	
 	if sys.argv[1] == 'debug':
 		debug(debugList)
 
@@ -188,10 +190,12 @@ if len(sys.argv) == 2:
 		clear(advList)
 		hardProbs(clear)
 	else:
-		print "Improper Command"
+		print 'Improper Command'
 		exit()
 		
-	print "Passed All Tests"
+	tm = time.time()-start
+	print 'Passed All Tests'
+	print 'Time: ' + str(tm) + ' Seconds'
 	
 else:
 	print coms
