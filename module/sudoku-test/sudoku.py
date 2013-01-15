@@ -115,6 +115,82 @@ def minizincSolver(blockSize,line):
 	cmd = 'minizinc puzzle.mzn > puzzle-out.txt'
 	os.system(cmd)
 
+# need to install swipl (swi-prolog)
+def prologSolver(blockSize,line):
+
+	boardStr = line.strip().replace('.','?')
+	
+	size = blockSize * blockSize
+	nums = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMO'
+	rows = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmo'
+	
+	nums = list(nums[:size])
+	rows = list(rows[:size])
+	
+	cols = nums
+	
+	def cross(A, B):
+		return [a+b for a in A for b in B]
+	
+	outStr = ':- use_module(library(clpfd)).\n\n'
+	
+	# puzzle param
+	outStr += 'puzzle(\n'
+	board = [cross(rows, c) for c in cols]
+	
+	outStr += str(board)[1:-1].replace('], ','],\n').replace('\'','G') + '\n):-\n'
+	
+	# vars
+	outStr += 'Vars = '
+	flat = [item for sublist in board for item in sublist]
+	outStr += str(flat).replace('\'','G') + ',\n'
+	outStr += 'Vars ins 1..' + str(size) + ',\n'
+	
+	# alldif
+	def addGroup(des):
+		ret = ''
+		for elem in des:
+			ret += 'all_different(' + str(elem).replace('\'','G') + '),\n'
+		return ret
+	
+	# row all dif
+	des = [cross(rows, c) for c in cols]
+	outStr += addGroup(des)
+	
+	# column all dif
+	des = [cross(r, cols) for r in rows]
+	outStr += addGroup(des)
+	
+	# block all dif
+	blen = int(math.sqrt(size)+0.5)
+	rb = [rows[i:i+blen] for i in range(0,size,blen)]
+	cb = [cols[i:i+blen] for i in range(0,size,blen)]
+	
+	des = [cross(rs, cs) for rs in rb for cs in cb]
+	outStr += addGroup(des)
+	outStr = outStr[:-2] + '.\n'
+	
+	# this puzzle board
+	boardArr = [list(boardStr[i:i+size]) for i in range(0,len(boardStr),size)]
+	for y in range(0,size):
+		for x in range(0,size):
+			if boardArr[y][x] == '?':
+				boardArr[y][x] = 'G' + board[y][x] + 'G'
+			else:
+				boardArr[y][x] = str(nums.index(boardArr[y][x])+1)
+				
+	boardStr = 'puzzle(' + str(boardArr)[1:-1].replace('\'','') + ').'
+	
+	source = open('puzzle.pl','w')
+	source.write(outStr)
+	source.close()
+	
+	cmd = 'echo \'' + boardStr + '\' | swipl -f puzzle.pl'
+	print cmd
+	os.system(cmd)
+	
+	exit()
+
 # random
 def randomTest(size,i):
 	res = sudokurand.random_puzzle(size)
@@ -152,13 +228,13 @@ file95Test = fileTestGen('top95.txt')
 testOptions = [ randomTest, file95Test ]
 tester = testOptions[0]
 
-solverOptions = [ sabrSolver, minizincSolver, sudokurand.solve, cvc4sudo.solve ]
+solverOptions = [ sabrSolver, minizincSolver, prologSolver, sudokurand.solve, cvc4sudo.solve ]
 solver = solverOptions[0]
 
 timeShowOptions = [ regLineShower, statsLineShower ]
 shower = timeShowOptions[0]
 
-boardSize = 6
+boardSize = 3
 numTests = 1
 
 runTests(boardSize,tester,solver,shower,numTests)
