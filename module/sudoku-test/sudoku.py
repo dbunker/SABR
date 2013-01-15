@@ -131,20 +131,19 @@ def prologSolver(blockSize,line):
 	
 	def cross(A, B):
 		return [a+b for a in A for b in B]
+		
+	board = [cross(rows, c) for c in cols]
+	flatBoard = [item for sublist in board for item in sublist]
 	
 	outStr = ':- use_module(library(clpfd)).\n\n'
 	
 	# puzzle param
-	outStr += 'puzzle(\n'
-	board = [cross(rows, c) for c in cols]
-	
-	outStr += str(board)[1:-1].replace('], ','],\n').replace('\'','G') + '\n):-\n'
+	outStr += 'puzzle(Cells):-\n'
 	
 	# vars
-	outStr += 'Vars = '
-	flat = [item for sublist in board for item in sublist]
-	outStr += str(flat).replace('\'','G') + ',\n'
-	outStr += 'Vars ins 1..' + str(size) + ',\n'
+	outStr += 'Cells = '
+	outStr += str(flatBoard).replace('\'','G') + ',\n'
+	outStr += 'Cells ins 1..' + str(size) + ',\n'
 	
 	# alldif
 	def addGroup(des):
@@ -168,7 +167,9 @@ def prologSolver(blockSize,line):
 	
 	des = [cross(rs, cs) for rs in rb for cs in cb]
 	outStr += addGroup(des)
-	outStr = outStr[:-2] + '.\n'
+	outStr = outStr[:-2] + ',\n'
+	
+	outStr += 'label(Cells).'
 	
 	# this puzzle board
 	boardArr = [list(boardStr[i:i+size]) for i in range(0,len(boardStr),size)]
@@ -178,15 +179,15 @@ def prologSolver(blockSize,line):
 				boardArr[y][x] = 'G' + board[y][x] + 'G'
 			else:
 				boardArr[y][x] = str(nums.index(boardArr[y][x])+1)
-				
-	boardStr = 'puzzle(' + str(boardArr)[1:-1].replace('\'','') + ').'
+	
+	flatBoardArr = [item for sublist in boardArr for item in sublist]
+	boardStr = 'puzzle(' + str(flatBoardArr).replace('\'','') + ').'
 	
 	source = open('puzzle.pl','w')
 	source.write(outStr)
 	source.close()
 	
 	cmd = 'echo \'' + boardStr + '\' | swipl -f puzzle.pl'
-	print cmd
 	os.system(cmd)
 	
 	exit()
@@ -229,12 +230,12 @@ testOptions = [ randomTest, file95Test ]
 tester = testOptions[0]
 
 solverOptions = [ sabrSolver, minizincSolver, prologSolver, sudokurand.solve, cvc4sudo.solve ]
-solver = solverOptions[0]
+solver = solverOptions[2]
 
 timeShowOptions = [ regLineShower, statsLineShower ]
 shower = timeShowOptions[0]
 
-boardSize = 3
+boardSize = 4
 numTests = 1
 
 runTests(boardSize,tester,solver,shower,numTests)
