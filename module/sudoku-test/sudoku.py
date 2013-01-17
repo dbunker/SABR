@@ -224,19 +224,4 @@ def fileTestGen(name):
 		
 	return fileTest
 
-file95Test = fileTestGen('top95.txt')
-
-testOptions = [ randomTest, file95Test ]
-tester = testOptions[0]
-
-solverOptions = [ sabrSolver, minizincSolver, prologSolver, sudokurand.solve, cvc4sudo.solve ]
-solver = solverOptions[2]
-
-timeShowOptions = [ regLineShower, statsLineShower ]
-shower = timeShowOptions[0]
-
-boardSize = 4
-numTests = 1
-
-runTests(boardSize,tester,solver,shower,numTests)
 
