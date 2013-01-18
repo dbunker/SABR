@@ -671,12 +671,16 @@ class SabrObj:
 			
 		return (boardList,transList)
 	
+	def getCmd(self,sabrPath,numStages=1):
+	
+		self.source('source.tb')
+		cmd = sabrPath + ' ' + str(numStages) + ' source.tb > stats.txt'
+		return cmd
+	
 	# source.tb
 	def process(self,sabrPath,numStages=1):
 		
-		self.source('source.tb')
-		
-		cmd = sabrPath + ' ' + str(numStages) + ' source.tb > stats.txt'
+		cmd = self.getCmd('source.tb',numStages)
 		os.system(cmd)
 		
 		resultFile = open('result.txt','r')
