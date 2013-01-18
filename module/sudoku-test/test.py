@@ -59,11 +59,13 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		
 		if status == 'Failed':
 			curFails += 1
+			line = 'Failed ' + line
 		else:
 			curFails = 0
 			
 		# failed too many consecutive times
-		if curFails > numFails :
+		if curFails > numFails:
+			file.write('Failed Tests')
 			return
 		
 		res = ''
@@ -119,9 +121,9 @@ def testBat():
 	
 	timeShowOptions = [ regLineShower, statsLineShower ]
 	shower = timeShowOptions[0]
-	numTests = 10
+	numTests = 500
 
-	for boardSize in range(2,3):
+	for boardSize in range(2,8):
 	
 		# create test file of 1000 random tests
 		testFileName = str(boardSize) + '-test.txt'
@@ -140,8 +142,8 @@ def testBat():
 			solver = solverOptions[solverNum]
 			print 'RUN: ' + name
 			
-			timeout = 10
-			numFails = 5
+			timeout = 5*60
+			numFails = 4
 			outTestName = str(boardSize) + '-' + name + '-' + 'out.txt'
 			runTests(boardSize,tester,solver,shower,numTests,outTestName,timeout,numFails)
 			
