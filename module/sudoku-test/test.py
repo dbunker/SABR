@@ -44,7 +44,7 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 	
 	file = open(outFile,'w')
 	for i in range(numTests):
-	
+		
 		line = generateTest(blockSize,i)
 		
 		if line == None:
@@ -54,8 +54,16 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		cmd = solver(blockSize,line)
 		
 		start = time.time()
+		# { time ls; } 2> out.txt
+		cmd = '{ time ' + cmd + '; } 2> time.txt'
 		status = runWithTime(cmd,timeout)
 		tm = time.time()-start
+		
+		fi = open('time.txt','r')
+		show1 = fi.readline().strip()
+		show2 = fi.readline().strip()
+		print '\n' + show1 + '\n' + show2 + '\n'
+		fi.close()
 		
 		if status == 'Failed':
 			curFails += 1
@@ -72,7 +80,7 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		outLine = shower(line,res,tm)
 		print i
 		
-		file.write(outLine)
+		file.write(outLine.strip() + ' ' + show1 + ' ' + show2 + '\n')
 		
 		if tm > threshold:
 			print outLine
