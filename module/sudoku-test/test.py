@@ -1,46 +1,31 @@
+import os
 from sudoku import *
-import subprocess, threading
 
-class Command(object):
-    def __init__(self, cmd):
-        self.cmd = cmd
-        self.process = None
-
-    def run(self, timeout):
-    
-    	result = 'Success'
-    
-        def target():
-            print 'Thread started'
-            self.process = subprocess.Popen(self.cmd, shell=True)
-            self.process.communicate()
-            print 'Thread finished'
-
-        thread = threading.Thread(target=target)
-        thread.start()
-
-        thread.join(timeout)
-        if thread.is_alive():
-            print 'Terminating process'
-            self.process.terminate()
-            thread.join()
-            result = 'Failed'
-        
-        code = self.process.returncode
-        
-        return result
-        
+# create and run as a shell script
 def runWithTime(cmd,timeout):
 
-	command = Command(cmd)
-	return command.run(timeout)
+	print cmd
+	
+	fi = open('test.sh','w')
+	fi.write(cmd + ';exit 0')
+	fi.close()
+	
+	cmd = '( time timeout ' + str(timeout) + ' sh test.sh ) 2> time.txt'
+	ret = os.system(cmd)
+	
+	if ret == 0:
+		return 'Success'
+	else:
+		return 'Failed'
 
 # generateTest takes an integer argument for test number as well as 
 # blockSize which is block width
 def runTests(blockSize,generateTest,solver,shower,numTests=100,
 				outFile='tests.txt',timeout=1000,numFails=1000,threshold=-1.0):
 	
+	# run all if it passes the first numFails
 	curFails = 0
+	runAll = False
 	
 	file = open(outFile,'w')
 	for i in range(numTests):
@@ -54,8 +39,7 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		cmd = solver(blockSize,line)
 		
 		start = time.time()
-		# { time ls; } 2> out.txt
-		cmd = '{ time ' + cmd + '; } 2> time.txt'
+		
 		status = runWithTime(cmd,timeout)
 		tm = time.time()-start
 		
@@ -69,10 +53,11 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 			curFails += 1
 			line = 'Failed ' + line
 		else:
+			runAll = True
 			curFails = 0
 			
 		# failed too many consecutive times
-		if curFails > numFails:
+		if curFails >= numFails and not runAll:
 			file.write('Failed Tests')
 			return
 		
@@ -131,9 +116,9 @@ def testBat():
 	shower = timeShowOptions[0]
 	numTests = 500
 
-	for boardSize in range(2,8):
+	for boardSize in range(2,7):
 	
-		# create test file of 1000 random tests
+		# create test file of random tests
 		testFileName = str(boardSize) + '-test.txt'
 		testFile = open(testFileName,'w')
 		for i in range(numTests):
@@ -151,17 +136,11 @@ def testBat():
 			print 'RUN: ' + name
 			
 			timeout = 5*60
-			numFails = 4
+			numFails = 5
 			outTestName = str(boardSize) + '-' + name + '-' + 'out.txt'
 			runTests(boardSize,tester,solver,shower,numTests,outTestName,timeout,numFails)
 			
 			# run these tests
 			# if it fails to solve within 5 minutes for 5 initial tests, give up
-
-"""
-command = Command("echo 'Process started'; sleep 2; echo 'Process finished'")
-print command.run(timeout=3)
-print command.run(timeout=1)
-"""
 
 testBat()
