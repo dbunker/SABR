@@ -40,30 +40,20 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		
 		start = time.time()
 		
-		run = True
-		while run:
+		status = runWithTime(cmd,timeout)
+			
+		fi = open('time.txt','r')
+		show = fi.read().replace('\n',' ')
+		print '\n' + show + '\n'
+		fi.close()
+			
+		getRe = '[0-9]*\.[0-9]*'
+		userTime = float(re.findall(getRe+'user',show)[0][:-4])
+		systemTime = float(re.findall(getRe+'system',show)[0][:-6])
+		elapsedTime = float(re.findall(getRe+'elapsed',show)[0][:-7])
 		
-			status = runWithTime(cmd,timeout)
-			
-			fi = open('time.txt','r')
-			show = fi.read().replace('\n',' ')
-			print '\n' + show + '\n'
-			fi.close()
-			
-			getRe = '[0-9]*\.[0-9]*'
-			userTime = float(re.findall(getRe+'user',show)[0][:-4])
-			systemTime = float(re.findall(getRe+'system',show)[0][:-6])
-			
-			print userTime, systemTime
-			print ''
-			
-			# if it failed, but insufficient time was given to run, run it again
-			run = False
-			if status == 'Failed' and userTime+systemTime < 120:
-				
-				timeout += 120
-				print 'Run Again For: ' + str(timeout)
-				run = True
+		print userTime, systemTime, elapsedTime
+		print ''
 		
 		tm = time.time()-start
 		
