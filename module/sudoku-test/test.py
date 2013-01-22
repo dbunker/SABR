@@ -1,4 +1,4 @@
-import os
+import re, subprocess
 from sudoku import *
 
 # create and run as a shell script
@@ -11,7 +11,7 @@ def runWithTime(cmd,timeout):
 	fi.close()
 	
 	cmd = '( time timeout ' + str(timeout) + ' sh test.sh ) 2> time.txt'
-	ret = os.system(cmd)
+	ret = subprocess.Popen(cmd, shell=True).wait()
 	
 	if ret == 0:
 		return 'Success'
@@ -40,14 +40,32 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		
 		start = time.time()
 		
-		status = runWithTime(cmd,timeout)
-		tm = time.time()-start
+		run = True
+		while run:
 		
-		fi = open('time.txt','r')
-		show1 = fi.readline().strip()
-		show2 = fi.readline().strip()
-		print '\n' + show1 + '\n' + show2 + '\n'
-		fi.close()
+			status = runWithTime(cmd,timeout)
+			
+			fi = open('time.txt','r')
+			show = fi.read().replace('\n',' ')
+			print '\n' + show + '\n'
+			fi.close()
+			
+			getRe = '[0-9]*\.[0-9]*'
+			userTime = float(re.findall(getRe+'user',show)[0][:-4])
+			systemTime = float(re.findall(getRe+'system',show)[0][:-6])
+			
+			print userTime, systemTime
+			print ''
+			
+			# if it failed, but insufficient time was given to run, run it again
+			run = False
+			if status == 'Failed' and userTime+systemTime < 120:
+				
+				timeout += 120
+				print 'Run Again For: ' + str(timeout)
+				run = True
+		
+		tm = time.time()-start
 		
 		if status == 'Failed':
 			curFails += 1
@@ -65,7 +83,7 @@ def runTests(blockSize,generateTest,solver,shower,numTests=100,
 		outLine = shower(line,res,tm)
 		print i
 		
-		file.write(outLine.strip() + ' ' + show1 + ' ' + show2 + '\n')
+		file.write(outLine.strip() + ' ' + show + '\n')
 		
 		if tm > threshold:
 			print outLine
