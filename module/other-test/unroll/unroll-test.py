@@ -1,7 +1,8 @@
 # shell game
 
 import sys, os, time, random, math
-sys.path.append("..")
+relFold = '../../../'
+sys.path.append(relFold+'module')
 import sabr
 
 def sabrUnroll():
@@ -34,7 +35,7 @@ def sabrUnroll():
 	
 	sabrObj.source('unroll.tb')
 	
-	res = sabrObj.process('../../sabr',2)
+	res = sabrObj.process(relFold+'sabr',2)
 	print res
 
 sabrUnroll()

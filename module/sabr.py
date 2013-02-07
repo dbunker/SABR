@@ -727,7 +727,7 @@ class SabrObj:
 	# source.tb
 	def process(self,sabrPath,numStages=1):
 		
-		cmd = self.getCmd('source.tb',numStages)
+		cmd = self.getCmd(sabrPath,numStages)
 		os.system(cmd)
 		
 		resultFile = open('result.txt','r')

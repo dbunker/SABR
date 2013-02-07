@@ -1,7 +1,9 @@
 # shell game
+# show it is possible to get multiple solutions
 
 import sys, os, time, random, math
-sys.path.append("..")
+relFold = "../../../"
+sys.path.append(relFold+'module')
 import sabr
 
 def sabrMulti():
@@ -29,7 +31,7 @@ def sabrMulti():
 	for i in range(5):
 	
 		# (board,trans)
-		res = sabrObj.multiProcess('../../sabr',4)
+		res = sabrObj.multiProcess(relFold + 'sabr',4)
 		print res
 		print ''
 

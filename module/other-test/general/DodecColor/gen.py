@@ -6,7 +6,8 @@
 #   4 5       11
 
 import sys, time
-sys.path.append("../../../module/")
+relFold = "../../../../"
+sys.path.append(relFold+'module')
 import sabr
 
 # possible colors
@@ -42,7 +43,7 @@ def gen():
 			sabrObj.addAllDif([cell,linkCell])
 		sabrObj.addSpace()
 	
-	return sabrObj.process('../../../sabr',1)
+	return sabrObj.process(relFold+'sabr',1)[0][0]
 
 def bruteForce():
 	
@@ -85,8 +86,10 @@ def checkResult():
 
 options = [gen,bruteForce]
 
+# ex. ['b', 'r', 'g', 'y', 'b', 'r', 'r', 'y', 'g', 'b', 'g', 'y']
 res = options[0]()
 print res
 
+# ex. ['y', 'g', 'b', 'g', 'y', 'r', 'r', 'b', 'y', 'g', 'r', 'b']
 res = options[1]()
 print res

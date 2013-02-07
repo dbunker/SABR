@@ -1,8 +1,10 @@
 
+# for prolog: http://www.binding-time.co.uk/counterfeit.txt
 # 12 marbles, 1 light/heavy, 3 weighs
 
 import sys, os, time, copy
-sys.path.append("../../../../module/")
+relFold = "../../../../../"
+sys.path.append(relFold+'module')
 import sabr
 
 def gen():
@@ -132,7 +134,7 @@ def gen():
 					sabrObj.addSpace()
 				
 	sabrObj.source('out.tb')
-	os.system('../../../../sabr 1 out.tb')
+	os.system(relFold + 'sabr 1 out.tb')
 
 # process result.txt
 def output():
@@ -186,9 +188,10 @@ def output():
 				
 			for v3 in ['a','b','g']:
 				if v1+v2+v3 in dict:
-					print '\t\tIf ' + infoMatch[v3] + ', ' + dict[v1+v2+v3][0] + ' is ' + dict[v1+v2+v3][1]
+					final = dict[v1+v2+v3][0] + ' is ' + dict[v1+v2+v3][1]
+					print '\t\tIf ' + infoMatch[v3] + ', ' + final
 			print ''
 
+os.system('rm result.txt')
+gen()
 output()
-
-

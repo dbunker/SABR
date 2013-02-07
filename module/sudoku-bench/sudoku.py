@@ -2,7 +2,8 @@
 # top95.txt from http://norvig.com/sudoku.html
 
 import sys, os, time, random, math, numpy, sudokurand
-sys.path.append("..")
+relFold = '../../'
+sys.path.append(relFold + 'module')
 import sabr
 
 def sabrSolver(blockSize,boardStr):
@@ -55,7 +56,7 @@ def sabrSolver(blockSize,boardStr):
 	des = [cross(rs, cs) for rs in rb for cs in cb]
 	addGroup(des)
 	
-	cmd = sabrObj.getCmd('../../sabr',1)
+	cmd = sabrObj.getCmd(relFold+'sabr',1)
 	return cmd
 
 # need to install minizinc from http://www.g12.csse.unimelb.edu.au/minizinc/download.html

@@ -1,7 +1,9 @@
 # shell game
+# unroll: transition by 2 steps instead of 1
 
 import sys, os, re, time, random, math
-sys.path.append("..")
+relFold = '../../../'
+sys.path.append(relFold+'module')
 import sabr
 
 def sabrUnroll():
@@ -15,7 +17,7 @@ def sabrUnroll():
 	
 	sabrObj.source('unroll.tb')
 	
-	res = sabrObj.process('../../sabr',4)
+	res = sabrObj.process(relFold+'/sabr',4)
 	if res != None:
 		(board,trans) = res
 		print trans
