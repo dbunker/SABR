@@ -717,9 +717,6 @@ class SabrObj:
 					newTrans.append((arr[0],arr[1]))
 			
 		return (boardList,transList)
-<<<<<<< HEAD
-		
-=======
 	
 	def getCmd(self,sabrPath,numStages=1):
 	
@@ -727,7 +724,6 @@ class SabrObj:
 		cmd = sabrPath + ' ' + str(numStages) + ' source.tb > stats.txt'
 		return cmd
 	
->>>>>>> c74cce1f268f7840da096540e21176b8b7aa4de5
 	# source.tb
 	def process(self,sabrPath,numStages=1):
 		
