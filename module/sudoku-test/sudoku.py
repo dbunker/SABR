@@ -1,7 +1,7 @@
 # test sudoku using various solvers
 # top95.txt from http://norvig.com/sudoku.html
 
-import sys, os, time, random, math, sudokurand, cvc4sudo
+import sys, os, time, random, math, numpy, sudokurand
 sys.path.append("..")
 import sabr
 
@@ -55,31 +55,8 @@ def sabrSolver(blockSize,boardStr):
 	des = [cross(rs, cs) for rs in rb for cs in cb]
 	addGroup(des)
 	
-	return sabrObj.process('../../sabr',1)
-
-# generateTest takes an integer argument for test number as well as 
-# blockSize which is block width
-def runTests(blockSize,generateTest,solver,shower,numTests=100,
-				outFile='tests.txt',threshold=-1.0):
-	
-	file = open(outFile,'w')
-	for i in range(numTests):
-	
-		line = generateTest(blockSize,i)
-		
-		if line == None:
-			return
-		line = line.strip()
-		
-		start = time.time()
-		res = solver(blockSize,line)
-		tm = time.time()-start
-		
-		outLine = shower(line,res,tm)
-		file.write(outLine)
-		
-		if tm > threshold:
-			print outLine
+	cmd = sabrObj.getCmd('../../sabr',1)
+	return cmd
 
 # need to install minizinc from http://www.g12.csse.unimelb.edu.au/minizinc/download.html
 # and place in system path to run this test
@@ -113,7 +90,7 @@ def minizincSolver(blockSize,line):
 	source.close()
 	
 	cmd = 'minizinc puzzle.mzn > puzzle-out.txt'
-	os.system(cmd)
+	return cmd
 
 # need to install swipl (swi-prolog)
 def prologSolver(blockSize,line):
@@ -188,40 +165,61 @@ def prologSolver(blockSize,line):
 	source.close()
 	
 	cmd = 'echo \'' + boardStr + '\' | swipl -f puzzle.pl'
-	os.system(cmd)
-	
-	exit()
+	return cmd
 
-# random
-def randomTest(size,i):
-	res = sudokurand.random_puzzle(size)
-	return res
+def cvc4Solver(blockSize,line):
 
-def regLineShower(line,res,tm):
+	def select(list):
+		return ' '.join('(select a {0})'.format(l) for l in list)
 	
-	return str(tm) + '\t' + line + '\n'
+	nums = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMO'
+	
+	lineSize = blockSize * blockSize
+	boardSize = lineSize * lineSize
+	
+	lines = []
+	lines.append('(set-logic AUFLIRA)')
+	lines.append('(set-option :produce-models true)')
+	lines.append('(declare-fun a () (Array Int Int))')
+	
+	index = numpy.arange(boardSize).reshape(lineSize,lineSize)
+	for i in xrange(lineSize):
+		lines.append('(assert (distinct {}))'.format(select(index[:,i])))
+		lines.append('(assert (distinct {}))'.format(select(index[i,:])))
+	
+		r0 = (i % blockSize) * blockSize
+		c0 = (i // blockSize) * blockSize
+		lines.append('(assert (distinct {}))'.format(
+			select(index[r0:r0+blockSize,c0:c0+blockSize].ravel())
+		))
+	
+	for i in xrange(boardSize):
+		lines.append('(assert (< 0 (select a {0})))'.format(i))
+		lines.append('(assert (> ' + str(lineSize+1) + ' (select a {0})))'.format(i))
+	
+	for i, n in zip(xrange(boardSize), line):
+		if n != '.':
+			outN = str(nums.index(n)+1)
+			lines.append('(assert (= {0} (select a {1})))'.format(outN, i))
+	
+	lines.append('(check-sat)')
+	lines.append('(get-value ({}))'.format(select(xrange(boardSize))))
+	
+	out = open('puzzle.smt', 'w')
+	outStr = '\n'.join(lines)
+	out.write(outStr)
+	out.write('\n')
+	out.close()
+	
+	# cvc4 must be added to project path
+	# downloadable from http://cvc4.cs.nyu.edu/web/#Downloads
+	cmd = 'cvc4 --lang smt puzzle.smt > cvc4-result.txt'
+	return cmd
 
-# show sabr stats and regular
-def statsLineShower(line,res,tm):
-	
-	statsFile = open('stats.txt','r')
-	stats = statsFile.read()
-	arr1 = stats.split('CPU time              : ')[1]
-	numStr = arr1.split('s',)[0].strip();
-	
-	ret = str(tm) + '\t' + str(numStr) + '\t' + line + '\n'
-	return ret
+def pythonSolver(blockSize,line):
 
-# closure
-def fileTestGen(name):
-	file = open(name,'r')
-	lines = file.read().strip().split('\n')
-	
-	def fileTest(size,i):
-		if i >= len(lines):
-			return None
-		return lines[i]
-		
-	return fileTest
+	cmd = 'python pythonsolver.py ' + str(blockSize) + ' ' + line
+	return cmd
+
 
 
