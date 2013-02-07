@@ -1,63 +1,5 @@
 import os, copy
 
-# construct recursively
-def combSimp(val,numVal,soFar,left,acc):
-	
-	# go through each val
-	if len(left) == 0 or numVal == 0:
-		acc.append(soFar + ([val]*numVal) + left)
-		return
-	
-	# pick number to place now and later
-	for i in range(numVal,-1,-1):
-		
-		newSoFar = soFar + ([val]*i) + [left[0]]
-		newLeft = left[1:]
-		newNum = numVal - i
-		
-		combSimp(val,newNum,newSoFar,newLeft,acc)
-
-# combMany([('A',4),('B',4)])
-def combMany(li):
-	li.reverse()
-	
-	newLeftListGroup = [[]]
-	for (val,numVal) in li:
-		
-		leftListGroup = newLeftListGroup
-		newLeftListGroup = []
-		
-		for leftList in leftListGroup:
-			combSimp(val,numVal,[],leftList,newLeftListGroup)
-
-	return newLeftListGroup
-
-def clean(arr):
-	if not isinstance(arr,list) or arr == []:
-		print 'Malformed List Entered'
-		exit()
-		
-	for y in range(len(arr)):
-		if isinstance(arr[y],list):
-			for x in range(len(arr[y])):
-				arr[y][x] = str(arr[y][x])
-		else:
-			arr[y] = str(arr[y])
-	
-	return arr
-
-# change [[...],...] to [...]
-def flatten(arr):
-	
-	if isinstance(arr[0],list):
-		ret = []
-		for line in arr:
-			for elem in line:
-				ret.append(elem)
-		return ret
-	else:
-		return arr
-
 class SabrObj:
 	
 	def __init__(self):
@@ -827,3 +769,60 @@ class SabrObj:
 		
 		return ret
 		
+# construct recursively
+def combSimp(val,numVal,soFar,left,acc):
+	
+	# go through each val
+	if len(left) == 0 or numVal == 0:
+		acc.append(soFar + ([val]*numVal) + left)
+		return
+	
+	# pick number to place now and later
+	for i in range(numVal,-1,-1):
+		
+		newSoFar = soFar + ([val]*i) + [left[0]]
+		newLeft = left[1:]
+		newNum = numVal - i
+		
+		combSimp(val,newNum,newSoFar,newLeft,acc)
+
+# combMany([('A',4),('B',4)])
+def combMany(li):
+	li.reverse()
+	
+	newLeftListGroup = [[]]
+	for (val,numVal) in li:
+		
+		leftListGroup = newLeftListGroup
+		newLeftListGroup = []
+		
+		for leftList in leftListGroup:
+			combSimp(val,numVal,[],leftList,newLeftListGroup)
+
+	return newLeftListGroup
+
+def clean(arr):
+	if not isinstance(arr,list) or arr == []:
+		print 'Malformed List Entered'
+		exit()
+		
+	for y in range(len(arr)):
+		if isinstance(arr[y],list):
+			for x in range(len(arr[y])):
+				arr[y][x] = str(arr[y][x])
+		else:
+			arr[y] = str(arr[y])
+	
+	return arr
+
+# change [[...],...] to [...]
+def flatten(arr):
+	
+	if isinstance(arr[0],list):
+		ret = []
+		for line in arr:
+			for elem in line:
+				ret.append(elem)
+		return ret
+	else:
+		return arr
