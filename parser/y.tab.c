@@ -68,6 +68,8 @@
 /* Line 268 of yacc.c  */
 #line 19 "parser/tbl.y"
 
+#define YYMAXDEPTH 100000
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -77,7 +79,7 @@ int yylex(void);
 
 
 /* Line 268 of yacc.c  */
-#line 81 "y.tab.c"
+#line 83 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -166,7 +168,7 @@ typedef union YYSTYPE
 {
 
 /* Line 293 of yacc.c  */
-#line 28 "parser/tbl.y"
+#line 30 "parser/tbl.y"
 
     int val;
     treeNode *node;
@@ -174,7 +176,7 @@ typedef union YYSTYPE
 
 
 /* Line 293 of yacc.c  */
-#line 178 "y.tab.c"
+#line 180 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -186,7 +188,7 @@ typedef union YYSTYPE
 
 
 /* Line 343 of yacc.c  */
-#line 190 "y.tab.c"
+#line 192 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -506,13 +508,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    68,    68,    72,    73,    77,    78,    79,    80,    81,
-      82,    83,    87,    88,    89,    93,    94,    98,    99,   103,
-     107,   111,   115,   118,   123,   124,   128,   129,   133,   137,
-     140,   145,   150,   153,   158,   161,   166,   167,   168,   169,
-     173,   174,   175,   176,   177,   181,   182,   186,   187,   188,
-     189,   193,   197,   198,   199,   200,   204,   208,   209,   210,
-     211,   215,   216,   217,   218,   219,   223,   224,   225,   226
+       0,    70,    70,    74,    75,    79,    80,    81,    82,    83,
+      84,    85,    89,    90,    91,    95,    96,   100,   101,   105,
+     109,   113,   117,   120,   125,   126,   130,   131,   135,   139,
+     142,   147,   152,   155,   160,   163,   168,   169,   170,   171,
+     175,   176,   177,   178,   179,   183,   184,   188,   189,   190,
+     191,   195,   199,   200,   201,   202,   206,   210,   211,   212,
+     213,   217,   218,   219,   220,   221,   225,   226,   227,   228
 };
 #endif
 
@@ -1540,483 +1542,483 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 68 "parser/tbl.y"
+#line 70 "parser/tbl.y"
     { if(endFileGlobal) execute((yyvsp[(1) - (1)].node)); }
     break;
 
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 72 "parser/tbl.y"
+#line 74 "parser/tbl.y"
     { (yyval.node) = statementNodes((yyvsp[(1) - (5)].node),(yyvsp[(2) - (5)].node),(yyvsp[(3) - (5)].node),(yyvsp[(4) - (5)].node),(yyvsp[(5) - (5)].node)); }
     break;
 
   case 4:
 
 /* Line 1806 of yacc.c  */
-#line 73 "parser/tbl.y"
+#line 75 "parser/tbl.y"
     { (yyval.node) = statementNodes((yyvsp[(1) - (3)].node),(yyvsp[(2) - (3)].node),NULL,NULL,(yyvsp[(3) - (3)].node)); }
     break;
 
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 77 "parser/tbl.y"
+#line 79 "parser/tbl.y"
     { (yyval.node) = choiceNode(OBJECT,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 78 "parser/tbl.y"
+#line 80 "parser/tbl.y"
     { (yyval.node) = choiceNode(DESOBJECT,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 7:
 
 /* Line 1806 of yacc.c  */
-#line 79 "parser/tbl.y"
+#line 81 "parser/tbl.y"
     { (yyval.node) = choiceNode(ALLDIF,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 80 "parser/tbl.y"
+#line 82 "parser/tbl.y"
     { (yyval.node) = choiceNode(TRANSFORM,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 81 "parser/tbl.y"
+#line 83 "parser/tbl.y"
     { (yyval.node) = choiceNode(REQUIRE,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 10:
 
 /* Line 1806 of yacc.c  */
-#line 82 "parser/tbl.y"
+#line 84 "parser/tbl.y"
     { (yyval.node) = choiceNode(OPTION,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 83 "parser/tbl.y"
+#line 85 "parser/tbl.y"
     { (yyval.node) = NULL; }
     break;
 
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 87 "parser/tbl.y"
+#line 89 "parser/tbl.y"
     { (yyval.node) = setStages((yyvsp[(2) - (5)].val),(yyvsp[(4) - (5)].val)); }
     break;
 
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 88 "parser/tbl.y"
+#line 90 "parser/tbl.y"
     { (yyval.node) = setStages((yyvsp[(2) - (3)].val),(yyvsp[(2) - (3)].val)); }
     break;
 
   case 14:
 
 /* Line 1806 of yacc.c  */
-#line 89 "parser/tbl.y"
+#line 91 "parser/tbl.y"
     { (yyval.node) = NULL; }
     break;
 
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 93 "parser/tbl.y"
+#line 95 "parser/tbl.y"
     { (yyval.node) = symNode((yyvsp[(1) - (1)].node),NULL); }
     break;
 
   case 16:
 
 /* Line 1806 of yacc.c  */
-#line 94 "parser/tbl.y"
+#line 96 "parser/tbl.y"
     { (yyval.node) = symNode((yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 98 "parser/tbl.y"
+#line 100 "parser/tbl.y"
     { (yyval.node) = nameNode(SYMBOLS,NULL,0,0,(yyvsp[(3) - (4)].node)); }
     break;
 
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 99 "parser/tbl.y"
+#line 101 "parser/tbl.y"
     { (yyval.node) = nameNode(SYMBOLS,NULL,(yyvsp[(2) - (5)].val),0,(yyvsp[(4) - (5)].node)); }
     break;
 
   case 19:
 
 /* Line 1806 of yacc.c  */
-#line 103 "parser/tbl.y"
+#line 105 "parser/tbl.y"
     { (yyval.node) = storeNode(BOARD,(yyvsp[(3) - (4)].node)); }
     break;
 
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 107 "parser/tbl.y"
+#line 109 "parser/tbl.y"
     { (yyval.node) = nameNode(START,NULL,0,0,(yyvsp[(3) - (4)].node)); }
     break;
 
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 111 "parser/tbl.y"
+#line 113 "parser/tbl.y"
     { (yyval.node) = nameNode(END,NULL,0,0,(yyvsp[(3) - (4)].node)); }
     break;
 
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 116 "parser/tbl.y"
+#line 118 "parser/tbl.y"
     { (yyval.node) = transNode((yyvsp[(1) - (10)].val),(yyvsp[(2) - (10)].node),(yyvsp[(3) - (10)].val),(yyvsp[(5) - (10)].val),(yyvsp[(7) - (10)].node),(yyvsp[(9) - (10)].node)); }
     break;
 
   case 23:
 
 /* Line 1806 of yacc.c  */
-#line 119 "parser/tbl.y"
+#line 121 "parser/tbl.y"
     { (yyval.node) = transNode((yyvsp[(1) - (8)].val),(yyvsp[(2) - (8)].node),0,(yyvsp[(3) - (8)].val),(yyvsp[(5) - (8)].node),(yyvsp[(7) - (8)].node)); }
     break;
 
   case 24:
 
 /* Line 1806 of yacc.c  */
-#line 123 "parser/tbl.y"
+#line 125 "parser/tbl.y"
     { (yyval.val) = TRANSFORM; }
     break;
 
   case 25:
 
 /* Line 1806 of yacc.c  */
-#line 124 "parser/tbl.y"
+#line 126 "parser/tbl.y"
     { (yyval.val) = TRANSFORMSIM; }
     break;
 
   case 26:
 
 /* Line 1806 of yacc.c  */
-#line 128 "parser/tbl.y"
+#line 130 "parser/tbl.y"
     { (yyval.val) = (yyvsp[(1) - (1)].val); }
     break;
 
   case 27:
 
 /* Line 1806 of yacc.c  */
-#line 129 "parser/tbl.y"
+#line 131 "parser/tbl.y"
     { (yyval.val) = addSymbol("Board"); }
     break;
 
   case 28:
 
 /* Line 1806 of yacc.c  */
-#line 133 "parser/tbl.y"
+#line 135 "parser/tbl.y"
     { (yyval.node) = nameNode(OBJECT,NULL,(yyvsp[(2) - (5)].val),(yyvsp[(2) - (5)].val),(yyvsp[(4) - (5)].node)); }
     break;
 
   case 29:
 
 /* Line 1806 of yacc.c  */
-#line 138 "parser/tbl.y"
+#line 140 "parser/tbl.y"
     { (yyval.node) = nameNode(DESOBJECT,NULL,(yyvsp[(2) - (7)].val),(yyvsp[(4) - (7)].val),(yyvsp[(6) - (7)].node)); }
     break;
 
   case 30:
 
 /* Line 1806 of yacc.c  */
-#line 141 "parser/tbl.y"
+#line 143 "parser/tbl.y"
     { (yyval.node) = nameNode(DESOBJECT,NULL,0,(yyvsp[(2) - (5)].val),(yyvsp[(4) - (5)].node)); }
     break;
 
   case 31:
 
 /* Line 1806 of yacc.c  */
-#line 146 "parser/tbl.y"
+#line 148 "parser/tbl.y"
     { (yyval.node) = nameNode(ALLDIF,(yyvsp[(2) - (5)].node),0,0,(yyvsp[(4) - (5)].node)); }
     break;
 
   case 32:
 
 /* Line 1806 of yacc.c  */
-#line 151 "parser/tbl.y"
+#line 153 "parser/tbl.y"
     { (yyval.node) = nameNode(REQUIRE,(yyvsp[(2) - (8)].node),(yyvsp[(3) - (8)].val),(yyvsp[(5) - (8)].val),(yyvsp[(7) - (8)].node)); }
     break;
 
   case 33:
 
 /* Line 1806 of yacc.c  */
-#line 154 "parser/tbl.y"
+#line 156 "parser/tbl.y"
     { (yyval.node) = nameNode(REQUIRE,(yyvsp[(2) - (6)].node),0,(yyvsp[(3) - (6)].val),(yyvsp[(5) - (6)].node)); }
     break;
 
   case 34:
 
 /* Line 1806 of yacc.c  */
-#line 159 "parser/tbl.y"
+#line 161 "parser/tbl.y"
     { (yyval.node) = nameNode(OPTION,(yyvsp[(2) - (8)].node),(yyvsp[(3) - (8)].val),(yyvsp[(5) - (8)].val),(yyvsp[(7) - (8)].node)); }
     break;
 
   case 35:
 
 /* Line 1806 of yacc.c  */
-#line 162 "parser/tbl.y"
+#line 164 "parser/tbl.y"
     { (yyval.node) = nameNode(OPTION,(yyvsp[(2) - (6)].node),0,(yyvsp[(3) - (6)].val),(yyvsp[(5) - (6)].node)); }
     break;
 
   case 36:
 
 /* Line 1806 of yacc.c  */
-#line 166 "parser/tbl.y"
+#line 168 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 37:
 
 /* Line 1806 of yacc.c  */
-#line 167 "parser/tbl.y"
+#line 169 "parser/tbl.y"
     { (yyval.node) = setNode(SEMI,(yyvsp[(1) - (3)].node),(yyvsp[(3) - (3)].node)); }
     break;
 
   case 38:
 
 /* Line 1806 of yacc.c  */
-#line 168 "parser/tbl.y"
+#line 170 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),NULL); }
     break;
 
   case 39:
 
 /* Line 1806 of yacc.c  */
-#line 169 "parser/tbl.y"
+#line 171 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (1)].node),NULL); }
     break;
 
   case 40:
 
 /* Line 1806 of yacc.c  */
-#line 173 "parser/tbl.y"
+#line 175 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 41:
 
 /* Line 1806 of yacc.c  */
-#line 174 "parser/tbl.y"
+#line 176 "parser/tbl.y"
     { (yyval.node) = setNode(SEMI,(yyvsp[(1) - (3)].node),(yyvsp[(3) - (3)].node)); }
     break;
 
   case 42:
 
 /* Line 1806 of yacc.c  */
-#line 175 "parser/tbl.y"
+#line 177 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),NULL); }
     break;
 
   case 43:
 
 /* Line 1806 of yacc.c  */
-#line 176 "parser/tbl.y"
+#line 178 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (1)].node),NULL); }
     break;
 
   case 44:
 
 /* Line 1806 of yacc.c  */
-#line 177 "parser/tbl.y"
+#line 179 "parser/tbl.y"
     { (yyval.node) = setNode(SPACEVAR,NULL,(yyvsp[(2) - (2)].node)); }
     break;
 
   case 45:
 
 /* Line 1806 of yacc.c  */
-#line 181 "parser/tbl.y"
+#line 183 "parser/tbl.y"
     { (yyval.node) = setBoardVarNode(BOARDVAR,(yyvsp[(1) - (1)].val),0); }
     break;
 
   case 46:
 
 /* Line 1806 of yacc.c  */
-#line 182 "parser/tbl.y"
+#line 184 "parser/tbl.y"
     { (yyval.node) = setBoardVarNode(BOARDVAR,(yyvsp[(1) - (3)].val),(yyvsp[(3) - (3)].val)); }
     break;
 
   case 47:
 
 /* Line 1806 of yacc.c  */
-#line 186 "parser/tbl.y"
+#line 188 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 48:
 
 /* Line 1806 of yacc.c  */
-#line 187 "parser/tbl.y"
+#line 189 "parser/tbl.y"
     { (yyval.node) = setNode(SEMI,(yyvsp[(1) - (3)].node),(yyvsp[(3) - (3)].node)); }
     break;
 
   case 49:
 
 /* Line 1806 of yacc.c  */
-#line 188 "parser/tbl.y"
+#line 190 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),NULL); }
     break;
 
   case 50:
 
 /* Line 1806 of yacc.c  */
-#line 189 "parser/tbl.y"
+#line 191 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (1)].node),NULL); }
     break;
 
   case 51:
 
 /* Line 1806 of yacc.c  */
-#line 193 "parser/tbl.y"
+#line 195 "parser/tbl.y"
     { (yyval.node) = setVarNode(CHARVAR,(yyvsp[(1) - (1)].val),NULL); }
     break;
 
   case 52:
 
 /* Line 1806 of yacc.c  */
-#line 197 "parser/tbl.y"
+#line 199 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 53:
 
 /* Line 1806 of yacc.c  */
-#line 198 "parser/tbl.y"
+#line 200 "parser/tbl.y"
     { (yyval.node) = setNode(SEMI,(yyvsp[(1) - (3)].node),(yyvsp[(3) - (3)].node)); }
     break;
 
   case 54:
 
 /* Line 1806 of yacc.c  */
-#line 199 "parser/tbl.y"
+#line 201 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),NULL); }
     break;
 
   case 55:
 
 /* Line 1806 of yacc.c  */
-#line 200 "parser/tbl.y"
+#line 202 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (1)].node),NULL); }
     break;
 
   case 56:
 
 /* Line 1806 of yacc.c  */
-#line 204 "parser/tbl.y"
+#line 206 "parser/tbl.y"
     { (yyval.node) = setVarNode(MANYVAR,(yyvsp[(1) - (1)].val),NULL); }
     break;
 
   case 57:
 
 /* Line 1806 of yacc.c  */
-#line 208 "parser/tbl.y"
+#line 210 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),(yyvsp[(2) - (2)].node)); }
     break;
 
   case 58:
 
 /* Line 1806 of yacc.c  */
-#line 209 "parser/tbl.y"
+#line 211 "parser/tbl.y"
     { (yyval.node) = setNode(SEMI,(yyvsp[(1) - (3)].node),(yyvsp[(3) - (3)].node)); }
     break;
 
   case 59:
 
 /* Line 1806 of yacc.c  */
-#line 210 "parser/tbl.y"
+#line 212 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (2)].node),NULL); }
     break;
 
   case 60:
 
 /* Line 1806 of yacc.c  */
-#line 211 "parser/tbl.y"
+#line 213 "parser/tbl.y"
     { (yyval.node) = setNode(0,(yyvsp[(1) - (1)].node),NULL); }
     break;
 
   case 61:
 
 /* Line 1806 of yacc.c  */
-#line 215 "parser/tbl.y"
+#line 217 "parser/tbl.y"
     { (yyval.node) = setVarNode(ELABTEMP,(yyvsp[(1) - (1)].val),NULL); }
     break;
 
   case 62:
 
 /* Line 1806 of yacc.c  */
-#line 216 "parser/tbl.y"
+#line 218 "parser/tbl.y"
     { (yyval.node) = setVarNode(ELABQUEST,0,NULL); }
     break;
 
   case 63:
 
 /* Line 1806 of yacc.c  */
-#line 217 "parser/tbl.y"
+#line 219 "parser/tbl.y"
     { (yyval.node) = setVarNode(ELABNEG,(yyvsp[(2) - (2)].val),NULL); }
     break;
 
   case 64:
 
 /* Line 1806 of yacc.c  */
-#line 218 "parser/tbl.y"
+#line 220 "parser/tbl.y"
     { (yyval.node) = setVarNode(ELABPAREN,0,(yyvsp[(2) - (3)].node)); }
     break;
 
   case 65:
 
 /* Line 1806 of yacc.c  */
-#line 219 "parser/tbl.y"
+#line 221 "parser/tbl.y"
     { (yyval.node) = setVarNode(ELABCOL,(yyvsp[(1) - (5)].val),(yyvsp[(4) - (5)].node)); }
     break;
 
   case 66:
 
 /* Line 1806 of yacc.c  */
-#line 223 "parser/tbl.y"
+#line 225 "parser/tbl.y"
     { (yyval.node) = setCommaNode(ELABVAR,(yyvsp[(1) - (1)].val),NULL); }
     break;
 
   case 67:
 
 /* Line 1806 of yacc.c  */
-#line 224 "parser/tbl.y"
+#line 226 "parser/tbl.y"
     { (yyval.node) = setCommaNode(ELABNEG,(yyvsp[(2) - (2)].val),NULL); }
     break;
 
   case 68:
 
 /* Line 1806 of yacc.c  */
-#line 225 "parser/tbl.y"
+#line 227 "parser/tbl.y"
     { (yyval.node) = setCommaNode(ELABVAR,(yyvsp[(1) - (3)].val),(yyvsp[(3) - (3)].node)); }
     break;
 
   case 69:
 
 /* Line 1806 of yacc.c  */
-#line 226 "parser/tbl.y"
+#line 228 "parser/tbl.y"
     { (yyval.node) = setCommaNode(ELABNEG,(yyvsp[(2) - (4)].val),(yyvsp[(4) - (4)].node)); }
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 2020 "y.tab.c"
+#line 2022 "y.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2247,7 +2249,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 228 "parser/tbl.y"
+#line 230 "parser/tbl.y"
 
 
 

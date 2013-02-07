@@ -1,5 +1,37 @@
 import os, copy
 
+# construct recursively
+def combSimp(val,numVal,soFar,left,acc):
+	
+	# go through each val
+	if len(left) == 0 or numVal == 0:
+		acc.append(soFar + ([val]*numVal) + left)
+		return
+	
+	# pick number to place now and later
+	for i in range(numVal,-1,-1):
+		
+		newSoFar = soFar + ([val]*i) + [left[0]]
+		newLeft = left[1:]
+		newNum = numVal - i
+		
+		combSimp(val,newNum,newSoFar,newLeft,acc)
+
+# combMany([('A',4),('B',4)])
+def combMany(li):
+	li.reverse()
+	
+	newLeftListGroup = [[]]
+	for (val,numVal) in li:
+		
+		leftListGroup = newLeftListGroup
+		newLeftListGroup = []
+		
+		for leftList in leftListGroup:
+			combSimp(val,numVal,[],leftList,newLeftListGroup)
+
+	return newLeftListGroup
+
 def clean(arr):
 	if not isinstance(arr,list) or arr == []:
 		print 'Malformed List Entered'
@@ -30,6 +62,7 @@ class SabrObj:
 	
 	def __init__(self):
 		self.sym = []
+		self.symList = []
 		self.board = []
 		self.start = []
 		self.end = []
@@ -40,9 +73,13 @@ class SabrObj:
 		# ( [[<board>]], [<list of trans to get from last>] )
 		self.results = []
 				
-    # [<symbols>]
+    # main unnamed [<symbols>]
 	def setSym(self,arr):
 		self.sym = clean(arr)
+	
+	# list [<symbols>]	
+	def addSym(self,name,arr):
+		self.symList.append((name,clean(arr)))
 	
 	# [<board array>]
 	def setBoard(self,arr):
@@ -102,24 +139,34 @@ class SabrObj:
 		
 	def singleWrap(self,name,arr):
 	
-		return name + ' {' + self.outLines(arr) + '}\n\n'
+		return name + ' {' + self.outLines(arr) + '}\n'
 	
 	def toString(self):
 		
-		if self.sym == [] or self.board == [] or (bool(self.start != []) ^ bool(self.end != [])):
+		if (self.sym == [] and self.symList == []) or self.board == [] or (bool(self.start != []) ^ bool(self.end != [])):
+			
 			print 'Must have Sym, Board and possibly Start and End'
 			exit()
 		
+		out = ''
+		
 		# sym
-		out = self.singleWrap('Sym',self.sym)
+		if self.sym != []:
+			out += self.singleWrap('Sym',self.sym) + '\n'
+		
+		for (name,sym) in self.symList:
+			out += self.singleWrap('Sym '+name,sym)
+		
+		if self.symList != []:
+			out += '\n'
 		
 		# board
-		out +=  self.singleWrap('Board',self.board)
+		out +=  self.singleWrap('Board',self.board) + '\n'
 		
 		# start, end
 		if self.start != [] and self.end != []:
-			out += self.singleWrap('Start',self.start)
-			out += self.singleWrap('End',self.end)
+			out += self.singleWrap('Start',self.start) + '\n'
+			out += self.singleWrap('End',self.end) + '\n'
 			
 		# constraints: AllDif, Req, Opt, Trans, TransSim, DesObj
 		for const in self.constraints:
@@ -670,7 +717,7 @@ class SabrObj:
 					newTrans.append((arr[0],arr[1]))
 			
 		return (boardList,transList)
-	
+		
 	# source.tb
 	def process(self,sabrPath,numStages=1):
 		
@@ -684,7 +731,7 @@ class SabrObj:
 		resultFile.close()
 		
 		return self.getResult(res)
-	
+		
 	def multiProcess(self,sabrPath,numStages=1):
 	
 		ret = None

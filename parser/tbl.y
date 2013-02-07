@@ -17,6 +17,8 @@ limitations under the License.
 /* yacc file */
 
 %{
+#define YYMAXDEPTH 100000
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
