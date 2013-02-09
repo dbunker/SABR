@@ -64,6 +64,11 @@ DesObj indicates what board-cells that Obj can define. DesObj can also have a na
 appears along with the transition that used it in the output file.
 DesObj optional-desobj-name:obj-name{ board-cell1 board-cell2 ... }
 
+------ AllDif ------
+
+AllDif requires all the cells stated must be different
+AllDif ( obj-cell1 obj-cell2 ... }
+
 ------ Req ------
 
 Req defines what rules the object must follow (defined over all board-cells 
@@ -99,4 +104,3 @@ Trans trans-name:obj-name{ rule1 rule2 ... => rule3 rule4 ... }
 
 Same as Trans, but allows multiple transitions to happen in a single stage iteration.
 TransSim trans-name:obj-name{ rule1 rule2 ... => rule3 rule4 ... }
-
