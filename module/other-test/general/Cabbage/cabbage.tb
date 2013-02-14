@@ -8,6 +8,7 @@ Board { cabbage goat wolf sailor }
 Start { west west west west }
 End { east east east east }
 
+# sailor can take one passenger east or west
 Trans SailEast:Crew { west west => east east }
 Trans SailWest:Crew { east east => west west }
 
@@ -16,6 +17,7 @@ DesObj Cabbage:Crew { sailor cabbage }
 DesObj Wolf:Crew { sailor wolf }
 DesObj Alone:Crew { sailor sailor }
 
+# sailor needs to be watching these two if they are together
 Opt Watch { side side side }
 Opt Watch { !side !side side }
 Opt Watch { !side side !side }
