@@ -193,7 +193,7 @@ if len(sys.argv) == 2:
 		print 'Improper Command'
 		exit()
 		
-	tm = time.time()-start
+	tm = time.time() - start
 	print 'Time: ' + str(tm) + ' Seconds'
 	print 'Passed All Tests'
 	
