@@ -1,0 +1,30 @@
+west west west west 
+
+SailEast Goat
+
+west east west east 
+
+SailWest Alone
+
+west east west west 
+
+SailEast Wolf
+
+west east east east 
+
+SailWest Goat
+
+west west east west 
+
+SailEast Cabbage
+
+east west east east 
+
+SailWest Alone
+
+east west east west 
+
+SailEast Goat
+
+east east east east 
+

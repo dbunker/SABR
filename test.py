@@ -194,8 +194,8 @@ if len(sys.argv) == 2:
 		exit()
 		
 	tm = time.time()-start
-	print 'Passed All Tests'
 	print 'Time: ' + str(tm) + ' Seconds'
+	print 'Passed All Tests'
 	
 else:
 	print coms

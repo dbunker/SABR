@@ -1,0 +1,24 @@
+# river crossing puzzle
+# http://www.mathcats.com/explore/river/crossing.html
+# sabr 10 cabbage.tb
+
+Sym { west east }
+
+Board { cabbage goat wolf sailor }
+Start { west west west west }
+End { east east east east }
+
+Trans SailEast:Crew { west west => east east }
+Trans SailWest:Crew { east east => west west }
+
+DesObj Goat:Crew { sailor goat }
+DesObj Cabbage:Crew { sailor cabbage }
+DesObj Wolf:Crew { sailor wolf }
+DesObj Alone:Crew { sailor sailor }
+
+Opt Watch { side side side }
+Opt Watch { !side !side side }
+Opt Watch { !side side !side }
+
+DesObj Watch { sailor goat cabbage }
+DesObj Watch { sailor wolf goat }
