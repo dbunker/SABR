@@ -4,19 +4,23 @@
 
 Sym { west east }
 
+# each cell on the board can be any symbol
 Board { cabbage goat wolf sailor }
 Start { west west west west }
 End { east east east east }
 
+# transitions for object Crew
 # sailor can take one passenger east or west
 Trans SailEast:Crew { west west => east east }
 Trans SailWest:Crew { east east => west west }
 
+# describe the object's cells
 DesObj Goat:Crew { sailor goat }
 DesObj Cabbage:Crew { sailor cabbage }
 DesObj Wolf:Crew { sailor wolf }
 DesObj Alone:Crew { sailor sailor }
 
+# options for object Watch, at least one must match
 # sailor needs to be watching these two if they are together
 Opt Watch { side side side }
 Opt Watch { !side !side side }

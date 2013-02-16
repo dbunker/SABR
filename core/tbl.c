@@ -901,7 +901,7 @@ void printClauses(char *fileName,indexList *varList,linkedList clauseList){
 	fclose(file);
 }
 
-void checkRes(){}
+void checkRes(int res){}
 
 // read in from dimout.out
 // convert output from minisat to human readable

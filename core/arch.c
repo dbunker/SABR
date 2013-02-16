@@ -546,6 +546,7 @@ char *getDir(char *path){
 			last = i+1;
 	
 	char *dir = Malloc(sizeof(char)*(last+1));
+	dir[last] = '\0';
 	strncpy(dir,path,last);
 	
 	return dir;

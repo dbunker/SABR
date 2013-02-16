@@ -12,9 +12,6 @@ The goal of the language is to make representing operations research problems no
 
 From a theoretical perspective, the language can also be used to prove a problem is NP-Easy and to verify properties about automata and systems that can be modeled as automata such as circuits and programs.
 
-Website: http://sabrlang.org  
-Examples: http://sabrlang.org/river.html
-
 Install
 -------------------------
 
@@ -48,8 +45,45 @@ python test.py all
 python test.py help  
 	For more commands
 
+Example
+-------------------------
+
+Let's see what the traditional river crossing puzzle (http://wikipedia.org/wiki/river_crossing_puzzle) looks like in SABR.
+
+	Sym { west east }
+	
+	# each cell on the board can be any symbol
+	Board { cabbage goat wolf sailor }
+	Start { west west west west }
+	End { east east east east }
+	
+	# transitions for object Crew
+	# sailor can take one passenger east or west
+	Trans SailEast:Crew { west west => east east }
+	Trans SailWest:Crew { east east => west west }
+	
+	# describe object Crew's cells
+	DesObj Goat:Crew { sailor goat }
+	DesObj Cabbage:Crew { sailor cabbage }
+	DesObj Wolf:Crew { sailor wolf }
+	DesObj Alone:Crew { sailor sailor }
+	
+	# options for object Watch, at least one must match
+	# sailor needs to be watching these two if they are together
+	Opt Watch { side side side }
+	Opt Watch { !side !side side }
+	Opt Watch { !side side !side }
+	
+	DesObj Watch { sailor goat cabbage }
+	DesObj Watch { sailor wolf goat }
+
+Running ./sabr 10 source.tb shows us the answer to the puzzle in result.txt (https://gist.github.com/dbunker/4966217).
+
 Other
 -------------------------
 
 For more documentation check /doc/LANGUAGE.  
 Simple python module can be found at /module/sabr.py  
+
+Website: http://sabrlang.org  
+Examples: http://sabrlang.org/river.html
