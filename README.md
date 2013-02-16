@@ -26,7 +26,7 @@ python setup.py help
 Run
 -------------------------
 
-To run SABR, provide an optional flag, the number of stages to use, and the input source path.
+To run SABR, provide an optional flag, the number of stages to use, and the input source path. The solution can be found in result.txt.
 
 Example:  
 ./sabr 20 test/Simple/simple.tb
