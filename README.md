@@ -15,40 +15,46 @@ From a theoretical perspective, the language can also be used to prove a problem
 Install
 -------------------------
 
-SABR is installed using setup.py
+SABR is installed using `setup.py`.
 
-python setup.py build  
-	Will build SABR and the CNF solver
+Build SABR and the CNF solver:
 
-python setup.py help  
-	For more commands
+    python setup.py build
+    
+For more commands:
+
+    python setup.py help
 
 Run
 -------------------------
 
-To run SABR, provide an optional flag, the number of stages to use, and the input source path. The solution can be found in result.txt.
+To run SABR, provide an optional flag, the number of stages to use, and the input source path. The solution can be found in `result.txt`.
 
-Example:  
-./sabr 20 test/Simple/simple.tb
+Example:
 
-./sabr --help  
-	For more commands
+    ./sabr 20 test/Simple/simple.tb
+
+For more commands:
+
+    ./sabr --help
 
 Testing
 -------------------------
 
-Testing can be done with test.py. 
+Testing can be done with `test.py`.
 
-python test.py all  
-	Runs all tests
+Runs all tests:
 
-python test.py help  
-	For more commands
+    python test.py all
+	
+For more commands:
+
+    python test.py help	
 
 Example
 -------------------------
 
-Let's see what the traditional river crossing puzzle (http://wikipedia.org/wiki/river_crossing_puzzle) looks like in SABR.
+Let's see what the traditional [river crossing puzzle](http://wikipedia.org/wiki/river_crossing_puzzle) looks like in SABR. [A more detailed walkthrough](http://sabrlang.org/river.html) is also available.
 
 	Sym { west east }
 	
@@ -77,13 +83,13 @@ Let's see what the traditional river crossing puzzle (http://wikipedia.org/wiki/
 	DesObj Watch { sailor goat cabbage }
 	DesObj Watch { sailor wolf goat }
 
-Running ./sabr 10 source.tb shows us the answer to the puzzle in result.txt (https://gist.github.com/dbunker/4966217).
+Running `./sabr 10 source.tb` shows us the answer to the puzzle in `result.txt` (https://gist.github.com/dbunker/4966217).
 
 Other
 -------------------------
 
-For more documentation check /doc/LANGUAGE.  
-Simple python module can be found at /module/sabr.py  
+For more documentation check `/doc/LANGUAGE`.
+Simple python module can be found at `/module/sabr.py`
 
 Website: http://sabrlang.org  
 Examples: http://sabrlang.org/river.html
