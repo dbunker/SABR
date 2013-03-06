@@ -30,7 +30,7 @@ def parser():
 
 def sabr():
 
-	cmd  = 'gcc -Ofast -g -Wall -o sabr '
+	cmd  = 'gcc -O3 -g -Wall -o sabr '
 	cmd += 'utils/linkedlist.c utils/skiplist.c utils/botlist.c utils/gendebug.c '
 	cmd += 'parser/y.tab.c parser/lex.yy.c '
 	cmd += 'core/arch.c core/structs.c core/debug.c core/tbl.c core/req.c core/var.c'
