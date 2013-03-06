@@ -14,7 +14,7 @@ Board {
 }
 
 Req Board {
-				 R;
+                 R;
      	      !X   X;
      	     B  !X   X;
      	      !X  !X;
@@ -24,17 +24,15 @@ Req Board {
 	 B !X !X    X !X  R;
 }
 
-# each color must be surrounded by exactly two of its 
-# color, unless it is on an end where it has exactly one
+# each color must be surrounded by exactly two of its color, unless 
+# it is on an end, in which case it is surrounded by exactly one
 
-# middle sides
+# middle block followed by sides
 Opt conLink2 { v  v  v }
-# Opt conLink2 { X  ?  ? }
 
 Opt conLink3 { v !v  v  v }
 Opt conLink3 { v  v !v  v }
 Opt conLink3 { v  v  v !v }
-# Opt conLink3 { X  ?  ?  ? }
 
 Opt conLink4 { v  v  v !v !v }
 Opt conLink4 { v  v !v  v !v }
@@ -42,6 +40,10 @@ Opt conLink4 { v  v !v !v  v }
 Opt conLink4 { v !v  v  v !v }
 Opt conLink4 { v !v  v !v  v }
 Opt conLink4 { v !v !v  v  v }
+
+# these could be used if we didn't know where the Xs were
+# Opt conLink2 { X  ?  ? }
+# Opt conLink3 { X  ?  ?  ? }
 # Opt conLink4 { X  ?  ?  ?  ? }
 
 # all links
@@ -64,7 +66,7 @@ DesObj conLink3 { y7 y4 y8 y6 }
 # DesObj conLink2 { x6 x3 x7 }
 # DesObj conLink2 { y8 y5 y7 }
 
-# could also get speed up by removing all X from board entirely
+# could also get speed up by removing all Xs from board entirely
 # DesObj conLink3 { b1 a0 c1 c2 }
 # DesObj conLink2 { c2 b1 d1 }
 # DesObj conLink3 { x0 c0 x1 x3 }
