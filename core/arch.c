@@ -509,6 +509,7 @@ void yyerror(char *s) {
 }
 
 void endError(){
+	
 	// clean up
 	if(tempClausesFileGlobal != NULL){
 		fclose(tempClausesFileGlobal);

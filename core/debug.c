@@ -731,11 +731,10 @@ void checkElabDet(char *elabTypeName,int elabNameId,int elabObjId,setData *nameS
 	}
 
 	objHolder *oh = getLinked(objList,objSearch,&elabObjId);
-	if(!oh){
-		printf("Error: %s %s Invalid Object.\n",
-			elabTypeName, getStringSym(elabNameId));
-		endError();
-	}
+	
+	// these means there is an object that has Opt, Req, etc. but is never described
+	if(!oh)
+		return;
 
 	nameData *obj = oh->obj;
 	linkedList assocObjs = oh->assocObjs;

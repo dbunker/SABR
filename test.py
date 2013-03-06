@@ -119,7 +119,7 @@ def clear(newList,size):
 debugList = [	'1-Sym/1-MultiName', '1-Sym/2-DupGenList', '1-Sym/3-DupSym',
 		'2-Board/1-NoSym', '2-Board/2-NoGenSym', '2-Board/3-DupCellName',
 		'3-Obj/1-MultiNameObj', '3-Obj/2-MultiNameDesObj', '3-Obj/3-ObjCreate', '3-Obj/4-DesObj',
-		'4-Elab/1-Req/1-MultiNameReq', '4-Elab/1-Req/2-StageReq', '4-Elab/1-Req/3-Obj/1-BadObj',
+		'4-Elab/1-Req/1-MultiNameReq', '4-Elab/1-Req/2-StageReq',
 		'4-Elab/1-Req/3-Obj/2-MatchObj', '4-Elab/1-Req/4-Temp/1-Paren', '4-Elab/1-Req/4-Temp/2-SymName',
 		'4-Elab/1-Req/4-Temp/3-Connect', '4-Elab/2-Rest/1-MultiNameTrans','4-Elab/2-Rest/2-StageOpt',
 		'4-Elab/2-Rest/3-StageTrans', '4-Elab/2-Rest/4-TransObj', '4-Elab/2-Rest/5-StartEnd',
