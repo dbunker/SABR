@@ -1,0 +1,9 @@
+..... R 
+.... R X 
+... B R X 
+.... B R 
+..... B 
+X X B . X R X 
+X X B . X R X 
+B B B . X R R 
+
