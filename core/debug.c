@@ -732,7 +732,7 @@ void checkElabDet(char *elabTypeName,int elabNameId,int elabObjId,setData *nameS
 
 	objHolder *oh = getLinked(objList,objSearch,&elabObjId);
 	
-	// these means there is an object that has Opt, Req, etc. but is never described
+	// this means there is an object that has Opt, Req, etc. but is never described
 	if(!oh)
 		return;
 
