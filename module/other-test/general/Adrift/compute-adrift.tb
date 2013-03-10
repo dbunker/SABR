@@ -4,32 +4,32 @@ Sym { R B X }
 
 Board {
 
-	z0 z1 z2;
-	z3 z4 z5;
-	z6 z7 z8;
+	z00 z01 z02;
+	z10 z11 z12;
+	z20 z21 z22;
      	
-	x0 x1 x2;
-	x3 x4 x5;
-	x6 x7 x8;
+	x00 x01 x02;
+	x10 x11 x12;
+	x20 x21 x22;
 	
-	y0 y1 y2;
-	y3 y4 y5;
-	y6 y7 y8;
+	y00 y01 y02;
+	y10 y11 y12;
+	y20 y21 y22;
 }
 
 Req Board {
 
 	 R  X  X;
-	!X !X !X;
-	 B !X !X;
+	 ?  ?  ?;
+	 B  ?  ?;
 	
-	 X  X !X;
-	 X  X !X;
-	 B !X !X;
+	 X  X  ?;
+	 X  X  ?;
+	 B  ?  ?;
 	 
-	 X !X  X;
-	 X !X  X;
-	 X !X  R;
+	 X  ?  X;
+	 X  ?  X;
+	 X  ?  R;
 }
 
 # each color must be surrounded by exactly two of its color, unless 
@@ -68,34 +68,34 @@ Opt link3 { X  ?  ?  ? }
 Opt link4 { X  ?  ?  ?  ? }
 
 # all links
-DesObj link3 { z3 z0 z4 z6 }
-DesObj link4 { z4 z3 z1 z5 z7 }
-DesObj link4 { z7 z6 z4 z8 x1 }
-DesObj link4 { z5 z8 z4 z2 y1 }
-DesObj link4 { z8 z7 z5 y0 x2 }
-DesObj link4 { x2 z8 y0 x5 x1 }
-DesObj link4 { x5 x2 y3 x8 x4 }
-DesObj link3 { x7 x4 x8 x6 }
-DesObj link3 { x8 x5 y6 x7 }
-DesObj link4 { y1 z5 y2 y4 y0 }
-DesObj link4 { y4 y1 y5 y7 y3 }
-DesObj link3 { y7 y4 y8 y6 }
+DesObj link3 { z10 z00 z11 z20 }
+DesObj link4 { z11 z10 z01 z12 z21 }
+DesObj link4 { z21 z20 z11 z22 x01 }
+DesObj link4 { z12 z22 z11 z02 y01 }
+DesObj link4 { z22 z21 z12 y00 x02 }
+DesObj link4 { x02 z22 y00 x12 x01 }
+DesObj link4 { x12 x02 y10 x22 x11 }
+DesObj link3 { x21 x11 x22 x20 }
+DesObj link3 { x22 x12 y20 x21 }
+DesObj link4 { y01 z12 y02 y11 y00 }
+DesObj link4 { y11 y01 y12 y21 y10 }
+DesObj link3 { y21 y11 y22 y20 }
 
 # end points
-DesObj end2 { z0 z3 z1 }
-DesObj end3 { z6 z3 z7 x0 }
-DesObj end2 { x6 x3 x7 }
-DesObj end2 { y8 y5 y7 }
+DesObj end2 { z00 z10 z01 }
+DesObj end3 { z20 z10 z21 x00 }
+DesObj end2 { x20 x10 x21 }
+DesObj end2 { y22 y12 y21 }
 
 # all Xs
-DesObj link3 { z1 z0 z4 z2 }
-DesObj link3 { z2 z1 z5 y2 }
-DesObj link3 { x0 z6 x1 x3 }
-DesObj link4 { x1 z7 x2 x4 x0 }
-DesObj link3 { x3 x0 x4 x6 }
-DesObj link4 { x4 x1 x5 x7 x3 }
-DesObj link4 { y0 z8 y1 y3 x2 }
-DesObj link3 { y2 z2 y5 y1 }
-DesObj link4 { y3 y0 y4 y6 x5 }
-DesObj link3 { y5 y2 y8 y4 }
-DesObj link3 { y6 y3 y7 x8 }
+DesObj link3 { z01 z00 z11 z02 }
+DesObj link3 { z02 z01 z12 y02 }
+DesObj link3 { x00 z20 x01 x10 }
+DesObj link4 { x01 z21 x02 x11 x00 }
+DesObj link3 { x10 x00 x11 x20 }
+DesObj link4 { x11 x01 x12 x21 x10 }
+DesObj link4 { y00 z22 y01 y10 x02 }
+DesObj link3 { y02 z02 y12 y01 }
+DesObj link4 { y10 y00 y11 y20 x12 }
+DesObj link3 { y12 y02 y22 y11 }
+DesObj link3 { y20 y10 y21 x22 }
