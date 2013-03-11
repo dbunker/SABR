@@ -157,11 +157,6 @@ def createPuz(numSide,colorEnds,Xs=[]):
 	
 	sabrObj.source('source.tb')
 	return sabrObj
-	
-# R = ('R',[ 'z00', 'y22' ])
-# B = ('B',[ 'z20', 'x20' ])
-# colorEnds = [ R, B ]
-# Xs = [ 'z01', 'z02', 'x00', 'x01', 'x10', 'x11', 'y00', 'y10', 'y20', 'y02', 'y12' ]
 
 def randomPoint(sideNum):
 	z = ['z','x','y'][random.randint(0,2)]
@@ -169,59 +164,103 @@ def randomPoint(sideNum):
 	y = str(random.randint(0,sideNum-1))
 	return z+x+y
 
-sideNum = 5
-colors = [ 'R','B','G','O','Y' ]
+def makeNewPuz():
+	sideNum = 5
+	colors = [ 'R','B','G','O','Y' ]
 
-for i in range(0,10000):
+	for i in range(10000):
 
-	colorEnds = []
-	for color in colors:
-		colorEnds.append((color,[randomPoint(sideNum),randomPoint(sideNum)]))
+		colorEnds = []
+		for color in colors:
+			colorEnds.append((color,[randomPoint(sideNum),randomPoint(sideNum)]))
+
+		# pass 5 tuples of random (z,y,x)
+		sabrObj = createPuz(sideNum,colorEnds)
+		sabrObj.process(relFold + 'sabr')
+
+		fi = open('result.txt')
+		res = fi.read()
+	
+		if res != 'UNSATISFIABLE':
+	
+			faces = ['z','x','y']
+			faceNum = 0
+			curLineNum = 0
+			num = 0
+		
+			# get Xs
+			Xs = []
+			for val in res.split():
+		
+				name = faces[faceNum] + str(curLineNum) + str(num)
+			
+				if val == 'X':
+					Xs.append(name)
+				num += 1
+
+				if num == sideNum:
+					num = 0		
+					curLineNum += 1
+			
+					if curLineNum == sideNum:
+						curLineNum = 0
+						faceNum += 1
+		
+			if len(Xs) < 10:
+		
+				sabrObj = createPuz(sideNum,colorEnds,Xs)
+				sabrObj.multiProcess(relFold + 'sabr')
+				sabrObj.multiProcess(relFold + 'sabr')
+		
+				fi = open('result.txt')
+				secRes = fi.read()
+			
+				if secRes == 'UNSATISFIABLE':
+					print res
+					print secRes
+					print ''
+
+def genTest(sideNum,colorEnds,Xs=[]):
 
 	# pass 5 tuples of random (z,y,x)
-	sabrObj = createPuz(sideNum,colorEnds)
-	sabrObj.process(relFold + 'sabr')
+	sabrObj = createPuz(sideNum,colorEnds,Xs)
+	sabrObj.multiProcess(relFold + 'sabr')
+
+	fi = open('result.txt')
+	res = fi.read()
+	print res
+
+	sabrObj.multiProcess(relFold + 'sabr')
 
 	fi = open('result.txt')
 	res = fi.read()
 	
 	if res != 'UNSATISFIABLE':
-	
-		faces = ['z','x','y']
-		faceNum = 0
-		curLineNum = 0
-		num = 0
-		
-		# get Xs
-		Xs = []
-		for val in res.split():
-		
-			name = faces[faceNum] + str(curLineNum) + str(num)
-			
-			if val == 'X':
-				Xs.append(name)
-			num += 1
+		print res
+	else:
+		print 'Only Soultion'
 
-			if num == sideNum:
-				num = 0		
-				curLineNum += 1
-			
-				if curLineNum == sideNum:
-					curLineNum = 0
-					faceNum += 1
-		
-		if len(Xs) < 10:
-		
-			sabrObj = createPuz(sideNum,colorEnds,Xs)
-			sabrObj.multiProcess(relFold + 'sabr')
-			sabrObj.multiProcess(relFold + 'sabr')
-		
-			fi = open('result.txt')
-			secRes = fi.read()
-			
-			if secRes == 'UNSATISFIABLE':
-				print res
-				print secRes
-				print ''
-			
-			
+def test1():
+	sideNum = 4
+	colorEnds = [ 
+		('R',[ 'z00', 'x03' ]), 
+		('B',[ 'y02', 'x12' ]),  
+		('P',[ 'z11', 'y22' ]), 
+		('Y',[ 'x20', 'y23' ]), 
+		('G',[ 'z30', 'z23' ]), 
+	]	
+	genTest(sideNum,colorEnds)
+
+def test2():
+	sideNum = 5
+	colorEnds = [ 
+		('O',[ 'z02', 'x12' ]),
+		('G',[ 'z11', 'y44' ]),
+		('P',[ 'z14', 'x21' ]),
+		('B',[ 'z44', 'x40' ]),
+		('R',[ 'z31', 'x04' ]),
+	]
+	Xs = [ 'z23','z41','x01','x11','x24','y20','y21' ]
+	genTest(sideNum,colorEnds,Xs)
+	
+makeNewPuz()

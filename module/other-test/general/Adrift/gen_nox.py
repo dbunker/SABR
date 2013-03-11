@@ -10,7 +10,7 @@ import sabr
 
 # ../../../../sabr 1 source.tb
 
-def createPuz(numSide,oldColors,Xs=[]):
+def createPuz(numSide,oldColors,declareEnds=[],Xs=[],restrict=False):
 
 	sabrObj = sabr.SabrObj()
 
@@ -63,25 +63,31 @@ def createPuz(numSide,oldColors,Xs=[]):
 				toAdd = '?'
 				if name in Xs:
 					toAdd = 'X'
+					
+				for (col,arr) in declareEnds:
+					if name in arr:
+						toAdd = col
+				
 				tempSide.append(toAdd)
 			reqBoard.append(tempSide)
 
 	sabrObj.addReq(None,'Board',reqBoard)
 
 	# to force exactly two of each end, does not prevent cycles
-	# for col in oldColors:
-	#	li = sabr.combMany([(col,2),('!'+col,3*numSide*numSide-2)])
-	#	for arr in li:
-	#		sabrObj.addOpt('end-'+col,'end',arr)
-	#	
-	# desEnd = []
-	# for sideName in ['z', 'x', 'y' ]:
-	#	for y in range(0,numSide):
-	#		for x in range(0,numSide):
-	#			name = 'e' + sideName + str(y) + str(x)
-	#			desEnd.append(name)
-	#
-	# sabrObj.addDesObj(None,'end',desEnd)
+	if restrict:
+		for col in oldColors:
+			li = sabr.combMany([(col,2),('!'+col,3*numSide*numSide-2)])
+			for arr in li:
+				sabrObj.addOpt('end-'+col,'end',arr)
+		
+		desEnd = []
+		for sideName in ['z', 'x', 'y' ]:
+			for y in range(0,numSide):
+				for x in range(0,numSide):
+					name = 'e' + sideName + str(y) + str(x)
+					desEnd.append(name)
+	
+		sabrObj.addDesObj(None,'end',desEnd)
 	
 	# opt groups
 	optGroups = [
@@ -183,23 +189,96 @@ def createPuz(numSide,oldColors,Xs=[]):
 	sabrObj.source('source.tb')
 	return sabrObj
 	
-# R = ('R',[ 'z00', 'y22' ])
-# B = ('B',[ 'z20', 'x20' ])
-# colorEnds = [ R, B ]
-# Xs = [ 'z01', 'z02', 'x00', 'x01', 'x10', 'x11', 'y00', 'y10', 'y20', 'y02', 'y12' ]
-
 def randomPoint(sideNum):
 	z = ['z','x','y'][random.randint(0,2)]
 	x = str(random.randint(0,sideNum-1))
 	y = str(random.randint(0,sideNum-1))
 	return z+x+y
 
-sideNum = 5
-colors = [ 'R','B','G','O','Y' ][:sideNum]
+def simpleTest():
 
-# pass 5 tuples of random (z,y,x)
-sabrObj = createPuz(sideNum,colors)
-# sabrObj.process(relFold + 'sabr')
+	sideNum = 5
+	colors = [ 'R','B','G','O','Y' ][:sideNum]
 
-# fi = open('result.txt')
-# res = fi.read()
+	mainSabrObj = createPuz(sideNum,colors)
+	doPrint = True
+	
+	for i in range(3):
+		mainSabrObj.multiProcess(relFold + 'sabr')
+		fi = open('result.txt')
+		res = fi.read()
+		os.system('rm debug.txt stats.txt cnf.txt vars.txt result.txt 2> /dev/null')
+	
+		print str(i) + ' Done'
+		if doPrint:
+			print res
+
+def makePuz():
+
+	sideNum = 5
+	colors = [ 'R','B','G','O','Y' ][:sideNum]
+
+	mainSabrObj = createPuz(sideNum,colors)
+	
+	# find right one
+	for i in range(100):
+		
+		mainSabrObj.multiProcess(relFold + 'sabr')
+		
+		fi = open('result.txt')
+		res = fi.read()
+		
+		if res != 'UNSATISFIABLE':
+		
+			endsDict = {}
+			nextSect = 0
+			faces = ['z','x','y']
+			faceNum = 0
+			curLineNum = 0
+			num = 0
+			
+			# find start/end
+			for val in res.split():
+			
+				if nextSect == 1:
+					name = faces[faceNum] + str(curLineNum) + str(num)
+					
+					if not val in endsDict:
+						endsDict[val] = []
+					endsDict[val].append(name)
+				
+				num += 1
+				if num == sideNum:
+					num = 0
+					curLineNum += 1
+			
+					if curLineNum == sideNum:
+						curLineNum = 0
+						faceNum += 1
+						
+						if faceNum == 3:
+							faceNum = 0
+							nextSect += 1
+			
+			declareEnds = endsDict.items()
+			
+			# assume these start/end, make sure no other way to make it
+			tempSabrObj = createPuz(sideNum,colors,declareEnds)
+			tempSabrObj.multiProcess(relFold + 'sabr')
+			
+			# test that it is only solution
+			tempSabrObj.multiProcess(relFold + 'sabr')
+			
+			fi = open('result.txt')
+			secondRes = fi.read()
+			
+			if secondRes == 'UNSATISFIABLE':
+				print res
+			else:
+				print 'Many Solutions'
+		
+		else:
+			print 'Not Possible'
+
+makePuz()
+

@@ -12,9 +12,16 @@ class SabrObj:
 		# AllDif, Req, Opt, Trans, TransSim, DesObj
 		self.constraints = []
 		
+		# set of rseults from multiProcess
 		# ( [[<board>]], [<list of trans to get from last>] )
 		self.results = []
-				
+		
+		# variables for multiProcess
+		self.varsToLookFor = []
+		
+		# next cnf for multiProcess
+		self.nextCnf = []
+		
     # main unnamed [<symbols>]
 	def setSym(self,arr):
 		self.sym = clean(arr)
@@ -59,31 +66,27 @@ class SabrObj:
 	def addSpace(self):
 		self.constraints.append(None)
 	
-	def outLines(self,arr):
-		
-		out = ''
-		
-		if isinstance(arr[0],list):
-			for line in arr:
-				out += '\n\t'
-				for var in line:
-					out += var + ' '
-				out = out[:-1] + ';'
-			out += '\n'
-			
-		else:
-			out += ' '
-			for var in arr:
-				out += var + ' '	
-			out = out[:-1] + ' '
-			
-		return out
-		
-	def singleWrap(self,name,arr):
-	
-		return name + ' {' + self.outLines(arr) + '}\n'
-	
+	# create source
 	def toString(self):
+		
+		def outLines(arr):		
+			out = ''
+			if isinstance(arr[0],list):
+				for line in arr:
+					out += '\n\t'
+					for var in line:
+						out += var + ' '
+					out = out[:-1] + ';'
+				out += '\n'
+			else:
+				out += ' '
+				for var in arr:
+					out += var + ' '	
+				out = out[:-1] + ' '
+			return out
+		
+		def singleWrap(name,arr):
+			return name + ' {' + outLines(arr) + '}\n'
 		
 		if (self.sym == [] and self.symList == []) or self.board == [] or (bool(self.start != []) ^ bool(self.end != [])):
 			
@@ -94,21 +97,21 @@ class SabrObj:
 		
 		# sym
 		if self.sym != []:
-			out += self.singleWrap('Sym',self.sym) + '\n'
+			out += singleWrap('Sym',self.sym) + '\n'
 		
 		for (name,sym) in self.symList:
-			out += self.singleWrap('Sym '+name,sym)
+			out += singleWrap('Sym '+name,sym)
 		
 		if self.symList != []:
 			out += '\n'
 		
 		# board
-		out +=  self.singleWrap('Board',self.board) + '\n'
+		out +=  singleWrap('Board',self.board) + '\n'
 		
 		# start, end
 		if self.start != [] and self.end != []:
-			out += self.singleWrap('Start',self.start) + '\n'
-			out += self.singleWrap('End',self.end) + '\n'
+			out += singleWrap('Start',self.start) + '\n'
+			out += singleWrap('End',self.end) + '\n'
 			
 		# constraints: AllDif, Req, Opt, Trans, TransSim, DesObj
 		for const in self.constraints:
@@ -136,15 +139,16 @@ class SabrObj:
 					out += '(' + str(startStage) + ':' + str(endStage) + ')'
 			
 			out += ' {'
-			out += self.outLines(startArr)
+			out += outLines(startArr)
 			
 			if type == 'Trans' or type == 'TransSim':
-				out += '=>' + self.outLines(endArr)
+				out += '=>' + outLines(endArr)
 			
 			out += '}\n'
 		
 		return out
 	
+	# unroll transitions
 	def unroll(self):
 	
 		def unrollTrans(trans1,trans2):
@@ -343,7 +347,8 @@ class SabrObj:
 			for y in transDesObjList:
 		
 				unrollTrans(x,y)
-		
+	
+	# read sabr source from file
 	def readFromFile(self,fileName):
 		
 		# read from file
@@ -456,7 +461,8 @@ class SabrObj:
 					self.addDesObj(name,obj,arr1)
 				
 				self.addSpace()
-				
+	
+	# remove useless transistions, desobj etc.
 	def removeUseless(self):
 			
 		transList = [ const for const in self.constraints 
@@ -588,24 +594,22 @@ class SabrObj:
 				
 				self.constraints.remove(const1)
 
+	# only create source
 	def source(self,fileName):
 	
 		out = self.toString()
 		sourceFile = open(fileName,'w')
 		sourceFile.write(out)
 		sourceFile.close()
-		
+	
+	# run cnf
 	def cnf(self,sabrPath):
 	
 		self.source('source.tb')
-	
 		cmd = sabrPath + ' --cnf 1 source.tb > stats.txt'
 		os.system(cmd)
 	
-	def getResultVar(self,resultStr):
-	
-		return resultStr
-	
+	# get result of running sabr
 	def getResult(self,resultStr):
 	
 		# ( [ [[<board>]],... ], [<list of trans to get from last>] )
@@ -660,6 +664,7 @@ class SabrObj:
 			
 		return (boardList,transList)
 	
+	# cnf command to use
 	def getCmd(self,sabrPath,numStages=1):
 	
 		self.source('source.tb')
@@ -677,16 +682,34 @@ class SabrObj:
 		resultFile.close()
 		
 		return self.getResult(res)
-		
+	
+	# this is used when you want to run multiple times, 
+	# getting a different result each time
+	# 
+	# initial
+	# 	perform sabr with --debug
+	#	save varsToLookFor from debug
+	#	save current cnf as nextCnf
+	# 	
+	#	perform cnf	
+	#	save nextCnf for next run
+	#	save result in results
+	# secondary
+	#	pull cnf from nextCnf
+	#	
+	#	perform cnf
+	#	save nextCnf for next run
+	#	save result in results
 	def multiProcess(self,sabrPath,numStages=1):
-	
-		ret = None
-	
-		def getTack():
-			
+		
+		def getVarsToLookFor():
+		
+			# created when source is first written
 			fi = open('debug.txt','r')
 			fi.readline()
 			
+			# need to know which variables represent cells, since these are
+			# the ones we save
 			lookFor = []
 			
 			arr = fi.readline().strip().split()
@@ -695,9 +718,15 @@ class SabrObj:
 				if 'Is' in arr[1]:
 					lookFor.append(int(arr[0]))
 				arr = fi.readline().strip().split()
-				
 			fi.close()
 			
+			return lookFor
+			
+		def getTack():
+			
+			lookFor = self.varsToLookFor
+			
+			# recreated completely each run
 			fi = open('vars.txt','r')
 			line = fi.readline().strip()
 			
@@ -714,48 +743,59 @@ class SabrObj:
 			
 			return toTack
 		
-		toTack = []
-		
-		if self.results == []:
-		
-			self.source('source.tb')
+		def getNewCnf(oldCnfStr):
 			
-			cmd = sabrPath + ' --debug ' + str(numStages) + ' source.tb'
-			os.system(cmd)
-			
-		else:
 			toTack = getTack()
+			if toTack == None:
+				return None
 		
-		if toTack == None:
-			return None
-		
-		if toTack != []:
-			fir = open('cnf.txt','r')
-			fiw = open('.cnf.txt','w')
+			# update the cnf to reflect it can't have previouse set of variables
+			fir = oldCnfStr.split('\n')
+			cnfSaveStr = ''
 			
 			isFirst = True
 			for line in fir:
 				if isFirst:
 					arr = line.strip().split()					
 					clauseNumStr = str(int(arr[3])+1)
-					fiw.write('p cnf ' + arr[2] + ' ' + clauseNumStr + '\n')
+					cnfSaveStr += 'p cnf ' + arr[2] + ' ' + clauseNumStr + '\n'
 					isFirst = False
 				else:
-					fiw.write(line)
+					cnfSaveStr += line + '\n'
 			
 			for elem in toTack:
-				fiw.write(str(elem)+' ')
-			fiw.write('0\n')
+				cnfSaveStr += str(elem) + ' '
+			cnfSaveStr += '0\n'
 				
-			fir.close()
-			fiw.close()
+			return cnfSaveStr
 			
-			cmd = 'mv .cnf.txt cnf.txt'
-			os.system(cmd)
+		# first run
+		if self.results == []:
 		
+			self.source('source.tb')
+			cmd = sabrPath + ' --debug ' + str(numStages) + ' source.tb'
+			os.system(cmd)
+			
+			self.varsToLookFor = getVarsToLookFor()
+			
+			fir = open('cnf.txt','r')
+			self.nextCnf = fir.read()
+			fir.close()
+			
+		else:
+			cnfSaveStr = self.nextCnf
+			
+			fiw = open('cnf.txt','w')
+			fiw.write(cnfSaveStr)
+			fiw.close()
+		
+		# cnf.txt input with vars.txt output
 		cnfPath = sabrPath.replace('sabr','cnfsat')
 		cmd = cnfPath + ' cnf.txt vars.txt > stats.txt'
 		os.system(cmd)
+		
+		# save for next use
+		self.nextCnf = getNewCnf(self.nextCnf)
 		
 		cmd = sabrPath + ' --result ' + str(numStages) + ' source.tb'
 		os.system(cmd)
@@ -768,7 +808,8 @@ class SabrObj:
 		self.results.append(ret)
 		
 		return ret
-		
+
+# create combination of characters
 # construct recursively
 def combSimp(val,numVal,soFar,left,acc):
 	
@@ -786,6 +827,7 @@ def combSimp(val,numVal,soFar,left,acc):
 		
 		combSimp(val,newNum,newSoFar,newLeft,acc)
 
+# this will give a list of every combination of each of these number of characters
 # combMany([('A',4),('B',4)])
 def combMany(li):
 	li.reverse()
@@ -801,6 +843,7 @@ def combMany(li):
 
 	return newLeftListGroup
 
+# change to strings
 def clean(arr):
 	if not isinstance(arr,list) or arr == []:
 		print 'Malformed List Entered'
