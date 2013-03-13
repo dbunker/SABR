@@ -216,9 +216,8 @@ def makeNewPuz():
 				secRes = fi.read()
 			
 				if secRes == 'UNSATISFIABLE':
-					print res
-					print secRes
-					print ''
+					print '\n' + res
+					print colorEnds
 
 def genTest(sideNum,colorEnds,Xs=[]):
 
