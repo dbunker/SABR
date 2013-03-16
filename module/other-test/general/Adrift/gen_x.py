@@ -1,6 +1,6 @@
 # adrift game
 
-import sys, time, os, random
+import sys, time, os, json, random
 relFold = "../../../../"
 sys.path.append(relFold+'module')
 import sabr
@@ -167,8 +167,9 @@ def randomPoint(sideNum):
 def makeNewPuz():
 	sideNum = 5
 	colors = [ 'R','B','G','O','Y' ]
+	outJson = []
 
-	for i in range(10000):
+	for i in range(1000):
 
 		colorEnds = []
 		for color in colors:
@@ -190,10 +191,12 @@ def makeNewPuz():
 		
 			# get Xs
 			Xs = []
+			solution = []
 			for val in res.split():
 		
 				name = faces[faceNum] + str(curLineNum) + str(num)
-			
+				solution.append( { 'color':val, 'side':name[0], 'y':name[1], 'x':name[2] } )
+				
 				if val == 'X':
 					Xs.append(name)
 				num += 1
@@ -218,6 +221,20 @@ def makeNewPuz():
 				if secRes == 'UNSATISFIABLE':
 					print '\n' + res
 					print colorEnds
+					
+					start = []
+					for (color,[A,B]) in colorEnds:
+						start.append( { 'color':color, 'side':A[0], 'y':A[1], 'x':A[2] } )
+						start.append( { 'color':color, 'side':B[0], 'y':B[1], 'x':B[2] } )
+					
+					for X in Xs:
+						start.append( { 'color':'X', 'side':X[0], 'y':X[1], 'x':X[2] } )
+					
+					outJson.append( { 'start':start, 'solution':solution } )
+	
+	outFile = open('out.json','w')
+	outFile.write(json.dumps(outJson))
+	outFile.close()
 
 def genTest(sideNum,colorEnds,Xs=[]):
 
