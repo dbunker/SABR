@@ -25,7 +25,7 @@ Req Board {
 }
 
 # each color must be surrounded by exactly two of its color, unless 
-# it is on an end, in which case it is surrounded by exactly one
+# it is on an end, in which case it is surrounded by exactly one of its color
 
 # middle block followed by sides
 Opt link2 { v  v  v }
@@ -41,11 +41,6 @@ Opt link4 { v !v  v  v !v }
 Opt link4 { v !v  v !v  v }
 Opt link4 { v !v !v  v  v }
 
-# these could be used if we didn't know where the Xs were
-# Opt link2 { X  ?  ? }
-# Opt link3 { X  ?  ?  ? }
-# Opt link4 { X  ?  ?  ?  ? }
-
 # all links
 DesObj link3 { b0 a0 c1 c0 }
 DesObj link4 { c1 b0 b1 d1 d0 }
@@ -59,22 +54,3 @@ DesObj link3 { x8 x5 y6 x7 }
 DesObj link4 { y1 d1 y2 y4 y0 }
 DesObj link4 { y4 y1 y5 y7 y3 }
 DesObj link3 { y7 y4 y8 y6 }
-
-# note that we ignore the ends of each strand
-# DesObj link2 { a0 b0 b1 }
-# DesObj link3 { c0 b0 d0 x0 }
-# DesObj link2 { x6 x3 x7 }
-# DesObj link2 { y8 y5 y7 }
-
-# could also get speed up by removing all Xs from board entirely
-# DesObj link3 { b1 a0 c1 c2 }
-# DesObj link3 { c2 b1 d1 y2 }
-# DesObj link3 { x0 c0 x1 x3 }
-# DesObj link4 { x1 d0 x2 x4 x0 }
-# DesObj link3 { x3 x0 x4 x6 }
-# DesObj link4 { x4 x1 x5 x7 x3 }
-# DesObj link4 { y0 e0 y1 y3 x2 }
-# DesObj link3 { y2 c2 y5 y1 }
-# DesObj link4 { y3 y0 y4 y6 x5 }
-# DesObj link3 { y5 y2 y8 y4 }
-# DesObj link3 { y6 y3 y7 x8 }

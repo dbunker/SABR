@@ -169,7 +169,7 @@ def makeNewPuz():
 	colors = [ 'R','B','G','O','Y' ]
 	outJson = []
 
-	for i in range(1000):
+	for i in range(10000):
 
 		colorEnds = []
 		for color in colors:
