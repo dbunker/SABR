@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<title>SABR</title>
+		<link rel="stylesheet" href="/style/style.css">
+	</head>
+
+	<body>
+		<a href="http://github.com/dbunker/SABR"><img class="git" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+		
+		<div class="mid">
+			<ul class="navbar">
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
+
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/river/">River Crossing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mach/">Machinarium</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/sudoku/">Sudoku</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/einstein/">Einstein's Puzzle</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/zbin/">Z-Bin Packing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/rubik/">Rubik's Cube</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mult/">Multiplication</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mine/">Minesweeper</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/dine/">Dining Philosoraptors</a></div></div></div></li>
+
+				<li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="http://fizbizfiz.biz/2011/07/28/sabr-faq">FAQ</a></div></div></div></li>
+			</ul>
+
+			<div class="main">
+				<a href="/"><img src="/img/logo.jpg" alt="logo" width="460" height="73"/></a>
+
+				
+<h1>Einstein's Puzzle</h1>
+
+<a href="http://www.brain-fun.com/Brain-Teasers/EinsteinsRiddle.php"><img src="/img/ein.jpg"/></a>
+<br><br>
+
+Einstein's puzzle, stated <a href="http://www.brain-fun.com/Brain-Teasers/EinsteinsRiddle.php">here</a>, is a
+classic constraint problem. In common with Sudoku, it does not use transitions and uses the "all different"
+design pattern.
+<br><br>
+
+This puzzle also utilizes multiple symbol lists. After creating a symbol list with a name, you can specify
+that a board cell uses that symbol list by stating board-cell:symbol-list-name. It is invalid to connect
+one symbol list to another using a temporary variable.
+<br><br>
+
+Here we also utilize Opt, which stands for Option. For instance we can state that either the object House
+indicates the Englishman is in a red house, or the nationality and house have other values than
+Englishman and red. These groups of options (opt-groups) are formed using the option name. We continue in
+this vein for all the rules to properly model the problem.
+<br><br>
+
+<div class="mycode">
+Opt cl1:House {  red  Englishman ? ? ? }	<br>
+Opt cl1:House { !red !Englishman ? ? ? }
+</div>
+<br>
+
+<a href="/code/ein/source.txt">source</a> | <a href="/code/ein/result.txt">solution</a>
+
+
+				<br><br><br><br>
+			</div>
+		</div>
+	</body>
+</html>

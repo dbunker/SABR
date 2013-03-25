@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<title>SABR</title>
+		<link rel="stylesheet" href="/style/style.css">
+	</head>
+
+	<body>
+		<a href="http://github.com/dbunker/SABR"><img class="git" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+		
+		<div class="mid">
+			<ul class="navbar">
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
+
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/river/">River Crossing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mach/">Machinarium</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/sudoku/">Sudoku</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/einstein/">Einstein's Puzzle</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/zbin/">Z-Bin Packing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/rubik/">Rubik's Cube</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mult/">Multiplication</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mine/">Minesweeper</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/dine/">Dining Philosoraptors</a></div></div></div></li>
+
+				<li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="http://fizbizfiz.biz/2011/07/28/sabr-faq">FAQ</a></div></div></div></li>
+			</ul>
+
+			<div class="main">
+				<a href="/"><img src="/img/logo.jpg" alt="logo" width="460" height="73"/></a>
+
+				
+<h1>Rubik's Cube</h1>
+
+<a href="http://en.wikipedia.org/wiki/Rubik's_Cube"><img src="/img/rubik.jpg"/></a>
+<br><br>
+
+Solving a fully or partially scrambled Rubik's cube is another hard problem we can solve with constraint programming.
+The setup for this problem is simple and follows the same form as the <a href="/mach/">Machinarium puzzle</a>.
+<br><br>
+
+Board indicates all of the sides, Start indicates the starting scramble of the cube, and End indicates the
+solved cube. Trans (the possible transitions) operates over the side object and can be clockwise or counter clockwise.
+The side object has a DesObj (describe object) for representing each Rubik's Cube side.
+<br><br>
+
+It has been proven via <a href="http://en.wikipedia.org/wiki/Rubik's_Cube#Optimal_solutions">intelligent brute-force</a> that at most 20 moves are needed to solve a
+Rubik's Cube from any start position. So the number of stages input parameter can
+always be below 20.
+<br><br>
+
+The source and solution can be seen below.
+<br><br>
+
+<a href="/code/rubik/source.txt">source</a> | <a href="/code/rubik/result.txt">solution</a>
+
+
+				<br><br><br><br>
+			</div>
+		</div>
+	</body>
+</html>

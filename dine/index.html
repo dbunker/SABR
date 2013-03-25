@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<title>SABR</title>
+		<link rel="stylesheet" href="/style/style.css">
+	</head>
+
+	<body>
+		<a href="http://github.com/dbunker/SABR"><img class="git" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+		
+		<div class="mid">
+			<ul class="navbar">
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
+
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/river/">River Crossing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mach/">Machinarium</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/sudoku/">Sudoku</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/einstein/">Einstein's Puzzle</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/zbin/">Z-Bin Packing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/rubik/">Rubik's Cube</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mult/">Multiplication</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mine/">Minesweeper</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/dine/">Dining Philosoraptors</a></div></div></div></li>
+
+				<li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="http://fizbizfiz.biz/2011/07/28/sabr-faq">FAQ</a></div></div></div></li>
+			</ul>
+
+			<div class="main">
+				<a href="/"><img src="/img/logo.jpg" alt="logo" width="460" height="73"/></a>
+
+				
+<h1>Dining Philosoraptors</h1>
+
+<a href="http://en.wikipedia.org/wiki/Dining_philosophers_problem"><img src="/img/raptor.jpg"/></a>
+<br><br>
+
+So a group of five philosoraptors get together for their weekly poker match and decide to order
+some Chinese food, however they unfortunately only have five chopsticks between them.
+Each chopstick is between two philosoraptors and they are around a round poker table.
+<br><br>
+
+When the Chinese food arrives they will each reach for chopsticks, if one next to
+them is taken they will hold on to whatever they have and wait for the other.
+If they get both, they can eat and put them both down again.
+The question is, are they guaranteed to eat, or may they
+<a href="http://en.wikipedia.org/wiki/Dining_philosophers_problem">deadlock</a>.
+<br><br>
+
+SABR can be useful in finding concurrency issues such as this.
+For this example we model these rules to see if a deadlock state is possible.
+<br><br>
+
+<a href="/code/dine/v1/source.txt">source</a> | <a href="/code/dine/v1/result.txt">solution</a>
+<br><br>
+
+Then we can check if we can reach that state.
+<br><br>
+
+<a href="/code/dine/v2/source.txt">source</a> | <a href="/code/dine/v2/result.txt">solution</a>
+<br><br>
+
+Even if there was no way to reach that state, deadlock may still be possible and reachable in another state,
+so we combine our first and second examples to test for this. In this we utilize stage setting in Opt because
+the information that can be placed in End alone is not sufficient.
+<br><br>
+
+Opt(19:20) means option for the last stage
+since we are testing up to stage 20. Stage setting can also be useful for improving speed and can be used with
+Req, Opt, Trans, and TransSim. In this code we indicate no one has both chopsticks in the deadlock stage because
+they would then put them down, relieving deadlock.
+<br><br>
+
+<div class="mycode">
+Opt(19:20) NotBoth:Philo{ 0 0 }		<br>
+Opt(19:20) NotBoth:Philo{ 1 0 }		<br>
+Opt(19:20) NotBoth:Philo{ 0 1 }
+</div>
+<br>
+
+<a href="/code/dine/v3/source.txt">source</a> | <a href="/code/dine/v3/result.txt">solution</a>
+<br><br>
+
+As we can see from the solution, deadlock is possible by the transitions indicated.
+
+
+
+				<br><br><br><br>
+			</div>
+		</div>
+	</body>
+</html>

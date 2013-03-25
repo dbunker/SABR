@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<title>SABR</title>
+		<link rel="stylesheet" href="/style/style.css">
+	</head>
+
+	<body>
+		<a href="http://github.com/dbunker/SABR"><img class="git" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+		
+		<div class="mid">
+			<ul class="navbar">
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
+
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/river/">River Crossing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mach/">Machinarium</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/sudoku/">Sudoku</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/einstein/">Einstein's Puzzle</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/zbin/">Z-Bin Packing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/rubik/">Rubik's Cube</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mult/">Multiplication</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mine/">Minesweeper</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/dine/">Dining Philosoraptors</a></div></div></div></li>
+
+				<li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="http://fizbizfiz.biz/2011/07/28/sabr-faq">FAQ</a></div></div></div></li>
+			</ul>
+
+			<div class="main">
+				<a href="/"><img src="/img/logo.jpg" alt="logo" width="460" height="73"/></a>
+
+				
+<h1>Sudoku</h1>
+
+<a href="http://www.websudoku.com/"><img src="/img/sudo.jpg"/></a>
+<br><br>
+
+Sudoku is often used as a constraint programming example. Our example is a 4x4 Sudoku.
+Transitions are unnecessary for the Sudoku problem so we do not state a Start or End and
+instead use Board as the object for Req Board to specify what symbols we know.
+? is used for the symbols we do not know.
+<br><br>
+
+To make a constraint like "all different" we can use Req like below:
+<br><br>
+
+<div class="mycode">
+Req RowColBlock	{  v !v !v !v }		<br>
+Req RowColBlock	{ !v  v !v !v }		<br>
+Req RowColBlock	{ !v !v  v !v }		<br>
+Req RowColBlock	{ !v !v !v  v }
+</div>
+<br>
+
+<a href="/code/sudo/source.txt">source</a> | <a href="/code/sudo/result.txt">solution</a>
+
+
+				<br><br><br><br>
+			</div>
+		</div>
+	</body>
+</html>

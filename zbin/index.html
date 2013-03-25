@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<title>SABR</title>
+		<link rel="stylesheet" href="/style/style.css">
+	</head>
+
+	<body>
+		<a href="http://github.com/dbunker/SABR"><img class="git" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+		
+		<div class="mid">
+			<ul class="navbar">
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
+
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/river/">River Crossing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mach/">Machinarium</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/sudoku/">Sudoku</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/einstein/">Einstein's Puzzle</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/zbin/">Z-Bin Packing</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/rubik/">Rubik's Cube</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mult/">Multiplication</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/mine/">Minesweeper</a></div></div></div></li>
+				<li><div class="lisub"><div class="lisub_in"><div class="li"><a href="/dine/">Dining Philosoraptors</a></div></div></div></li>
+
+				<li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="http://fizbizfiz.biz/2011/07/28/sabr-faq">FAQ</a></div></div></div></li>
+			</ul>
+
+			<div class="main">
+				<a href="/"><img src="/img/logo.jpg" alt="logo" width="460" height="73"/></a>
+
+				
+<h1>Z-Bin Packing</h1>
+
+<a href="http://www.creativecrafthouse.com/index.php?main_page=page&id=90"><img src="/img/bin.jpg"/></a>
+<br><br>
+
+This is a difficult 3d puzzle involving fitting 25 roughly z-shaped pieces perfectly into a 5x5 cube.
+To perform this bin packing we set the Board to be the 5x5 cube and then "tile" the space. Every
+possible position the z-shaped piece could take is expressed with a DesObj.
+<br><br>
+
+We utilize TransSim to allow simultaneous transitions and then only allow 2 stages.
+so that the Board starts all 0 (unused) and then is filled by simultaneous transitions,
+in a single stage, to be all 1 (used). Based on which DesObj where used, we know where the z-shaped pieces go.
+<br><br>
+
+Writing out all of possible positions the z-shaped piece could have would be onerous, so it is better to
+write a script (generate) to perform this task for us.
+<br><br>
+
+<a href="/code/zbin/generate.txt">generate</a> | <a href="/code/zbin/source.txt">source</a> | <a href="/code/zbin/result.txt">solution</a>
+
+
+				<br><br><br><br>
+			</div>
+		</div>
+	</body>
+</html>

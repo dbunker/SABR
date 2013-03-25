@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<title>SABR</title>
+		<link rel="stylesheet" href="/style/style.css">
+	</head>
+
+	<body>
+		<a href="http://github.com/dbunker/SABR"><img class="git" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+
+		<div class="mid">
+			<ul class="navbar">
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
+				<li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
+		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="http://fizbizfiz.biz/2011/07/28/sabr-faq">FAQ</a></div></div></div></li>
+			</ul>
+
+			<div class="main">
+				<a href="/"><img src="/img/logo.jpg" alt="logo" width="460" height="73"/></a>
+
+				
+<h1>Getting Started</h1>
+
+The Github repository is <a href="https://github.com/dbunker/SABR">here</a>.
+<br><br>
+
+For the provided scripts to run properly you will need to have a Unix variant which could be:
+<ul>
+<li>Mac</li>
+<li>Linux</li>
+<li><a href="http://www.cygwin.com/">Cygwin</a></li>
+<li><a href="http://bellard.org/jslinux/">Browser Desktop</a></li>
+</ul>
+<br>
+
+To get the code, enter into terminal: <br>
+<div class="mycode">
+git clone http://github.com/dbunker/SABR.git
+</div>
+<br>
+
+Next, run the commands: <br>
+<div class="mycode">
+python setup.py minisat <br>
+python setup.py build <br>
+python test.py simple-full <br>
+python test.py simple
+</div>
+<br>
+
+You should get "Passed All" from the test file.
+<br><br>
+
+To run a program, execute: <br>
+<div class="mycode">
+./sabr [number of stages] [optional command] &lt; [path to source]
+</div>
+<br>
+
+Example: <br>
+<div class="mycode">
+./sabr 20 -all &lt; test/Simple/simple.tb
+</div>
+<br>
+
+To learn more about the language, check out the <a href="https://github.com/dbunker/SABR/blob/master/doc/LANGUAGE">specification</a>.
+<br><br>
+You can also try an example program <a href="/river/">here</a>.
+
+
+				<br><br><br><br>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,73 @@
+# SABR
+# dining philisophers
+# is it possible to reach the state from which deadlock is possble?
+
+Sym { 0 1 }
+
+Board{ 
+	p1R p1L;
+	t1;
+	p2R p2L;
+	t2;
+	p3R p3L;
+	t3;
+	p4R p4L;
+	t4;
+	p5R p5L;
+	t5; 
+}
+
+Start{
+	0 0;
+	1;
+	0 0;
+	1;
+	0 0;
+	1;
+	0 0;
+	1;
+	0 0;
+	1; 
+}
+
+End{
+	1 0; 
+	0; 
+	1 0; 
+	0; 
+	1 0; 
+	0; 
+	1 0; 
+	0;
+	1 0; 
+	0;
+}
+
+# put down chopsticks
+Trans Down:Philo{ 1 1 => 0 0 }
+
+DesObj p1:Philo{ p1R p1L }
+DesObj p2:Philo{ p2R p2L }
+DesObj p3:Philo{ p3R p3L }
+DesObj p4:Philo{ p4R p4L }
+DesObj p5:Philo{ p5R p5L }
+
+# pick up chopstick
+Trans Up:Get{ 0 1 => 1 0 }
+
+DesObj t5-p1:Get{ p1R t5 }
+DesObj t1-p1:Get{ p1L t1 }
+
+DesObj t1-p2:Get{ p2R t1 }
+DesObj t2-p2:Get{ p2L t2 }
+
+DesObj t2-p3:Get{ p3R t2 }
+DesObj t3-p3:Get{ p3L t3 }
+
+DesObj t3-p4:Get{ p4R t3 }
+DesObj t4-p4:Get{ p4L t4 }
+
+DesObj t4-p5:Get{ p5R t4 }
+DesObj t5-p5:Get{ p5L t5 }
+
+
