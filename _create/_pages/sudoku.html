@@ -8,21 +8,67 @@ title: SABR
 <a href="http://www.websudoku.com/"><img src="/img/sudo.jpg"/></a>
 <br><br>
 
-Sudoku is often used as a constraint programming example. Our example is a 4x4 Sudoku.
+Sudoku is often used as a constraint programming example. Our example is 4x4 Sudoku, but 
+the same ideas can be applied to any sudoku and solved quickly including 9x9, 16x16 etc.
 Transitions are unnecessary for the Sudoku problem so we do not state a Start or End and 
 instead use Board as the object for Req Board to specify what symbols we know. 
 ? is used for the symbols we do not know.
 <br><br>
 
-To make a constraint like "all different" we can use Req like below:
+To make the constraint "all different" we can use AllDif like below:
 <br><br>
 
 <div class="mycode">
-	Req RowColBlock	{  v !v !v !v }		<br>
-	Req RowColBlock	{ !v  v !v !v }		<br>
-	Req RowColBlock	{ !v !v  v !v }		<br>
-	Req RowColBlock	{ !v !v !v  v }
+	AllDif { a b c d }		
 </div>
 <br>
+
+We can see what the completed source for our 4x4 puzzle would look like below.
+<br><br>
+
+<div class="mycode">
+Sym{ 1 2 3 4 }		<br>
+					<br>
+Board{				<br>
+<div class="mytab"> 	
+	a0 a1 a2 a3;	<br>
+	b0 b1 b2 b3;	<br>	
+	c0 c1 c2 c3;	<br>
+	d0 d1 d2 d3;	<br>
+</div> 
+}					<br>
+
+Req Board{			<br>
+<div class="mytab"> 
+	3 ?	? ?;		<br>
+	? ?	? 3;		<br>
+	? 1	? ?;		<br>
+	? ?	? 2;		<br>
+</div>
+}					<br>
+					<br>
+# row				<br>
+AllDif{ a0 a1 a2 a3 }	<br>
+AllDif{ b0 b1 b2 b3 }	<br>
+AllDif{ c0 c1 c2 c3 }	<br>
+AllDif{ d0 d1 d2 d3 }	<br>
+						<br>
+# column				<br>
+AllDif{ a0 b0 c0 d0 }	<br>
+AllDif{ a1 b1 c1 d1 }	<br>
+AllDif{ a2 b2 c2 d2 }	<br>
+AllDif{ a3 b3 c3 d3 }	<br>
+						<br>
+# block					<br>
+AllDif{ a0 a1 b0 b1 }	<br>
+AllDif{ a2 a3 b2 b3 }	<br>
+AllDif{ c0 c1 d0 d1 }	<br>
+AllDif{ c2 c3 d2 d3 }	<br>
+</div>
+<br>
+
+Although SABR is designed to have a close mapping to the underlying Conjunction Normal Form (CNF), 
+we can use code generators to express our problem more succinctly, as we will see in later examples.
+<br><br>
 
 <a href="/code/sudo/source.txt">source</a> | <a href="/code/sudo/result.txt">solution</a>
