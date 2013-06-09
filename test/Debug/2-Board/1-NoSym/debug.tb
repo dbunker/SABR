@@ -1,5 +1,3 @@
-# see license at project root
-
 # There is no generic Sym for values in Board
 
 Sym { 0 1 }

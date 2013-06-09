@@ -1,5 +1,3 @@
-# see license at project root
-
 import os
 import sys
 

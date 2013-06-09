@@ -1,5 +1,3 @@
-# see license at project root
-
 # solves 8 queen problem
 
 Sym { 0 1 }

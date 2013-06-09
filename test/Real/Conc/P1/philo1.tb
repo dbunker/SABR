@@ -1,5 +1,3 @@
-# see license at project root
-
 # dining philisophers
 # is there a state from which deadlock (no transition) is possble?
 

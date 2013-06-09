@@ -1,5 +1,3 @@
-# see license at project root
-
 # this will write out the the TBL of the z bin packing problem
 # which is to fit long-z shaped pieces into a 5x5x5 cube
 

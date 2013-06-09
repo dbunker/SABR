@@ -1,5 +1,3 @@
-# see license at project root
-
 print 'Start'
 # use >> (bit shift) and % (mod) bit manipulation
 
