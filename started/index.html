@@ -37,16 +37,14 @@ For the provided scripts to run properly you will need to have a Unix variant wh
 
 To get the code, enter into terminal: <br>
 <div class="mycode">
-git clone http://github.com/dbunker/SABR.git
+git clone https://github.com/dbunker/SABR.git
 </div>
 <br>
 
 Next, run the commands: <br>
 <div class="mycode">
-python setup.py minisat <br>
 python setup.py build <br>
-python test.py simple-full <br>
-python test.py simple
+python test.py all
 </div>
 <br>
 
@@ -55,13 +53,13 @@ You should get "Passed All" from the test file.
 
 To run a program, execute: <br>
 <div class="mycode">
-./sabr [number of stages] [optional command] &lt; [path to source]
+./sabr [optional command] [number of stages] [path to source]
 </div>
 <br>
 
 Example: <br>
 <div class="mycode">
-./sabr 20 -all &lt; test/Simple/simple.tb
+./sabr --debug 20 test/Simple/simple.tb
 </div>
 <br>
 
