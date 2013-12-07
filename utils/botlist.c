@@ -9,42 +9,42 @@ typedef struct node_t{
 } node;
 
 // create node (need to give it malloc space of sizeNode size)
-inline void createNode(linkedNode curP,void *data){
+void createNode(linkedNode curP,void *data){
 	node *cur = curP;
 	cur->prev = NULL;
 	cur->next = NULL;
 	cur->data = data;
 }
 
-inline int sizeNode(){
+int sizeNode(){
 	return sizeof(node);
 }
 
 // put data in or get data out of node
 // embedNode is like replaceNode
-inline void embedNode(linkedNode curP,void *data){
+void embedNode(linkedNode curP,void *data){
 	node *cur = curP;
 	cur->data = data;
 }
 
-inline void *extractNode(linkedNode curP){
+void *extractNode(linkedNode curP){
 	node *cur = curP;
 	return cur->data;
 }
 
 // movement
-inline linkedNode getPrevNode(linkedNode curP){
+linkedNode getPrevNode(linkedNode curP){
 	node *cur = curP;
 	return cur->prev;
 }
 
-inline linkedNode getNextNode(linkedNode curP){
+linkedNode getNextNode(linkedNode curP){
 	node *cur = curP;
 	return cur->next;
 }
 
 // insert
-inline void insertAfterNode(linkedNode curP,linkedNode insP){
+void insertAfterNode(linkedNode curP,linkedNode insP){
 	node *cur = curP;
 	node *ins = insP;
 	
@@ -56,7 +56,7 @@ inline void insertAfterNode(linkedNode curP,linkedNode insP){
 	cur->next = ins;
 }
 
-inline void insertBeforeNode(linkedNode curP,linkedNode insP){
+void insertBeforeNode(linkedNode curP,linkedNode insP){
 	node *cur = curP;
 	node *ins = insP;
 	
@@ -69,7 +69,7 @@ inline void insertBeforeNode(linkedNode curP,linkedNode insP){
 }
 
 // remove
-inline void removeNode(linkedNode curP){
+void removeNode(linkedNode curP){
 	node *cur = curP;
 	if(cur->prev)
 		cur->prev->next = cur->next;
@@ -77,7 +77,7 @@ inline void removeNode(linkedNode curP){
 		cur->next->prev = cur->prev;
 }
 
-inline void connectNode(linkedNode ln1,linkedNode ln2){
+void connectNode(linkedNode ln1,linkedNode ln2){
 	node *n1 = ln1;
 	node *n2 = ln2;
 	
@@ -86,7 +86,7 @@ inline void connectNode(linkedNode ln1,linkedNode ln2){
 }
 
 // continues until function returns 0 (same as execUntilNode)
-inline linkedNode execUntilNode(linkedNode curP,int (*compare)(void*,linkedNode),void *param){	
+linkedNode execUntilNode(linkedNode curP,int (*compare)(void*,linkedNode),void *param){	
 	node *cur = curP;
 
 	while(cur){

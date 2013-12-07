@@ -7,29 +7,29 @@
 typedef void *linkedNode;
 
 // create node (need to give it malloc space of sizeNode size)
-inline void createNode(linkedNode,void*);
-inline int sizeNode();
+void createNode(linkedNode,void*);
+int sizeNode();
 
 // put data in or get data out of node
 // embedNode is like replaceNode
-inline void embedNode(linkedNode,void*);
-inline void *extractNode(linkedNode);
+void embedNode(linkedNode,void*);
+void *extractNode(linkedNode);
 
 // movement
-inline linkedNode getPrevNode(linkedNode);
-inline linkedNode getNextNode(linkedNode);
+linkedNode getPrevNode(linkedNode);
+linkedNode getNextNode(linkedNode);
 
 // insert
-inline void insertAfterNode (linkedNode,linkedNode);
-inline void insertBeforeNode(linkedNode,linkedNode);
+void insertAfterNode (linkedNode,linkedNode);
+void insertBeforeNode(linkedNode,linkedNode);
 
 // remove
-inline void removeNode(linkedNode);
+void removeNode(linkedNode);
 
 // connect
-inline void connectNode(linkedNode,linkedNode);
+void connectNode(linkedNode,linkedNode);
 
 // continues until function returns 0 (same as getNode)
-inline linkedNode execUntilNode(linkedNode,int(*)(void*,linkedNode),void*);
+linkedNode execUntilNode(linkedNode,int(*)(void*,linkedNode),void*);
 
 #endif

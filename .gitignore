@@ -1,0 +1,10 @@
+.DS_Store
+cnf.txt
+cnf/minisat/build/
+cnfsat
+core/.DS_Store
+full.txt
+result.txt
+sabr
+sabr.dSYM/
+vars.txt

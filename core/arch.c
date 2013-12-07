@@ -178,9 +178,9 @@ treeNode *symNode(treeNode *newSymListNode,treeNode *symLists){
 
 treeNode *storeNode(int tok,treeNode *set){
 
-	nodeType type;
+	nodeType type = boardType;
 	switch(tok){
-		case BOARD: 	type = boardType;	break;
+		case BOARD: 	break;
 		default:		assert(NULL,"Node Error");
 	}
 	startSetData *notParsed = set->data;
