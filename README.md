@@ -93,3 +93,5 @@ Simple python module can be found at `/module/sabr.py`
 
 Website: http://sabrlang.org  
 Examples: http://sabrlang.org/river.html
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dbunker/archstatmzn/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
