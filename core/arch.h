@@ -52,11 +52,11 @@ FILE *yyin;
 
 // each corresponds to a node type
 typedef enum { 	rootType, symType, boardType, startType, endType, transType, transSimType,
-		tempSetType, objType, desObjType, allDifType, reqType, optType,
+        transLockType, tempSetType, objType, desObjType, allDifType, reqType, optType,
 		charType, manyType, elabType } nodeType;
 
 // all nodes on the tree
-// data is rootData (root), setData (board,start,end), nameData (obj,desobj,opt,req), or transData (trans,transsim)
+// data is rootData (root), setData (board,start,end), nameData (obj,desobj,opt,req), or transData (trans,transsim,translock)
 // spaces is a linkedList of int* indicating number of . after each board cell
 // stages is for elab (trans,req,opt) to indicate stages they are valid
 typedef struct {

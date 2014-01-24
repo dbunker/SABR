@@ -1096,7 +1096,7 @@ void remSubTree(void *inData){
 		Free(name);
 	}
 	
-	if(type == transType || type == transSimType){
+	if(type == transType || type == transSimType || type == transLockType ){
 		transData *trans = data;
 		remElab(trans->startData);
 		remElab(trans->endData);
@@ -1126,7 +1126,8 @@ void remSubTree(void *inData){
 	if(type == boardType)
 		destroyLinked(node->spaces,singleFree);
 
-	if(type == reqType || type == optType || type == transType || type == transSimType)
+	if(type == reqType || type == optType || type == transType || type == transSimType 
+	    || type == transLockType)
 		Free(node->stages);
 
 	Free(node);

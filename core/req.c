@@ -333,7 +333,7 @@ void *intCopy(void *data){
 	return new;
 }
 
-// this produces the output for this specific elab (trans,transsim,req,opt) and desobj
+// this produces the output for this specific elab (trans,transsim,translock,req,opt) and desobj
 void elabClauses(elabFullData *elab,linkedList desObjNodes,indexList *varList,linkedList clauseList){
 
 	int c,x,y,r,n;

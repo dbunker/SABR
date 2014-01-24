@@ -26,6 +26,7 @@ int yylex(void);
 %token ALLDIF;
 %token TRANSFORM;
 %token TRANSFORMSIM;
+%token TRANSFORMLOCK;
 %token REQUIRE;
 %token OPTION;
 %token ARROW;
@@ -108,6 +109,7 @@ transform:
 transtype:
 	  TRANSFORM							{ $$ = TRANSFORM; }
 	| TRANSFORMSIM						{ $$ = TRANSFORMSIM; }
+	| TRANSFORMLOCK						{ $$ = TRANSFORMLOCK; }
 	;
 
 anyobject:

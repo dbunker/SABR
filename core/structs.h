@@ -42,6 +42,7 @@ typedef struct {
 	setData *desObjSet;
 	nodeStages *stages;
 	int isSim;
+	int isLocked;
 
 } tempTransVar;
 

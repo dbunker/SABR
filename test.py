@@ -124,7 +124,7 @@ debugList = [	'1-Sym/1-MultiName', '1-Sym/2-DupGenList', '1-Sym/3-DupSym',
 		'5-LexYacc/1-Lex','5-LexYacc/2-Yacc/1-Root'	]
 
 simpleList = [	'Simple/simple','Obj/obj','Req/Req1/req1','Req/Req2/req2','Req/Req3/req3',
-		'Trans/Swap/swap','Trans/SwapAdv/swap','Trans/Pack/pack','Opt/Opt/opt',
+		'Trans/Swap/swap','Trans/SwapAdv/swap','Trans/Pack/pack','Trans/Lock/lock','Opt/Opt/opt',
 		'SymList/Basic/sym','Extra/Punc/punc','Extra/Stages/stages',
 		'Extra/CellFail/cell','Extra/TransSim/sim','Opt/AdvOpt/opt' 	]
 

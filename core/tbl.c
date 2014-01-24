@@ -54,8 +54,11 @@ linkedList expandTrans(rootData *rdata){
 				var->desObjSet = objData->set;
 				var->stages = trans->stages;
 				var->isSim = 0;
+				var->isLocked = 0;
 				if(trans->type == transSimType)
 					var->isSim = 1;
+				if(trans->type == transLockType)
+					var->isLocked = 1;
 				pushLinked(fullTransList,var);
 			}
 		}
@@ -233,18 +236,16 @@ void stdInfraTrans(rootData *rdata,indexList *varList,linkedList clauseList,link
 
 	for(n=0;n<numStagesGlobal-1;n++){
 
+        linkedList *lockedTransList = createLinked(Malloc,Free);
 		linkedList *transList = createLinked(Malloc,Free);
+		
 		for(i=0;i<transWidth;i++){
 			
 			tempTransVar *tv = transArray[i];
 			int desObjId = tv->desObjId;
 			int transId = tv->transId;
 			nodeStages *stages = tv->stages;
-		
-			// multiple transitions can happen simultaneously
-			if(tv->isSim)
-				continue;
-			
+            
 			// stages are inclusive between start and end for both
 			int start = stages->start;
 			int end = stages->end;
@@ -254,15 +255,28 @@ void stdInfraTrans(rootData *rdata,indexList *varList,linkedList clauseList,link
 		
 			varData *var = getTransVar(varList,transId,desObjId,n);
 			assert(var,"Trans Failed");
-			addTailLinked(transList,var);
+			
+			// multiple transitions can happen simultaneously, so don't 
+			// need to be in atMostOne
+			if(!(tv->isSim))
+			    addTailLinked(transList,var);
+			
+			// if it is locked, atLeastOne Trans must occur
+			if(tv->isLocked)
+			    addTailLinked(lockedTransList,var);
 		}
 		
 		if(!allowBlankTrans)
 			atLeastOne(transList,clauseList);
+			
+		if(sizeLinked(lockedTransList) > 0)
+		    atLeastOne(lockedTransList,clauseList);
 
 		// possible to have a stage with no trans if allowBlankTrans is 0
 		atMostOne(transList,clauseList);
+		
 		destroyLinked(transList,NULL);
+		destroyLinked(lockedTransList,NULL);
 	}
 }
 

@@ -214,11 +214,13 @@ treeNode *transNode(int type,treeNode *stagesNode,int transId,int objId,treeNode
 	data->startData = createSet(notParsedStart);
 	data->endData = createSet(notParsedEnd);
 	
-	// either Trans or TransSim
+	// either Trans, TransSim, or TransLock
 	if(type == TRANSFORM)
 		newNode->type = transType;
-	else
+	else if(type == TRANSFORMSIM)
 		newNode->type = transSimType;
+    else if(type == TRANSFORMLOCK)
+		newNode->type = transLockType;
 
 	newNode->data = data;
 

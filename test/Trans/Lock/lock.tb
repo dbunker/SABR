@@ -1,0 +1,14 @@
+# show empty transition cannot occur
+# unsatisfiable
+
+Sym{ 0 1 2; }
+
+Board{ a b; }
+
+Start{ 0 0; }
+
+End{ 0 0; }
+
+DesObj Set { a b; }
+
+TransLock Set{ 0 0; => 1 1; }

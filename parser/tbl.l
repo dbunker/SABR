@@ -22,6 +22,7 @@
 "AllDif"				{ return ALLDIF;	}
 "Trans"					{ return TRANSFORM;	}
 "TransSim"				{ return TRANSFORMSIM;	}
+"TransLock"				{ return TRANSFORMLOCK;	}
 "Req"					{ return REQUIRE;	}
 "Opt"					{ return OPTION;	}
 "=>"					{ return ARROW;		}
