@@ -54,7 +54,7 @@ For more commands:
 Example
 -------------------------
 
-Let's see what the traditional [river crossing puzzle](http://wikipedia.org/wiki/river_crossing_puzzle) looks like in SABR. [A more detailed walkthrough](http://sabrlang.org/river.html) is also available.
+Let's see what the traditional [river crossing puzzle](http://wikipedia.org/wiki/river_crossing_puzzle) looks like in SABR. [A more detailed walkthrough](http://sabrlang.org/river) is also available.
 
 	Sym { west east }
 	
