@@ -92,6 +92,6 @@ For more documentation check `/doc/LANGUAGE`.
 Simple python module can be found at `/module/sabr.py`
 
 Website: http://sabrlang.org  
-Examples: http://sabrlang.org/river.html
+Examples: http://sabrlang.org/river/
 
 
