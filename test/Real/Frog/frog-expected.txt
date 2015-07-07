@@ -1,62 +1,62 @@
 g g g 0 r r r 
 
-GreenOneForward Pair2
+RedOneBack Pair3
 
-g g 0 g r r r 
+g g g r 0 r r 
 
-RedHopBack Trip2
+GreenHopForward Trip2
 
-g g r g 0 r r 
+g g 0 r g r r 
 
-RedOneBack Pair4
+GreenOneForward Pair1
 
-g g r g r 0 r 
+g 0 g r g r r 
 
-GreenHopForward Trip3
+RedHopBack Trip1
 
-g g r 0 r g r 
+g r g 0 g r r 
 
-GreenHopForward Trip1
+RedHopBack Trip3
 
-g 0 r g r g r 
+g r g r g 0 r 
 
-GreenOneForward Pair0
+RedOneBack Pair5
 
-0 g r g r g r 
+g r g r g r 0 
 
-RedHopBack Trip0
+GreenHopForward Trip4
 
-r g 0 g r g r 
+g r g r 0 r g 
 
-RedHopBack Trip2
+GreenHopForward Trip2
 
-r g r g 0 g r 
+g r 0 r g r g 
 
-RedHopBack Trip4
+GreenHopForward Trip0
 
-r g r g r g 0 
+0 r g r g r g 
 
-GreenOneForward Pair5
+RedOneBack Pair0
 
-r g r g r 0 g 
+r 0 g r g r g 
 
-GreenHopForward Trip3
+RedHopBack Trip1
 
-r g r 0 r g g 
+r r g 0 g r g 
 
-GreenHopForward Trip1
+RedHopBack Trip3
 
-r 0 r g r g g 
+r r g r g 0 g 
 
-RedOneBack Pair1
+GreenOneForward Pair4
 
-r r 0 g r g g 
+r r g r 0 g g 
 
-RedHopBack Trip2
+GreenHopForward Trip2
 
-r r r g 0 g g 
+r r 0 r g g g 
 
-GreenOneForward Pair3
+RedOneBack Pair2
 
 r r r 0 g g g 
 
