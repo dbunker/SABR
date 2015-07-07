@@ -10,11 +10,11 @@
 
 		<div class="mid">
 			<ul class="navbar">
-		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
-		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
-		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
-				<li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
-		  		<li><div class="litop"><div class="litop_in"><div class="li"><a href="http://fizbizfiz.biz/2011/07/28/sabr-faq">FAQ</a></div></div></div></li>
+                <li><div class="litop"><div class="litop_in"><div class="li"><a href="/">About</a></div></div></div></li>
+                <li><div class="litop"><div class="litop_in"><div class="li"><a href="/started/">Getting Started</a></div></div></div></li>
+                <li><div class="litop"><div class="litop_in"><div class="li"><a href="/river/">Examples</a></div></div></div></li>
+                <li><div class="litop"><div class="litop_in"><div class="li"><a href="https://github.com/dbunker/SABR">Download</a></div></div></div></li>
+                <li><div class="litop"><div class="litop_in"><div class="li"><a href="http://dbunker.github.io/blog/2011/07/28/sabr-faq/">FAQ</a></div></div></div></li>
 			</ul>
 
 			<div class="main">
@@ -37,14 +37,16 @@ For the provided scripts to run properly you will need to have a Unix variant wh
 
 To get the code, enter into terminal: <br>
 <div class="mycode">
-git clone https://github.com/dbunker/SABR.git
+git clone http://github.com/dbunker/SABR.git
 </div>
 <br>
 
 Next, run the commands: <br>
 <div class="mycode">
+python setup.py minisat <br>
 python setup.py build <br>
-python test.py all
+python test.py simple-full <br>
+python test.py simple
 </div>
 <br>
 
@@ -53,13 +55,13 @@ You should get "Passed All" from the test file.
 
 To run a program, execute: <br>
 <div class="mycode">
-./sabr [optional command] [number of stages] [path to source]
+./sabr [number of stages] [optional command] &lt; [path to source]
 </div>
 <br>
 
 Example: <br>
 <div class="mycode">
-./sabr --debug 20 test/Simple/simple.tb
+./sabr 20 -all &lt; test/Simple/simple.tb
 </div>
 <br>
 
