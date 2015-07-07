@@ -1,0 +1,62 @@
+# run the following from root to solve: ./sabr 1 test/Real/MultipleChoice/multi.tb
+# solves the following multiple choice:
+# A) all of the below
+# B) none of the below
+# C) all of the above
+# D) one of the above
+# E) none of the above
+# F) none of the above
+
+# true or false
+Sym{
+	T F
+}
+
+# multiple choice options
+Board{
+	A B C D E F
+}
+
+# all of the below
+Opt A:Board { T T T T T T }
+Opt A:Board { F F ? ? ? ? }
+Opt A:Board { F ? F ? ? ? }
+Opt A:Board { F ? ? F ? ? }
+Opt A:Board { F ? ? ? F ? }
+Opt A:Board { F ? ? ? ? F }
+
+# none of the below
+Opt B:Board { ? T F F F F }
+Opt B:Board { ? F T ? ? ? }
+Opt B:Board { ? F ? T ? ? }
+Opt B:Board { ? F ? ? T ? }
+Opt B:Board { ? F ? ? ? T }
+
+# all of the above
+Opt C:Board { T T T ? ? ? }
+Opt C:Board { ? F F ? ? ? }
+Opt C:Board { F ? F ? ? ? }
+
+# one of the above
+Opt D:Board { T F F T ? ? }
+Opt D:Board { F T F T ? ? }
+Opt D:Board { F F T T ? ? }
+Opt D:Board { F F F F ? ? }
+Opt D:Board { ? T T F ? ? }
+Opt D:Board { T ? T F ? ? }
+Opt D:Board { T T ? F ? ? }
+
+# none of the above
+Opt E:Board { F F F F T ? }
+Opt E:Board { T ? ? ? F ? }
+Opt E:Board { ? T ? ? F ? }
+Opt E:Board { ? ? T ? F ? }
+Opt E:Board { ? ? ? T F ? }
+
+# none of the above
+Opt F:Board { F F F F F T }
+Opt F:Board { T ? ? ? ? F }
+Opt F:Board { ? T ? ? ? F }
+Opt F:Board { ? ? T ? ? F }
+Opt F:Board { ? ? ? T ? F }
+Opt F:Board { ? ? ? ? T F }
