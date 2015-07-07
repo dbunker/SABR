@@ -27,6 +27,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #include "minisat/mtl/IntTypes.h"
 #include "minisat/mtl/Alg.h"
 #include "minisat/mtl/Vec.h"
+#include "minisat/mtl/IntMap.h"
 #include "minisat/mtl/Map.h"
 #include "minisat/mtl/Alloc.h"
 
@@ -40,14 +41,18 @@ namespace Minisat {
 // so that they can be used as array indices.
 
 typedef int Var;
+#if defined(MINISAT_CONSTANTS_AS_MACROS)
 #define var_Undef (-1)
+#else
+  const Var var_Undef = -1;
+#endif
 
 
 struct Lit {
     int     x;
 
     // Use this as a constructor:
-    friend Lit mkLit(Var var, bool sign = false);
+    //friend Lit mkLit(Var var, bool sign = false);
 
     bool operator == (Lit p) const { return x == p.x; }
     bool operator != (Lit p) const { return x != p.x; }
@@ -55,7 +60,7 @@ struct Lit {
 };
 
 
-inline  Lit  mkLit     (Var var, bool sign) { Lit p; p.x = var + var + (int)sign; return p; }
+inline  Lit  mkLit     (Var var, bool sign = false) { Lit p; p.x = var + var + (int)sign; return p; }
 inline  Lit  operator ~(Lit p)              { Lit q; q.x = p.x ^ 1; return q; }
 inline  Lit  operator ^(Lit p, bool b)      { Lit q; q.x = p.x ^ (unsigned int)b; return q; }
 inline  bool sign      (Lit p)              { return p.x & 1; }
@@ -72,6 +77,11 @@ inline  Lit  toLit     (int i)              { Lit p; p.x = i; return p; }
 const Lit lit_Undef = { -2 };  // }- Useful special constants.
 const Lit lit_Error = { -1 };  // }
 
+struct MkIndexLit { vec<Lit>::Size operator()(Lit l) const { return vec<Lit>::Size(l.x); } };
+
+template<class T> class VMap : public IntMap<Var, T>{};
+template<class T> class LMap : public IntMap<Lit, T, MkIndexLit>{};
+class LSet : public IntSet<Lit, MkIndexLit>{};
 
 //=================================================================================================
 // Lifted booleans:
@@ -80,10 +90,6 @@ const Lit lit_Error = { -1 };  // }
 //       between one variable and one constant. Some care had to be taken to make sure that gcc 
 //       does enough constant propagation to produce sensible code, and this appears to be somewhat
 //       fragile unfortunately.
-
-#define l_True  (lbool((uint8_t)0)) // gcc does not do constant propagation if these are real constants.
-#define l_False (lbool((uint8_t)1))
-#define l_Undef (lbool((uint8_t)2))
 
 class lbool {
     uint8_t value;
@@ -114,6 +120,17 @@ public:
 inline int   toInt  (lbool l) { return l.value; }
 inline lbool toLbool(int   v) { return lbool((uint8_t)v);  }
 
+#if defined(MINISAT_CONSTANTS_AS_MACROS)
+  #define l_True  (lbool((uint8_t)0)) // gcc does not do constant propagation if these are real constants.
+  #define l_False (lbool((uint8_t)1))
+  #define l_Undef (lbool((uint8_t)2))
+#else
+  const lbool l_True ((uint8_t)0);
+  const lbool l_False((uint8_t)1);
+  const lbool l_Undef((uint8_t)2);
+#endif
+
+
 //=================================================================================================
 // Clause -- a simple class for representing a clause:
 
@@ -142,11 +159,12 @@ class Clause {
         for (int i = 0; i < ps.size(); i++) 
             data[i].lit = ps[i];
 
-        if (header.has_extra)
+        if (header.has_extra){
             if (header.learnt)
                 data[header.size].act = 0;
             else
                 calcAbstraction();
+    }
     }
 
     // NOTE: This constructor cannot be used directly (doesn't allocate enough memory).
@@ -157,11 +175,12 @@ class Clause {
         for (int i = 0; i < from.size(); i++)
             data[i].lit = from[i];
 
-        if (header.has_extra)
+        if (header.has_extra){
             if (header.learnt)
                 data[header.size].act = from.data[header.size].act;
             else 
                 data[header.size].abs = from.data[header.size].abs;
+    }
     }
 
 public:
@@ -302,27 +321,29 @@ public:
 //=================================================================================================
 // OccLists -- a class for maintaining occurence lists with lazy deletion:
 
-template<class Idx, class Vec, class Deleted>
+template<class K, class Vec, class Deleted, class MkIndex = MkIndexDefault<K> >
 class OccLists
 {
-    vec<Vec>  occs;
-    vec<char> dirty;
-    vec<Idx>  dirties;
-    Deleted   deleted;
+    IntMap<K, Vec,  MkIndex> occs;
+    IntMap<K, char, MkIndex> dirty;
+    vec<K>                   dirties;
+    Deleted                  deleted;
 
  public:
-    OccLists(const Deleted& d) : deleted(d) {}
+    OccLists(const Deleted& d, MkIndex _index = MkIndex()) :
+        occs(_index), 
+        dirty(_index), 
+        deleted(d){}
     
-    void  init      (const Idx& idx){ occs.growTo(toInt(idx)+1); dirty.growTo(toInt(idx)+1, 0); }
-    // Vec&  operator[](const Idx& idx){ return occs[toInt(idx)]; }
-    Vec&  operator[](const Idx& idx){ return occs[toInt(idx)]; }
-    Vec&  lookup    (const Idx& idx){ if (dirty[toInt(idx)]) clean(idx); return occs[toInt(idx)]; }
+    void  init      (const K& idx){ occs.reserve(idx); occs[idx].clear(); dirty.reserve(idx, 0); }
+    Vec&  operator[](const K& idx){ return occs[idx]; }
+    Vec&  lookup    (const K& idx){ if (dirty[idx]) clean(idx); return occs[idx]; }
 
     void  cleanAll  ();
-    void  clean     (const Idx& idx);
-    void  smudge    (const Idx& idx){
-        if (dirty[toInt(idx)] == 0){
-            dirty[toInt(idx)] = 1;
+    void  clean     (const K& idx);
+    void  smudge    (const K& idx){
+        if (dirty[idx] == 0){
+            dirty[idx] = 1;
             dirties.push(idx);
         }
     }
@@ -335,27 +356,27 @@ class OccLists
 };
 
 
-template<class Idx, class Vec, class Deleted>
-void OccLists<Idx,Vec,Deleted>::cleanAll()
+template<class K, class Vec, class Deleted, class MkIndex>
+void OccLists<K,Vec,Deleted,MkIndex>::cleanAll()
 {
     for (int i = 0; i < dirties.size(); i++)
         // Dirties may contain duplicates so check here if a variable is already cleaned:
-        if (dirty[toInt(dirties[i])])
+        if (dirty[dirties[i]])
             clean(dirties[i]);
     dirties.clear();
 }
 
 
-template<class Idx, class Vec, class Deleted>
-void OccLists<Idx,Vec,Deleted>::clean(const Idx& idx)
+template<class K, class Vec, class Deleted, class MkIndex>
+void OccLists<K,Vec,Deleted,MkIndex>::clean(const K& idx)
 {
-    Vec& vec = occs[toInt(idx)];
+    Vec& vec = occs[idx];
     int  i, j;
     for (i = j = 0; i < vec.size(); i++)
         if (!deleted(vec[i]))
             vec[j++] = vec[i];
     vec.shrink(i - j);
-    dirty[toInt(idx)] = 0;
+    dirty[idx] = 0;
 }
 
 

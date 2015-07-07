@@ -67,9 +67,9 @@ static inline int memReadPeak(void)
 }
 
 double Minisat::memUsed() { return (double)memReadStat(0) * (double)getpagesize() / (1024*1024); }
-double Minisat::memUsedPeak() { 
-    double peak = memReadPeak() / 1024;
-    return peak == 0 ? memUsed() : peak; }
+double Minisat::memUsedPeak(bool strictlyPeak) { 
+    double peak = memReadPeak() / (double)1024;
+    return peak == 0 && !strictlyPeak ? memUsed() : peak; }
 
 #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__gnu_hurd__)
 
@@ -77,7 +77,7 @@ double Minisat::memUsed() {
     struct rusage ru;
     getrusage(RUSAGE_SELF, &ru);
     return (double)ru.ru_maxrss / 1024; }
-double Minisat::memUsedPeak() { return memUsed(); }
+double Minisat::memUsedPeak(bool strictlyPeak) { (void) strictlyPeak; return memUsed(); }
 
 
 #elif defined(__APPLE__)
@@ -87,11 +87,11 @@ double Minisat::memUsed() {
     malloc_statistics_t t;
     malloc_zone_statistics(NULL, &t);
     return (double)t.max_size_in_use / (1024*1024); }
-double Minisat::memUsedPeak() { return memUsed(); }
+double Minisat::memUsedPeak(bool strictlyPeak) { (void) strictlyPeak; return memUsed(); }
 
 #else
 double Minisat::memUsed()     { return 0; }
-double Minisat::memUsedPeak() { return 0; }
+double Minisat::memUsedPeak(bool strictlyPeak) { (void) strictlyPeak; return 0; }
 #endif
 
 
