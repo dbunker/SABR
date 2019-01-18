@@ -5,7 +5,7 @@
 from jinja2 import Template
 import shutil, os
 
-print 'start'
+print('start')
 
 # clear out directory
 outDir = '_out'
@@ -55,8 +55,8 @@ for page in pageFiles:
 		
 		if state == 'start':
 			if line != '---':
-				print line
-				print name + ' not templated'
+				print(line)
+				print(name + ' not templated')
 				exit()
 			else:
 				state = 'keys'
@@ -95,3 +95,5 @@ for page in pageFiles:
 	outFile.close()
 
 # run: jekyll _out _site --server
+# cp -r _out/* ..
+
